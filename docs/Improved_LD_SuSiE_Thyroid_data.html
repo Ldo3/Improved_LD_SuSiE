@@ -521,13 +521,13 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong3ab47e1">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongeeb4130">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> 3ab47e1
+aria-hidden="true"></span> <strong>Repository version:</strong> eeb4130
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong3ab47e1"
+<div id="strongRepositoryversionstrongeeb4130"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -536,7 +536,7 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 3ab47e1.
+The results in this page were generated with repository version eeb4130.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -578,9 +578,692 @@ There are no past versions. Publish this analysis with
 </div>
 </div>
 </div>
-<pre class="r"><code>library(susieR)</code></pre>
-<pre><code>Warning: package &#39;susieR&#39; was built under R version 4.3.3</code></pre>
-<pre class="r"><code>gtex &lt;- readRDS(&quot;data/Thyroid_ENSG00000132855.rds&quot;)</code></pre>
+<pre class="r"><code>library(susieR)
+gtex &lt;- readRDS(&quot;data/Thyroid_ENSG00000132855.rds&quot;)</code></pre>
+<pre class="r"><code>seed_vary(11)</code></pre>
+<pre><code>HINT: For estimate_residual_variance = TRUE, please check that R is the &quot;in-sample&quot; LD matrix; that is, the correlation matrix obtained using the exact same data matrix X that was used for the other summary statistics. Also note, when covariates are included in the univariate regressions that produced the summary statistics, also consider removing these effects from X before computing R.</code></pre>
+<pre><code>Warning in var_y * adj: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in z * sqrt(adj) * var_y: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in residual_variance/dXtX: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in dXtX/residual_variance: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in (1/residual_variance) * post_var: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in var_y * adj: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in z * sqrt(adj) * var_y: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in var_y * adj: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in z * sqrt(adj) * var_y: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in var_y * adj: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in z * sqrt(adj) * var_y: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in var_y * adj: Recycling array of length 1 in array-vector arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<pre><code>Warning in z * sqrt(adj) * var_y: Recycling array of length 1 in vector-array arithmetic is deprecated.
+  Use c() or as.vector() instead.</code></pre>
+<p><img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] -3.993101</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -623,9 +1306,10 @@ loaded via a namespace (and not attached):
 [37] R6_2.5.1          matrixStats_1.3.0 lifecycle_1.0.4   git2r_0.36.2     
 [41] stringr_1.5.1     fs_1.6.3          irlba_2.3.5.1     pkgconfig_2.0.3  
 [45] callr_3.7.3       pillar_1.9.0      bslib_0.5.0       later_1.3.1      
-[49] gtable_0.3.5      glue_1.7.0        Rcpp_1.0.12       xfun_0.39        
-[53] tibble_3.2.1      tidyselect_1.2.1  rstudioapi_0.15.0 knitr_1.43       
-[57] htmltools_0.5.5   rmarkdown_2.23    compiler_4.3.1    getPass_0.2-4    </code></pre>
+[49] gtable_0.3.5      glue_1.7.0        Rcpp_1.0.12       highr_0.10       
+[53] xfun_0.39         tibble_3.2.1      tidyselect_1.2.1  rstudioapi_0.15.0
+[57] knitr_1.43        htmltools_0.5.5   rmarkdown_2.23    compiler_4.3.1   
+[61] getPass_0.2-4    </code></pre>
 </div>
 
 
