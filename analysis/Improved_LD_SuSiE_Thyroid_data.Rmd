@@ -10,7 +10,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-```{r load data}
+```{r load data, warning=FALSE}
 library(susieR)
 gtex <- readRDS("data/Thyroid_ENSG00000132855.rds")
 ```
@@ -149,3 +149,6 @@ seed_vary = function(seed)
 
 ```
 
+```{r}
+seed_vary(11)
+```
