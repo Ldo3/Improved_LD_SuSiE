@@ -149,6 +149,6 @@ seed_vary = function(seed)
 
 ```
 
-```{r}
+```{r, warning=FALSE}
 seed_vary(11)
 ```
