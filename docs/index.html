@@ -11,12 +11,12 @@
 
 
 
-<title>Home</title>
+<title>Improving the LD SuSiE model</title>
 
 <script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -253,13 +253,7 @@ $(document).ready(function () {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Home</a>
-</li>
-<li>
-  <a href="about.html">About</a>
-</li>
-<li>
-  <a href="license.html">License</a>
+  <a href="index.html">Overview</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -273,7 +267,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Home</h1>
+<h1 class="title toc-ignore">Improving the LD SuSiE model</h1>
 
 </div>
 
@@ -349,13 +343,13 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong3a53d4a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstronge0cb76e">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> 3a53d4a
+aria-hidden="true"></span> <strong>Repository version:</strong> e0cb76e
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong3a53d4a"
+<div id="strongRepositoryversionstronge0cb76e"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -364,7 +358,7 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 3a53d4a.
+The results in this page were generated with repository version e0cb76e.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -406,7 +400,28 @@ There are no past versions. Publish this analysis with
 </div>
 </div>
 </div>
-<p>Welcome to my research website.</p>
+<p>We investigate the performance of SuSiE model for summary statistics
+with various types of covariance (LD) matrices. We consider 5 types of
+covariance matrices:</p>
+<ol style="list-style-type: decimal">
+<li><p>In-sample LD matrix: Gold standard</p></li>
+<li><p>Out-sample LD matrix: LD matrix <span
+class="math inline">\(\widehat{R}\)</span> calculated from a
+out-of-sample data</p></li>
+<li><p>Regularized: <span class="math inline">\(\widehat{R}_{\lambda} =
+(1-\lambda) * \widehat{R} + \lambda * I\)</span> with <span
+class="math inline">\(\lambda = 0.1\)</span></p></li>
+<li><p>Truncated SVD: <span class="math inline">\(\tilde{R}\)</span> as
+presented in the paper</p></li>
+<li><p>TSVD + Reg.: <span class="math inline">\(\tilde{R}_{\lambda} =
+(1-\lambda) * \tilde{R} + \lambda * I\)</span> with <span
+class="math inline">\(\lambda = 0.1\)</span></p></li>
+</ol>
+<p><strong>Analyses:</strong></p>
+<ul>
+<li><a href="Improved_LD_SuSiE_Thyroid_data.html">Experiments using the
+Thyroid dataset</a></li>
+</ul>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
