@@ -515,13 +515,13 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstronge0cb76e">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong929c65b">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> e0cb76e
+aria-hidden="true"></span> <strong>Repository version:</strong> 929c65b
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstronge0cb76e"
+<div id="strongRepositoryversionstrong929c65b"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -530,7 +530,7 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version e0cb76e.
+The results in this page were generated with repository version 929c65b.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -574,10 +574,139 @@ There are no past versions. Publish this analysis with
 </div>
 <pre class="r"><code>library(susieR)
 gtex &lt;- readRDS(&quot;data/Thyroid_ENSG00000132855.rds&quot;)</code></pre>
+<pre class="r"><code>seed_vary = function(seed)
+{
+     set.seed(seed)
+     ## good example: seed 3, 4, 8, 10, 11, 12
+     ## bad example: seed 5
+     # Remove SNPs with MAF &lt; 0.01
+     maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
+     X0 = gtex[, maf &gt; 0.01]
+     dim(X0)
+     X = na.omit(X0)
+     dim(X)
+     snp_total = ncol(X0)
+     n = nrow(X0)
+     p = 200
+     # Start from a random point on the genome
+     indx_start = sample(1: (snp_total - p), 1)
+     X = X0[, indx_start:(indx_start + p -1)]
+     # View(cor(X)[1:10, 1:10])
+     
+     ## sub-sample into two
+     out_sample = sample(1:n, 100)
+     X_out = X[out_sample, ]
+     X_in = X[setdiff(1:n, out_sample), ]
+     sum(is.na(X_out))
+     
+     rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
+     length(rm_p)
+     indx_p = setdiff(1:p, rm_p)
+     X_in = X_in[, indx_p]
+     X_out = X_out[, indx_p]
+     
+     ## Standardize both sample matrices
+     X_in &lt;- scale(X_in)
+     X_out &lt;- scale(X_out)
+     
+     ## out-sample LD matrix
+     R_hat = cor(X_out)
+     R = cor(X_in)
+     # View(R_hat[1:10, 1:10])
+     # View(R[1:10, 1:10])
+     # View(cor(X)[1:10, 1:10])
+     
+     ## generate data from in-sample X matrix
+     p = ncol(X_in)
+     beta &lt;- rep(0,p)
+     n = nrow(X_in)
+     beta[c(1, 50, 100, 150)] &lt;- c(2, 1, -2, 3)
+     # plot(beta, pch=16, ylab=&#39;effect size&#39;)
+     y &lt;- X_in %*% beta + rnorm(n)
+     y = scale(y)
+     
+     ## compute summary statistics 
+     sumstats &lt;- univariate_regression(X_in, y)
+     z_scores &lt;- sumstats$betahat / sumstats$sebetahat
+     # susie_plot(z_scores, y = &quot;z&quot;, b=beta)
+     min_cor = 0.01
+     ## fit the susie-rss model with in-sample R
+     fitted_rss1 &lt;- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                              R = R, var_y = var(y), L = 10,
+                              estimate_residual_variance = TRUE,
+                              min_abs_corr=min_cor)
+     # summary(fitted_rss1)$cs
+     # p1 = susie_plot(fitted_rss1, y=&quot;PIP&quot;, b=beta)
+     
+     ## fit the model with out-sample R
+     fitted_rss2 &lt;- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                              R = R_hat, var_y = var(y), L = 10,
+                              estimate_residual_variance = FALSE,
+                              min_abs_corr=min_cor)
+     # will have problem non-positive cov if estimate_residual_variance = TRUE
+     # summary(fitted_rss2)$cs
+     # p2 = susie_plot(fitted_rss2, y=&quot;PIP&quot;, b=beta) ## miss the true or does not run
+     
+     
+     ## adjusted by identity matrix
+     lambda = 0.1
+     R_hat_lambd = (1-lambda) * R_hat + lambda * diag(p)
+     fitted_rss3 &lt;- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                              R = R_hat_lambd, var_y = var(y), L = 10,
+                              estimate_residual_variance = F,
+                              min_abs_corr=min_cor)
+     # will have problem non-positive cov if estimate_residual_variance = TRUE
+     # summary(fitted_rss3)$cs
+     # susie_plot(fitted_rss3, y=&quot;PIP&quot;, b=beta) 
+     
+     ## using truncated SVD
+     alph = 1
+     XtY = t(X_in) %*% y
+     ZZ = XtY %*% t(XtY) 
+     R_hat_minus = R_hat - alph * ZZ / (n-1)^2
+     eigen_R = eigen(R_hat_minus)
+     eigen_R$values
+     
+     V &lt;- eigen_R$vectors
+     D_plus &lt;- diag(pmax(eigen_R$values, 0))
+     
+     R_hat_plus &lt;- V %*% D_plus %*% solve(V) + alph * ZZ / (n-1)^2
+     
+     fitted_rss4 &lt;- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                              R = R_hat_plus, var_y = var(y), L = 10,
+                              estimate_residual_variance = F,
+                              min_abs_corr=min_cor)
+     # summary(fitted_rss4)$cs
+     # susie_plot(fitted_rss4, y=&quot;PIP&quot;, b=beta)
+     
+     ## combine strategy
+     lambda = 0.1
+     R_hat_plus_diag = (1-lambda) * R_hat_plus + lambda * diag(p)
+     fitted_rss5 &lt;- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                              R = R_hat_plus_diag, var_y = var(y), L = 10,
+                              estimate_residual_variance = F,
+                              min_abs_corr=min_cor)
+     # summary(fitted_rss5)$cs
+     # susie_plot(fitted_rss5, y=&quot;PIP&quot;, b=beta)
+     
+     par(mfrow = c(3, 2))
+     susie_plot(z_scores, y = &quot;z&quot;, b=beta)
+     title(&#39;Z-score&#39;)
+     susie_plot(fitted_rss1, y=&quot;PIP&quot;, b=beta)
+     title(&#39;in-sample LD&#39;)
+     susie_plot(fitted_rss2, y=&quot;PIP&quot;, b=beta)
+     title(&#39;out-sample LD&#39;)
+     susie_plot(fitted_rss3, y=&quot;PIP&quot;, b=beta)
+     title(&#39;reg.+out-sample LD&#39;)
+     susie_plot(fitted_rss4, y=&quot;PIP&quot;, b=beta)
+     title(&#39;trunc.SVD out-sample LD&#39;)
+     susie_plot(fitted_rss5, y=&quot;PIP&quot;, b=beta)
+     title(&#39;reg+trunc.SVD out-sample LD&#39;)
+     print(paste(&quot;Minimum eigenvalue is:&quot;,min(eigen_R$values)))
+}</code></pre>
 <pre class="r"><code>seed_vary(11)</code></pre>
-<pre><code>HINT: For estimate_residual_variance = TRUE, please check that R is the &quot;in-sample&quot; LD matrix; that is, the correlation matrix obtained using the exact same data matrix X that was used for the other summary statistics. Also note, when covariates are included in the univariate regressions that produced the summary statistics, also consider removing these effects from X before computing R.</code></pre>
-<p><img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre><code>[1] -3.993101</code></pre>
+<p><img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-1-1.png" width="1200" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Minimum eigenvalue is: -3.9931008866974&quot;</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
