@@ -8,14 +8,14 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.width=8, fig.height=10, dpi=150)
 ```
 ```{r load data, warning=FALSE}
 library(susieR)
 gtex <- readRDS("data/Thyroid_ENSG00000132855.rds")
 ```
 
-```{r inital functions, include=FALSE}
+```{r inital functions}
 seed_vary = function(seed)
 {
      set.seed(seed)
@@ -144,11 +144,11 @@ seed_vary = function(seed)
      title('trunc.SVD out-sample LD')
      susie_plot(fitted_rss5, y="PIP", b=beta)
      title('reg+trunc.SVD out-sample LD')
-     print(min(eigen_R$values))
+     print(paste("Minimum eigenvalue is:",min(eigen_R$values)))
 }
 
 ```
 
-```{r, warning=FALSE}
+```{r, warning=FALSE,  message=FALSE}
 seed_vary(11)
 ```
