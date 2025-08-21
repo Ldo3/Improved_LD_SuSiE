@@ -8,9 +8,13 @@ editor_options:
 ---
 
 We investigate the performance of SuSiE model for summary statistics with various types of covariance (LD) matrices. We consider 5 types of covariance matrices:
+
 1. In-sample LD matrix: Gold standard
+
 2. Out-sample LD matrix: LD matrix $\widehat{R}$ calculated from a out-of-sample data
+
 3. Regularized: $\widehat{R}_{\lambda} = (1-\lambda) * \widehat{R} + \lambda * I$ with $\lambda = 0.1$
+
 3. Truncated SVD: $\tilde{R}$ as presented in the paper
 3. TSVD + Reg.: $\tilde{R}_{\lambda} = (1-\lambda) * \tilde{R} + \lambda * I$ with $\lambda = 0.1$
 
