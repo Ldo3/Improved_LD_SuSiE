@@ -190,8 +190,7 @@ seed_vary = function(seed)
 
 We vary the random seed to be from $1-20$. 
 
-The following table record cases where the TSVD LD matrix provide a "better", equal or worse PIP output compare to the out-sample LD matrix.  The "better" here is in the mean that improving power detecting the causal SNPs, and less FDR. 
-
+The following table records cases where the TSVD LD matrix provides a "better," equal, or worse PIP output compared to the out-sample LD matrix. The "better" here means improving power in detecting the causal SNPs and reducing FDR. 
 
 
 ```{r, message=FALSE, echo=FALSE}
@@ -233,11 +232,11 @@ kable(df, "html", escape = FALSE, align = "c") %>%
 ```
 **Note**
 
-+ <span style="color:green; font-size:20px;">■</span> for case where the TSVD improved the power and reduce the FDR compare to out-sample LD.
++ <span style="color:green; font-size:20px;">■</span> for cases where the TSVD improved the power and reduce the FDR compare to out-sample LD.
 
-+ <span style="color:green; font-size:20px;">●</span> for case where the TSVD improved the power but increased the FDR compare to out-sample LD.
++ <span style="color:green; font-size:20px;">●</span> for cases where the TSVD improved the power but increased the FDR compare to out-sample LD.
 
-+ <span style="color:green; font-size:20px;">▲</span> for case where the TSVD maintained the same power but reduced the FDR compare to out-sample LD.
++ <span style="color:green; font-size:20px;">▲</span> for cases where the TSVD maintained the same power but reduced the FDR compare to out-sample LD.
 
 
 ```{r, results='asis', echo=FALSE, warning=FALSE, message=FALSE}
