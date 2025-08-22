@@ -7,6 +7,22 @@ output:
     code_folding: hide
 ---
 
+In this experiment, we compare the SuSiE model for summary statistics under different types of the LD matrices. There are 5 types of covariance matrices as we mentioned earlier in the beginning of the page. Let's recall here once more
+
+1. In-sample LD matrix: Gold standard
+
+2. Out-sample LD matrix: LD matrix $\widehat{R}$ calculated from a out-of-sample data
+
+3. Regularized: $\widehat{R}_{\lambda} = (1-\lambda) * \widehat{R} + \lambda * I$ with $\lambda = 0.1$
+
+4. Truncated SVD: $\tilde{R}$ as presented in the paper
+
+5. TSVD + Reg.: $\tilde{R}_{\lambda} = (1-\lambda) * \tilde{R} + \lambda * I$ with $\lambda = 0.1$
+
+# 1. Preprocessing the data and ideas of this experiment
+
+We used the Thyroid data which can be found in the data folder of the source code of this page. The size of the data is $n \times P$ where $n = 547$ is the sample size and $P=7470$ is the total number of SNPs.
+ 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.width=8, fig.height=10, dpi=150)
 ```
@@ -15,10 +31,30 @@ library(susieR)
 gtex <- readRDS("data/Thyroid_ENSG00000132855.rds")
 ```
 
+In the following, we provide the coded-up function for the experiment where the outputs are SuSiE plots with their corresponding LD matrix. In terms of the procedure, we
+
++ removed the SNPs with $MAF < 0.01$,
+
++ randomly splitted the Thyroid data into two subsamples called in-sample ($n_1=474$) and out-of-sample ($n_2=100$) with $p = 200$. To maintain the correlation between Xs, we subsampled in a way that took consecutive SNPs.
+
++ standardized both sample matrices and calculated the out-sample LD matrix.
+
++ generated data from the in-sample X matrix where the chosen causal SNPs are in the set $\{1, 50, 100,150\}$ the corresponding non-zeros $\beta$s are $2,1,-2,3$. Specifically, 
+$$y = X_{\text{in}}\boldsymbol{\beta} + \epsilon, \text{ where } \epsilon \sim \mathcal{N}_{474}(0,\sigma^2I_{474}), \boldsymbol{\beta} = \sum_{l=1}^4\boldsymbol{\beta}_l, \boldsymbol{\beta}_l = \gamma_l\beta_l,$$
+where $\gamma_1, \gamma_2, \gamma_3, \gamma_4$ are vectors of all zero but only one value 1 in position $1, 50, 100, 150$, respectively, and ${\beta_1,\beta_2, \beta_3,\beta_4} = (2,1,-2,3)$. Standardized $y$.
+
++ Fitted univariate regression for $(y, X_{\text{in}})$ and calculated the Z-scores.
+    
+
+4. Given the known true causal SNPs, we run SuSiE assuming we know nothing about the data but only have the summary statistics.
+
+Let's see how the different LD matrices affect the detection of causal SNPs.
+
 ```{r inital functions}
 seed_vary = function(seed)
 {
      set.seed(seed)
+     print(paste("This is seed number", seed))
      ## good example: seed 3, 4, 8, 10, 11, 12
      ## bad example: seed 5
      # Remove SNPs with MAF < 0.01
@@ -144,11 +180,70 @@ seed_vary = function(seed)
      title('trunc.SVD out-sample LD')
      susie_plot(fitted_rss5, y="PIP", b=beta)
      title('reg+trunc.SVD out-sample LD')
-     print(paste("Minimum eigenvalue is:",min(eigen_R$values)))
+     print(paste("Minimum eigenvalue is:",min(eigen_R$values,"corresponding to the seed", seed)))
 }
 
 ```
 
-```{r, warning=FALSE,  message=FALSE}
-seed_vary(11)
+
+# 2. Running the experiment with different seed
+
+We vary the random seed to be from $1-20$. 
+
+The following table record cases where the TSVD LD matrix provide a "better", equal or worse PIP output compare to the out-sample LD matrix.  The "better" here is in the mean that improving power detecting the causal SNPs, and less FDR. 
+
+
+
+```{r, message=FALSE, echo=FALSE}
+library(knitr)
+library(kableExtra)
+
+# helper: clickable symbol with color
+linked_symbol <- function(sym, col, seed) {
+  sprintf("<a href='#seed%s-plot'><span style='color:%s; font-size:18px;'>%s</span></a>",
+          seed, col, sym)
+}
+
+# Create table (3 rows x 20 seed columns + row labels)
+df <- as.data.frame(matrix("", nrow = 3, ncol = 20))
+colnames(df) <- paste0("seed ", 1:20)
+df <- cbind(Result = c("better", "equal", "worse"), df)
+
+# Fill with clickable symbols
+df[1, 17+1] <- linked_symbol("⬤", "green", 17)  # better power, lower FDR
+df[1, c(3,4,11,12,13)+1] <- sapply(c(3,4,11,12,13), function(s) linked_symbol("■", "green", s))
+df[1, c(8,9,7,14,15,16,18)+1] <- sapply(c(8,9,7,14,15,16,18), function(s) linked_symbol("▲", "green", s))
+
+df[2, c(2,6)+1] <- sapply(c(2,6), function(s) linked_symbol("✓", "orange", s))  # equal
+df[3, c(1,5,19,20)+1] <- sapply(c(1,5,19,20), function(s) linked_symbol("x", "red", s))  # worse
+
+# Render HTML table with borders
+kable(df, "html", escape = FALSE, align = "c") %>%
+  kable_styling(
+    full_width = FALSE,
+    bootstrap_options = c("bordered", "condensed", "responsive", "hover"),
+    position = "center",
+    font_size = 14
+  ) %>%
+  row_spec(1, bold = TRUE, color = "green") %>%
+  row_spec(2, bold = TRUE, color = "orange") %>%
+  row_spec(3, bold = TRUE, color = "red") %>%
+  column_spec(1, bold = TRUE, border_right = TRUE) %>%
+  column_spec(2:21, border_left = TRUE, border_right = TRUE)
 ```
+**Note**
+
++ <span style="color:green; font-size:20px;">■</span> for case where the TSVD improved the power and reduce the FDR compare to out-sample LD.
+
++ <span style="color:green; font-size:20px;">●</span> for case where the TSVD improved the power but increased the FDR compare to out-sample LD.
+
++ <span style="color:green; font-size:20px;">▲</span> for case where the TSVD maintained the same power but reduced the FDR compare to out-sample LD.
+
+
+```{r, results='asis', echo=FALSE, warning=FALSE, message=FALSE}
+for (s in 1:20) {
+  cat(sprintf("<a id='seed%s-plot'></a>\n\n", s))  # anchor
+  seed_vary(s)  
+}
+```
+
