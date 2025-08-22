@@ -1,10 +1,14 @@
-name: "Improved_LD_SuSiE"
+name: Improved_LD_SuSiE
 output_dir: ../docs
 navbar:
-  title: "Improved_LD_SuSiE"
+  title: Improved_LD_SuSiE
   left:
   - text: Overview
     href: index.html
+  right:
+  - icon: fab fa-github
+    text: Source code
+    href: https://github.com/Ldo3/Improved_LD_SuSiE
 output:
   workflowr::wflow_html:
     toc: no
