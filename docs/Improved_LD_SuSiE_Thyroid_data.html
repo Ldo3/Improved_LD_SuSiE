@@ -36,6 +36,8 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -384,7 +386,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-08-21
+<strong>Last updated:</strong> 2025-08-22
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -515,13 +517,13 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong929c65b">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstronge01c281">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> 929c65b
+aria-hidden="true"></span> <strong>Repository version:</strong> e01c281
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong929c65b"
+<div id="strongRepositoryversionstronge01c281"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -530,7 +532,7 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 929c65b.
+The results in this page were generated with repository version e01c281.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -572,11 +574,75 @@ There are no past versions. Publish this analysis with
 </div>
 </div>
 </div>
+<p>In this experiment, we compare the SuSiE model for summary statistics
+under different types of the LD matrices. There are 5 types of
+covariance matrices as we mentioned earlier in the beginning of the
+page. Let’s recall here once more</p>
+<ol style="list-style-type: decimal">
+<li><p>In-sample LD matrix: Gold standard</p></li>
+<li><p>Out-sample LD matrix: LD matrix <span
+class="math inline">\(\widehat{R}\)</span> calculated from a
+out-of-sample data</p></li>
+<li><p>Regularized: <span class="math inline">\(\widehat{R}_{\lambda} =
+(1-\lambda) * \widehat{R} + \lambda * I\)</span> with <span
+class="math inline">\(\lambda = 0.1\)</span></p></li>
+<li><p>Truncated SVD: <span class="math inline">\(\tilde{R}\)</span> as
+presented in the paper</p></li>
+<li><p>TSVD + Reg.: <span class="math inline">\(\tilde{R}_{\lambda} =
+(1-\lambda) * \tilde{R} + \lambda * I\)</span> with <span
+class="math inline">\(\lambda = 0.1\)</span></p></li>
+</ol>
+<div id="preprocessing-the-data-and-ideas-of-this-experiment"
+class="section level1">
+<h1>1. Preprocessing the data and ideas of this experiment</h1>
+<p>We used the Thyroid data which can be found in the data folder of the
+source code of this page. The size of the data is <span
+class="math inline">\(n \times P\)</span> where <span
+class="math inline">\(n = 547\)</span> is the sample size and <span
+class="math inline">\(P=7470\)</span> is the total number of SNPs.</p>
 <pre class="r"><code>library(susieR)
 gtex &lt;- readRDS(&quot;data/Thyroid_ENSG00000132855.rds&quot;)</code></pre>
+<p>In the following, we provide the coded-up function for the experiment
+where the outputs are SuSiE plots with their corresponding LD matrix. In
+terms of the procedure, we</p>
+<ul>
+<li><p>removed the SNPs with <span class="math inline">\(MAF &lt;
+0.01\)</span>,</p></li>
+<li><p>randomly splitted the Thyroid data into two subsamples called
+in-sample (<span class="math inline">\(n_1=474\)</span>) and
+out-of-sample (<span class="math inline">\(n_2=100\)</span>) with <span
+class="math inline">\(p = 200\)</span>. To maintain the correlation
+between Xs, we subsampled in a way that took consecutive SNPs.</p></li>
+<li><p>standardized both sample matrices and calculated the out-sample
+LD matrix.</p></li>
+<li><p>generated data from the in-sample X matrix where the chosen
+causal SNPs are in the set <span class="math inline">\(\{1, 50,
+100,150\}\)</span> the corresponding non-zeros <span
+class="math inline">\(\beta\)</span>s are <span
+class="math inline">\(2,1,-2,3\)</span>. Specifically, <span
+class="math display">\[y = X_{\text{in}}\boldsymbol{\beta} + \epsilon,
+\text{ where } \epsilon \sim \mathcal{N}_{474}(0,\sigma^2I_{474}),
+\boldsymbol{\beta} = \sum_{l=1}^4\boldsymbol{\beta}_l,
+\boldsymbol{\beta}_l = \gamma_l\beta_l,\]</span> where <span
+class="math inline">\(\gamma_1, \gamma_2, \gamma_3, \gamma_4\)</span>
+are vectors of all zero but only one value 1 in position <span
+class="math inline">\(1, 50, 100, 150\)</span>, respectively, and <span
+class="math inline">\({\beta_1,\beta_2, \beta_3,\beta_4} =
+(2,1,-2,3)\)</span>. Standardized <span
+class="math inline">\(y\)</span>.</p></li>
+<li><p>Fitted univariate regression for <span class="math inline">\((y,
+X_{\text{in}})\)</span> and calculated the Z-scores.</p></li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li>Given the known true causal SNPs, we run SuSiE assuming we know
+nothing about the data but only have the summary statistics.</li>
+</ol>
+<p>Let’s see how the different LD matrices affect the detection of
+causal SNPs.</p>
 <pre class="r"><code>seed_vary = function(seed)
 {
      set.seed(seed)
+     print(paste(&quot;This is seed number&quot;, seed))
      ## good example: seed 3, 4, 8, 10, 11, 12
      ## bad example: seed 5
      # Remove SNPs with MAF &lt; 0.01
@@ -702,11 +768,335 @@ gtex &lt;- readRDS(&quot;data/Thyroid_ENSG00000132855.rds&quot;)</code></pre>
      title(&#39;trunc.SVD out-sample LD&#39;)
      susie_plot(fitted_rss5, y=&quot;PIP&quot;, b=beta)
      title(&#39;reg+trunc.SVD out-sample LD&#39;)
-     print(paste(&quot;Minimum eigenvalue is:&quot;,min(eigen_R$values)))
+     print(paste(&quot;Minimum eigenvalue is:&quot;,min(eigen_R$values,&quot;corresponding to the seed&quot;, seed)))
 }</code></pre>
-<pre class="r"><code>seed_vary(11)</code></pre>
-<p><img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-1-1.png" width="1200" style="display: block; margin: auto;" /></p>
-<pre><code>[1] &quot;Minimum eigenvalue is: -3.9931008866974&quot;</code></pre>
+</div>
+<div id="running-the-experiment-with-different-seed"
+class="section level1">
+<h1>2. Running the experiment with different seed</h1>
+<p>We vary the random seed to be from <span
+class="math inline">\(1-20\)</span>.</p>
+<p>The following table record cases where the TSVD LD matrix provide a
+“better”, equal or worse PIP output compare to the out-sample LD matrix.
+The “better” here is in the mean that improving power detecting the
+causal SNPs, and less FDR.</p>
+<table class="table table-bordered table-condensed table-responsive table-hover" style="font-size: 14px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+Result
+</th>
+<th style="text-align:center;">
+seed 1
+</th>
+<th style="text-align:center;">
+seed 2
+</th>
+<th style="text-align:center;">
+seed 3
+</th>
+<th style="text-align:center;">
+seed 4
+</th>
+<th style="text-align:center;">
+seed 5
+</th>
+<th style="text-align:center;">
+seed 6
+</th>
+<th style="text-align:center;">
+seed 7
+</th>
+<th style="text-align:center;">
+seed 8
+</th>
+<th style="text-align:center;">
+seed 9
+</th>
+<th style="text-align:center;">
+seed 10
+</th>
+<th style="text-align:center;">
+seed 11
+</th>
+<th style="text-align:center;">
+seed 12
+</th>
+<th style="text-align:center;">
+seed 13
+</th>
+<th style="text-align:center;">
+seed 14
+</th>
+<th style="text-align:center;">
+seed 15
+</th>
+<th style="text-align:center;">
+seed 16
+</th>
+<th style="text-align:center;">
+seed 17
+</th>
+<th style="text-align:center;">
+seed 18
+</th>
+<th style="text-align:center;">
+seed 19
+</th>
+<th style="text-align:center;">
+seed 20
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;font-weight: bold;color: green !important;font-weight: bold;border-right:1px solid;">
+better
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed3-plot"><span
+style="color:green; font-size:18px;">■</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed4-plot"><span
+style="color:green; font-size:18px;">■</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed7-plot"><span
+style="color:green; font-size:18px;">▲</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed8-plot"><span
+style="color:green; font-size:18px;">▲</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed9-plot"><span
+style="color:green; font-size:18px;">▲</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed11-plot"><span
+style="color:green; font-size:18px;">■</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed12-plot"><span
+style="color:green; font-size:18px;">■</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed13-plot"><span
+style="color:green; font-size:18px;">■</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed14-plot"><span
+style="color:green; font-size:18px;">▲</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed15-plot"><span
+style="color:green; font-size:18px;">▲</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed16-plot"><span
+style="color:green; font-size:18px;">▲</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed17-plot"><span
+style="color:green; font-size:18px;">⬤</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed18-plot"><span
+style="color:green; font-size:18px;">▲</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: green !important;border-left:1px solid;border-right:1px solid;">
+</td>
+</tr>
+<tr>
+<td style="text-align:center;font-weight: bold;color: orange !important;font-weight: bold;border-right:1px solid;">
+equal
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed2-plot"><span
+style="color:orange; font-size:18px;">✓</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed6-plot"><span
+style="color:orange; font-size:18px;">✓</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: orange !important;border-left:1px solid;border-right:1px solid;">
+</td>
+</tr>
+<tr>
+<td style="text-align:center;font-weight: bold;color: red !important;font-weight: bold;border-right:1px solid;">
+worse
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed1-plot"><span
+style="color:red; font-size:18px;">x</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed5-plot"><span
+style="color:red; font-size:18px;">x</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed19-plot"><span
+style="color:red; font-size:18px;">x</span></a>
+</td>
+<td style="text-align:center;font-weight: bold;color: red !important;border-left:1px solid;border-right:1px solid;">
+<a href="#seed20-plot"><span
+style="color:red; font-size:18px;">x</span></a>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note</strong></p>
+<ul>
+<li><p><span style="color:green; font-size:20px;">■</span> for case
+where the TSVD improved the power and reduce the FDR compare to
+out-sample LD.</p></li>
+<li><p><span style="color:green; font-size:20px;">●</span> for case
+where the TSVD improved the power but increased the FDR compare to
+out-sample LD.</p></li>
+<li><p><span style="color:green; font-size:20px;">▲</span> for case
+where the TSVD maintained the same power but reduced the FDR compare to
+out-sample LD.</p></li>
+</ul>
+<p><a id='seed1-plot'></a></p>
+<p>[1] “This is seed number 1”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-1.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -3.711724” <a id='seed2-plot'></a></p>
+<p>[1] “This is seed number 2”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-2.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -1.989602” <a id='seed3-plot'></a></p>
+<p>[1] “This is seed number 3”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-3.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -0.9986563” <a id='seed4-plot'></a></p>
+<p>[1] “This is seed number 4”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-4.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -0.3631381” <a id='seed5-plot'></a></p>
+<p>[1] “This is seed number 5”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-5.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -0.7655705” <a id='seed6-plot'></a></p>
+<p>[1] “This is seed number 6”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-6.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -2.874186” <a id='seed7-plot'></a></p>
+<p>[1] “This is seed number 7”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-7.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -1.981569” <a id='seed8-plot'></a></p>
+<p>[1] “This is seed number 8”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-8.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -1.601618” <a id='seed9-plot'></a></p>
+<p>[1] “This is seed number 9”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-9.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -1.278852” <a id='seed10-plot'></a></p>
+<p>[1] “This is seed number 10”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-10.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -0.4129873” <a id='seed11-plot'></a></p>
+<p>[1] “This is seed number 11”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-11.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -3.993101” <a id='seed12-plot'></a></p>
+<p>[1] “This is seed number 12”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-12.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -2.219522” <a id='seed13-plot'></a></p>
+<p>[1] “This is seed number 13”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-13.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -3.037011” <a id='seed14-plot'></a></p>
+<p>[1] “This is seed number 14”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-14.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -1.119388” <a id='seed15-plot'></a></p>
+<p>[1] “This is seed number 15”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-15.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -2.52149” <a id='seed16-plot'></a></p>
+<p>[1] “This is seed number 16”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-16.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -2.84049” <a id='seed17-plot'></a></p>
+<p>[1] “This is seed number 17”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-17.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -2.866559” <a id='seed18-plot'></a></p>
+<p>[1] “This is seed number 18”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-18.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -0.6496066” <a id='seed19-plot'></a></p>
+<p>[1] “This is seed number 19”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-19.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -1.861127” <a id='seed20-plot'></a></p>
+<p>[1] “This is seed number 20”
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-20.png" width="1200" style="display: block; margin: auto;" />[1]
+“Minimum eigenvalue is: -0.7103139”</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -734,25 +1124,27 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] susieR_0.14.2   workflowr_1.7.1
+[1] kableExtra_1.4.0 knitr_1.43       susieR_0.14.2    workflowr_1.7.1 
 
 loaded via a namespace (and not attached):
- [1] sass_0.4.7        utf8_1.2.4        generics_0.1.3    stringi_1.8.4    
- [5] lattice_0.21-8    digest_0.6.33     magrittr_2.0.3    evaluate_0.21    
- [9] grid_4.3.1        fastmap_1.1.1     plyr_1.8.8        rprojroot_2.0.3  
-[13] jsonlite_1.8.7    Matrix_1.6-0      processx_3.8.2    whisker_0.4.1    
-[17] reshape_0.8.10    mixsqp_0.3-54     ps_1.7.5          promises_1.2.0.1 
-[21] httr_1.4.6        fansi_1.0.6       scales_1.3.0      jquerylib_0.1.4  
-[25] cli_3.6.2         rlang_1.1.4       crayon_1.5.2      munsell_0.5.1    
-[29] cachem_1.0.8      yaml_2.3.7        tools_4.3.1       dplyr_1.1.4      
-[33] colorspace_2.1-0  ggplot2_3.5.1     httpuv_1.6.11     vctrs_0.6.5      
-[37] R6_2.5.1          matrixStats_1.3.0 lifecycle_1.0.4   git2r_0.36.2     
-[41] stringr_1.5.1     fs_1.6.3          irlba_2.3.5.1     pkgconfig_2.0.3  
-[45] callr_3.7.3       pillar_1.9.0      bslib_0.5.0       later_1.3.1      
-[49] gtable_0.3.5      glue_1.7.0        Rcpp_1.0.12       highr_0.10       
-[53] xfun_0.39         tibble_3.2.1      tidyselect_1.2.1  rstudioapi_0.15.0
-[57] knitr_1.43        htmltools_0.5.5   rmarkdown_2.23    compiler_4.3.1   
-[61] getPass_0.2-4    </code></pre>
+ [1] sass_0.4.7        utf8_1.2.4        generics_0.1.3    xml2_1.3.5       
+ [5] stringi_1.8.4     lattice_0.21-8    digest_0.6.33     magrittr_2.0.3   
+ [9] evaluate_0.21     grid_4.3.1        fastmap_1.1.1     plyr_1.8.8       
+[13] rprojroot_2.0.3   jsonlite_1.8.7    Matrix_1.6-0      processx_3.8.2   
+[17] whisker_0.4.1     reshape_0.8.10    mixsqp_0.3-54     ps_1.7.5         
+[21] promises_1.2.0.1  httr_1.4.6        fansi_1.0.6       viridisLite_0.4.2
+[25] scales_1.3.0      textshaping_0.3.6 jquerylib_0.1.4   cli_3.6.2        
+[29] rlang_1.1.4       crayon_1.5.2      munsell_0.5.1     cachem_1.0.8     
+[33] yaml_2.3.7        tools_4.3.1       dplyr_1.1.4       colorspace_2.1-0 
+[37] ggplot2_3.5.1     httpuv_1.6.11     vctrs_0.6.5       R6_2.5.1         
+[41] matrixStats_1.3.0 lifecycle_1.0.4   git2r_0.36.2      stringr_1.5.1    
+[45] fs_1.6.3          irlba_2.3.5.1     pkgconfig_2.0.3   callr_3.7.3      
+[49] pillar_1.9.0      bslib_0.5.0       later_1.3.1       gtable_0.3.5     
+[53] glue_1.7.0        Rcpp_1.0.12       systemfonts_1.2.3 highr_0.10       
+[57] xfun_0.39         tibble_3.2.1      tidyselect_1.2.1  rstudioapi_0.15.0
+[61] htmltools_0.5.5   svglite_2.2.1     rmarkdown_2.23    compiler_4.3.1   
+[65] getPass_0.2-4    </code></pre>
+</div>
 </div>
 
 
