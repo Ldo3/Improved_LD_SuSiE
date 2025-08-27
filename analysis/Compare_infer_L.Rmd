@@ -1,0 +1,189 @@
+---
+title: "Compare inferred L in SuSiE when using different covariance matrices"
+Author: "Dat Do"
+output:
+  workflowr::wflow_html:
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
+
+In this experiment, we compare the SuSiE model with true $L_0 = 4$ and fitted $L$ from 1 to 10. SuSiE has a notable feature that when fitting with $L > 4$, the PIP for all CSs after 4 will be diffused because all of the causual SNPs have been picked. Therefore we do not select CSs with low purity, where purity is defined by the minimum pairwise correlation of SNPs in a CS. The inferred $L$ is defined by the number of CSs that have purity excess a chosen threshold (default = 0.5). 
+
+```{r}
+library(susieR)
+gtex <- readRDS("data/Thyroid_ENSG00000132855.rds")
+
+num_reps = 200
+
+all_L_infer = array(0, dim=c(5, num_reps, 10))
+
+maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
+X0 = gtex[, maf > 0.01]
+dim(X0)
+X = na.omit(X0)
+dim(X)
+snp_total = ncol(X0)
+
+
+for (seed in 1:num_reps){
+  for (L in 1:10){
+    print(seed)
+    set.seed(seed)
+    n = nrow(X0)
+    # Remove SNPs with MAF < 0.01
+    p = 200
+    min_cor = 0.5
+    # Start from a random point on the genome
+    indx_start = sample(1: (snp_total - p), 1)
+    X = X0[, indx_start:(indx_start + p -1)]
+    # View(cor(X)[1:10, 1:10])
+    
+    ## sub-sample into two
+    out_sample = sample(1:n, 100)
+    X_out = X[out_sample, ]
+    X_in = X[setdiff(1:n, out_sample), ]
+    sum(is.na(X_out))
+    
+    rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
+    length(rm_p)
+    indx_p = setdiff(1:p, rm_p)
+    X_in = X_in[, indx_p]
+    X_out = X_out[, indx_p]
+    
+    ## Standardize both sample matrices
+    X_in <- scale(X_in)
+    X_out <- scale(X_out)
+    
+    ## out-sample LD matrix
+    R_hat = cor(X_out)
+    R = cor(X_in)
+    
+    ## generate data from in-sample X matrix
+    p = ncol(X_in)
+    beta <- rep(0,p)
+    n = nrow(X_in)
+    ## L_true = 4
+    truth = c(1, 50, 100, 150)
+    beta[truth] <- c(2, 1, -2, 3)
+    ## L_true = 1
+    # truth = c(100)
+    # beta[truth] <- c(2)
+    # plot(beta, pch=16, ylab='effect size')
+    y <- X_in %*% beta + rnorm(n)
+    y = scale(y)
+    
+    ## compute summary statistics 
+    sumstats <- univariate_regression(X_in, y)
+    z_scores <- sumstats$betahat / sumstats$sebetahat
+    # susie_plot(z_scores, y = "z", b=beta)
+    # L = 10 # overfitted
+    
+    
+    ## fit the susie-rss model with in-sample R
+    fitted_rss1 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                             R = R, var_y = var(y), L = L,
+                             estimate_residual_variance = F,
+                             min_abs_corr=min_cor)
+    
+    summary(fitted_rss1)$cs
+    # p1 = susie_plot(fitted_rss1, y="PIP", b=beta)
+    
+    ## fit the model with out-sample R
+    fitted_rss2 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                             R = R_hat, var_y = var(y), L = L,
+                             estimate_residual_variance = F,
+                             min_abs_corr=min_cor)
+    # will have problem non-positive cov if estimate_residual_variance = TRUE
+    summary(fitted_rss2)$cs
+    # p2 = susie_plot(fitted_rss2, y="PIP", b=beta) ## miss the true or does not run
+    
+    
+    ## adjusted by identity matrix
+    lambda = 0.1
+    R_hat_lambd = (1-lambda) * R_hat + lambda * diag(p)
+    fitted_rss3 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                             R = R_hat_lambd, var_y = var(y), L = L,
+                             estimate_residual_variance = F,
+                             min_abs_corr=min_cor)
+    # will have problem non-positive cov if estimate_residual_variance = TRUE
+    # summary(fitted_rss3)$cs
+    # susie_plot(fitted_rss3, y="PIP", b=beta) 
+    
+    ## using truncated SVD
+    alph = 1
+    XtY = t(X_in) %*% y
+    ZZ = XtY %*% t(XtY) 
+    R_hat_minus = R_hat - alph * ZZ / (n-1)^2
+    eigen_R = eigen(R_hat_minus)
+    eigen_R$values
+    
+    V <- eigen_R$vectors
+    D_plus <- diag(pmax(eigen_R$values, 0))
+    
+    R_hat_plus <- V %*% D_plus %*% solve(V) + alph * ZZ / (n-1)^2
+    
+    fitted_rss4 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                             R = R_hat_plus, var_y = var(y), L = L,
+                             estimate_residual_variance = F,
+                             min_abs_corr=min_cor)
+    # summary(fitted_rss4)$cs
+    # susie_plot(fitted_rss4, y="PIP", b=beta)
+    
+    ## combine strategy
+    lambda = 0.1
+    R_hat_plus_diag = (1-lambda) * R_hat_plus + lambda * diag(p)
+    fitted_rss5 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                             R = R_hat_plus_diag, var_y = var(y), L = L,
+                             estimate_residual_variance = F,
+                             min_abs_corr=min_cor)
+    # summary(fitted_rss5)$cs
+    # susie_plot(fitted_rss5, y="PIP", b=beta)
+    
+    L_true = length(truth)
+    fitted_rss = list(fitted_rss1, fitted_rss2, fitted_rss3, fitted_rss4, fitted_rss5)
+    for (v in 1:5){
+      ## coverage = proportion of CS that contains a true casual SNP
+      if (is.null(summary(fitted_rss[[v]])$cs)) {
+        all_L_infer[v, seed, L] = 0
+      } else{
+        L_infer = nrow(summary(fitted_rss[[v]])$cs)
+        all_L_infer[v, seed, L] = L_infer
+      }
+    }
+  }
+}
+
+
+
+
+library(ggplot2)
+
+list_name = c('In-sample', 'Out-sample', 'Regularized', 'Trunc. SVD')
+plots = list()
+for (i in 1:4){
+  m = (all_L_infer[i, , ])
+  colnames(m) <- c(1:10)
+  means <- colMeans(m)
+  sds   <- apply(m, 2, sd)
+  df <- data.frame(
+    variable =  factor(colnames(m), levels = colnames(m)),
+    mean = means,
+    sd = sds
+  )
+  
+  plots[[i]] = ggplot(df, aes(x = variable, y = mean)) +
+    geom_point(size = 3, color = "blue") +
+    geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd), width = 0.2) +
+    labs(title = list_name[i],
+         x = "Methods", y = "Mean ± SD")
+}
+
+library(patchwork)
+wrap_plots(plots, ncol = 2)
+
+
+```
+
+
+

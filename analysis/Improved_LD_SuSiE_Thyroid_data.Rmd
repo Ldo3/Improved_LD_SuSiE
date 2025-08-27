@@ -1,5 +1,6 @@
 ---
 title: "Improved LD SuSiE using Thyroid data"
+Author: "Linh Do and Dat Do"
 output:
   workflowr::wflow_html:
     toc: true
