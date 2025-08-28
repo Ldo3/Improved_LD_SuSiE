@@ -13,7 +13,7 @@
 
 <title>Improved LD SuSiE using Thyroid data</title>
 
-<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
@@ -38,6 +38,8 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -339,7 +341,13 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/Ldo3/Improved_LD_SuSiE">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -386,7 +394,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-08-22
+<strong>Last updated:</strong> 2025-08-28
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -517,13 +525,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongb2d6f17">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree35b71f6a010e6f77c36afe617644fcffb4b33130targetblank35b71f6a">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> b2d6f17
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/35b71f6a010e6f77c36afe617644fcffb4b33130" target="_blank">35b71f6</a>
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongb2d6f17"
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree35b71f6a010e6f77c36afe617644fcffb4b33130targetblank35b71f6a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -532,7 +542,8 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version b2d6f17.
+The results in this page were generated with repository version
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/35b71f6a010e6f77c36afe617644fcffb4b33130" target="_blank">35b71f6</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -550,8 +561,10 @@ Ignored files:
     Ignored:    .DS_Store
 
 Untracked files:
-    Untracked:  data/Thyroid_ENSG00000132855.rds
-    Untracked:  initial_workflowr.R
+    Untracked:  code_push.R
+
+Unstaged changes:
+    Modified:   analysis/index.Rmd
 
 </code></pre>
 <p>
@@ -567,9 +580,294 @@ have uncommitted changes.
 </div>
 <div id="versions" class="tab-pane fade">
 <p>
-There are no past versions. Publish this analysis with
-<code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were
+made to the R Markdown
+(<code>analysis/Improved_LD_SuSiE_Thyroid_data.Rmd</code>) and HTML
+(<code>docs/Improved_LD_SuSiE_Thyroid_data.html</code>) files. If you’ve
+configured a remote Git repository (see <code>?wflow_git_remote</code>),
+click on the hyperlinks in the table below to view the files as they
+were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/18e5ae102956195a477a7843ec67a061dbdc7272/analysis/Improved_LD_SuSiE_Thyroid_data.Rmd" target="_blank">18e5ae1</a>
+</td>
+<td>
+Dat Do
+</td>
+<td>
+2025-08-27
+</td>
+<td>
+add infer L file
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/521f16a8094e522afba29440d2f537636fcc7bcc/docs/Improved_LD_SuSiE_Thyroid_data.html" target="_blank">521f16a</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/b2d6f17a9b0cefebb77c3941f5b4371b737f608f/analysis/Improved_LD_SuSiE_Thyroid_data.Rmd" target="_blank">b2d6f17</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+<td>
+wflow_publish("analysis/*")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/Improved_LD_SuSiE_Thyroid_data.html" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/e01c281a6c076ac5bab3055c8cc72ba40ed091f2/analysis/Improved_LD_SuSiE_Thyroid_data.Rmd" target="_blank">e01c281</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+<td>
+wflow_publish("analysis/*")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/21dc38a7455dc4d5e9ff246ed6420010e4d507e0/docs/Improved_LD_SuSiE_Thyroid_data.html" target="_blank">21dc38a</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/929c65bfac0257966b8d95b4e547b4c56c831a6d/analysis/Improved_LD_SuSiE_Thyroid_data.Rmd" target="_blank">929c65b</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+wflow_publish("analysis/*")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/7008df9bd80247563e62bb57244db17a622f1b31/docs/Improved_LD_SuSiE_Thyroid_data.html" target="_blank">7008df9</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/c7b76bb677f3b95d84bd17ce46b034df6920a172/docs/Improved_LD_SuSiE_Thyroid_data.html" target="_blank">c7b76bb</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/385ca920d2b2e8b9d5663fe3998234c252716b9c/docs/Improved_LD_SuSiE_Thyroid_data.html" target="_blank">385ca92</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c2764bbabbfcab22efe246afb8abc6f4ce034e08/analysis/Improved_LD_SuSiE_Thyroid_data.Rmd" target="_blank">c2764bb</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Start my new project
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/79c290ff955b2e4e41408eb74506ad038ded0884/docs/Improved_LD_SuSiE_Thyroid_data.html" target="_blank">79c290f</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/eeb4130b7d8a9277926a60eb340c82163811c790/analysis/Improved_LD_SuSiE_Thyroid_data.Rmd" target="_blank">eeb4130</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Start my new project
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/1edbb44d9fabd51712b459e0609beefbb15cdcce/docs/Improved_LD_SuSiE_Thyroid_data.html" target="_blank">1edbb44</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/3ab47e13f6b22b7096574311cbd345cab3b97738/analysis/Improved_LD_SuSiE_Thyroid_data.Rmd" target="_blank">3ab47e1</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Start my new project
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -1038,65 +1336,805 @@ out-sample LD.</p></li>
 </ul>
 <p><a id='seed1-plot'></a></p>
 <p>[1] “This is seed number 1”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-1.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -3.711724” <a id='seed2-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-1.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-1">
+Past versions of unnamed-chunk-2-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-1.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -3.711724” <a id='seed2-plot'></a></p>
 <p>[1] “This is seed number 2”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-2.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -1.989602” <a id='seed3-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-2.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-2">
+Past versions of unnamed-chunk-2-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-2.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -1.989602” <a id='seed3-plot'></a></p>
 <p>[1] “This is seed number 3”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-3.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -0.9986563” <a id='seed4-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-3.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-3">
+Past versions of unnamed-chunk-2-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-3.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -0.9986563” <a id='seed4-plot'></a></p>
 <p>[1] “This is seed number 4”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-4.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -0.3631381” <a id='seed5-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-4.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-4">
+Past versions of unnamed-chunk-2-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-4.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -0.3631381” <a id='seed5-plot'></a></p>
 <p>[1] “This is seed number 5”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-5.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -0.7655705” <a id='seed6-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-5.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-5">
+Past versions of unnamed-chunk-2-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-5.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -0.7655705” <a id='seed6-plot'></a></p>
 <p>[1] “This is seed number 6”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-6.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -2.874186” <a id='seed7-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-6.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-6">
+Past versions of unnamed-chunk-2-6.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-6.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -2.874186” <a id='seed7-plot'></a></p>
 <p>[1] “This is seed number 7”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-7.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -1.981569” <a id='seed8-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-7.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-7">
+Past versions of unnamed-chunk-2-7.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-7" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-7.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -1.981569” <a id='seed8-plot'></a></p>
 <p>[1] “This is seed number 8”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-8.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -1.601618” <a id='seed9-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-8.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-8">
+Past versions of unnamed-chunk-2-8.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-8" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-8.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -1.601618” <a id='seed9-plot'></a></p>
 <p>[1] “This is seed number 9”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-9.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -1.278852” <a id='seed10-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-9.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-9">
+Past versions of unnamed-chunk-2-9.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-9" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-9.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -1.278852” <a id='seed10-plot'></a></p>
 <p>[1] “This is seed number 10”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-10.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -0.4129873” <a id='seed11-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-10.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-10">
+Past versions of unnamed-chunk-2-10.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-10" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-10.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -0.4129873” <a id='seed11-plot'></a></p>
 <p>[1] “This is seed number 11”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-11.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -3.993101” <a id='seed12-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-11.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-11">
+Past versions of unnamed-chunk-2-11.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-11" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-11.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -3.993101” <a id='seed12-plot'></a></p>
 <p>[1] “This is seed number 12”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-12.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -2.219522” <a id='seed13-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-12.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-12">
+Past versions of unnamed-chunk-2-12.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-12" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-12.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -2.219522” <a id='seed13-plot'></a></p>
 <p>[1] “This is seed number 13”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-13.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -3.037011” <a id='seed14-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-13.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-13">
+Past versions of unnamed-chunk-2-13.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-13" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-13.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -3.037011” <a id='seed14-plot'></a></p>
 <p>[1] “This is seed number 14”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-14.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -1.119388” <a id='seed15-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-14.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-14">
+Past versions of unnamed-chunk-2-14.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-14" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-14.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -1.119388” <a id='seed15-plot'></a></p>
 <p>[1] “This is seed number 15”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-15.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -2.52149” <a id='seed16-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-15.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-15">
+Past versions of unnamed-chunk-2-15.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-15" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-15.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -2.52149” <a id='seed16-plot'></a></p>
 <p>[1] “This is seed number 16”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-16.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -2.84049” <a id='seed17-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-16.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-16">
+Past versions of unnamed-chunk-2-16.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-16" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-16.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -2.84049” <a id='seed17-plot'></a></p>
 <p>[1] “This is seed number 17”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-17.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -2.866559” <a id='seed18-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-17.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-17">
+Past versions of unnamed-chunk-2-17.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-17" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-17.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -2.866559” <a id='seed18-plot'></a></p>
 <p>[1] “This is seed number 18”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-18.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -0.6496066” <a id='seed19-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-18.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-18">
+Past versions of unnamed-chunk-2-18.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-18" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-18.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -0.6496066” <a id='seed19-plot'></a></p>
 <p>[1] “This is seed number 19”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-19.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -1.861127” <a id='seed20-plot'></a></p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-19.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-19">
+Past versions of unnamed-chunk-2-19.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-19" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-19.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -1.861127” <a id='seed20-plot'></a></p>
 <p>[1] “This is seed number 20”
-<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-20.png" width="1200" style="display: block; margin: auto;" />[1]
-“Minimum eigenvalue is: -0.7103139”</p>
+<img src="figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-20.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-20">
+Past versions of unnamed-chunk-2-20.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-20" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/figure/Improved_LD_SuSiE_Thyroid_data.Rmd/unnamed-chunk-2-20.png" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>[1] “Minimum eigenvalue is: -0.7103139”</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1106,13 +2144,13 @@ Session information
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.3.1 (2023-06-16)
-Platform: aarch64-apple-darwin20 (64-bit)
-Running under: macOS Ventura 13.1
+<pre><code>R version 4.5.1 (2025-06-13)
+Platform: aarch64-apple-darwin20
+Running under: macOS Sequoia 15.6.1
 
 Matrix products: default
-BLAS:   /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRblas.0.dylib 
-LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
+BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
 
 locale:
 [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -1124,26 +2162,30 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] kableExtra_1.4.0 knitr_1.43       susieR_0.14.2    workflowr_1.7.1 
+[1] kableExtra_1.4.0 knitr_1.50       susieR_0.14.2    workflowr_1.7.1 
 
 loaded via a namespace (and not attached):
- [1] sass_0.4.7        utf8_1.2.4        generics_0.1.3    xml2_1.3.5       
- [5] stringi_1.8.4     lattice_0.21-8    digest_0.6.33     magrittr_2.0.3   
- [9] evaluate_0.21     grid_4.3.1        fastmap_1.1.1     plyr_1.8.8       
-[13] rprojroot_2.0.3   jsonlite_1.8.7    Matrix_1.6-0      processx_3.8.2   
-[17] whisker_0.4.1     reshape_0.8.10    mixsqp_0.3-54     ps_1.7.5         
-[21] promises_1.2.0.1  httr_1.4.6        fansi_1.0.6       viridisLite_0.4.2
-[25] scales_1.3.0      textshaping_0.3.6 jquerylib_0.1.4   cli_3.6.2        
-[29] rlang_1.1.4       crayon_1.5.2      munsell_0.5.1     cachem_1.0.8     
-[33] yaml_2.3.7        tools_4.3.1       dplyr_1.1.4       colorspace_2.1-0 
-[37] ggplot2_3.5.1     httpuv_1.6.11     vctrs_0.6.5       R6_2.5.1         
-[41] matrixStats_1.3.0 lifecycle_1.0.4   git2r_0.36.2      stringr_1.5.1    
-[45] fs_1.6.3          irlba_2.3.5.1     pkgconfig_2.0.3   callr_3.7.3      
-[49] pillar_1.9.0      bslib_0.5.0       later_1.3.1       gtable_0.3.5     
-[53] glue_1.7.0        Rcpp_1.0.12       systemfonts_1.2.3 highr_0.10       
-[57] xfun_0.39         tibble_3.2.1      tidyselect_1.2.1  rstudioapi_0.15.0
-[61] htmltools_0.5.5   svglite_2.2.1     rmarkdown_2.23    compiler_4.3.1   
-[65] getPass_0.2-4    </code></pre>
+ [1] sass_0.4.10        generics_0.1.4     xml2_1.3.8         stringi_1.8.7     
+ [5] lattice_0.22-7     digest_0.6.37      magrittr_2.0.3     evaluate_1.0.4    
+ [9] grid_4.5.1         RColorBrewer_1.1-3 fastmap_1.2.0      plyr_1.8.9        
+[13] rprojroot_2.1.0    jsonlite_2.0.0     Matrix_1.7-3       processx_3.8.6    
+[17] whisker_0.4.1      reshape_0.8.10     ps_1.9.1           mixsqp_0.3-54     
+[21] promises_1.3.3     httr_1.4.7         viridisLite_0.4.2  scales_1.4.0      
+[25] textshaping_1.0.1  jquerylib_0.1.4    cli_3.6.5          rlang_1.1.6       
+[29] crayon_1.5.3       cachem_1.1.0       yaml_2.3.10        tools_4.5.1       
+[33] dplyr_1.1.4        ggplot2_3.5.2      httpuv_1.6.16      vctrs_0.6.5       
+[37] R6_2.6.1           matrixStats_1.5.0  lifecycle_1.0.4    git2r_0.36.2      
+[41] stringr_1.5.1      fs_1.6.6           irlba_2.3.5.1      pkgconfig_2.0.3   
+[45] callr_3.7.6        pillar_1.11.0      bslib_0.9.0        later_1.4.2       
+[49] gtable_0.3.6       glue_1.8.0         Rcpp_1.1.0         systemfonts_1.2.3 
+[53] xfun_0.52          tibble_3.3.0       tidyselect_1.2.1   rstudioapi_0.17.1 
+[57] farver_2.1.2       htmltools_0.5.8.1  svglite_2.2.1      rmarkdown_2.29    
+[61] compiler_4.5.1     getPass_0.2-4     </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 
