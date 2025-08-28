@@ -13,7 +13,7 @@
 
 <title>Improving the LD SuSiE model</title>
 
-<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
@@ -32,6 +32,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -257,7 +259,13 @@ $(document).ready(function () {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/Ldo3/Improved_LD_SuSiE">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -296,7 +304,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-08-22
+<strong>Last updated:</strong> 2025-08-28
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -343,13 +351,15 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongb2d6f17">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree0c916cc9dfe7d176b7ae91c730335f29803a5d34targetblank0c916cca">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> b2d6f17
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/0c916cc9dfe7d176b7ae91c730335f29803a5d34" target="_blank">0c916cc</a>
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongb2d6f17"
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree0c916cc9dfe7d176b7ae91c730335f29803a5d34targetblank0c916cca"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -358,7 +368,8 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version b2d6f17.
+The results in this page were generated with repository version
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/0c916cc9dfe7d176b7ae91c730335f29803a5d34" target="_blank">0c916cc</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -375,10 +386,6 @@ were generated:
 Ignored files:
     Ignored:    .DS_Store
 
-Untracked files:
-    Untracked:  data/Thyroid_ENSG00000132855.rds
-    Untracked:  initial_workflowr.R
-
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not
@@ -393,9 +400,241 @@ have uncommitted changes.
 </div>
 <div id="versions" class="tab-pane fade">
 <p>
-There are no past versions. Publish this analysis with
-<code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML
+(<code>docs/index.html</code>) files. If you’ve configured a remote Git
+repository (see <code>?wflow_git_remote</code>), click on the hyperlinks
+in the table below to view the files as they were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/0c916cc9dfe7d176b7ae91c730335f29803a5d34/analysis/index.Rmd" target="_blank">0c916cc</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-08-28
+</td>
+<td>
+wflow_publish("analysis/index.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/dc5a9916598949b5511d209941dae9c7c34b7256/analysis/index.Rmd" target="_blank">dc5a991</a>
+</td>
+<td>
+Dat Do
+</td>
+<td>
+2025-08-28
+</td>
+<td>
+Infer L analysis
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/521f16a8094e522afba29440d2f537636fcc7bcc/docs/index.html" target="_blank">521f16a</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/97a384dbaa6e7e05d192a824ba9f983a3d97ab2e/docs/index.html" target="_blank">97a384d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/21dc38a7455dc4d5e9ff246ed6420010e4d507e0/docs/index.html" target="_blank">21dc38a</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/7008df9bd80247563e62bb57244db17a622f1b31/docs/index.html" target="_blank">7008df9</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/e0cb76e202de25ba153598c7d4797543da223733/analysis/index.Rmd" target="_blank">e0cb76e</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+wflow_publish("analysis/*")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/c7b76bb677f3b95d84bd17ce46b034df6920a172/docs/index.html" target="_blank">c7b76bb</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/385ca920d2b2e8b9d5663fe3998234c252716b9c/docs/index.html" target="_blank">385ca92</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/79c290ff955b2e4e41408eb74506ad038ded0884/docs/index.html" target="_blank">79c290f</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/1edbb44d9fabd51712b459e0609beefbb15cdcce/docs/index.html" target="_blank">1edbb44</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c0c2c6d9d23259b8a0f348e45f647aa5c6012ff7/analysis/index.Rmd" target="_blank">c0c2c6d</a>
+</td>
+<td>
+Ldo3
+</td>
+<td>
+2025-08-21
+</td>
+<td>
+Start workflowr project.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -419,9 +658,15 @@ class="math inline">\(\lambda = 0.1\)</span></p></li>
 </ol>
 <p><strong>Analyses:</strong></p>
 <ul>
-<li><a href="Improved_LD_SuSiE_Thyroid_data.html">Experiments using the
-Thyroid dataset</a></li>
+<li><p><a href="Improved_LD_SuSiE_Thyroid_data.html">Experiments using
+the Thyroid dataset</a></p></li>
+<li><p>[Compare Inferred L](Compare_infer_L.html</p></li>
 </ul>
+</div>
+</div>
+</div>
+</div>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
