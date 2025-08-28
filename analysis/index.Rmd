@@ -20,6 +20,6 @@ We investigate the performance of SuSiE model for summary statistics with variou
 
 + [Experiments using the Thyroid dataset](Improved_LD_SuSiE_Thyroid_data.html)
 
-+ [Compare Inferred L](Compare_infer_L.html)
++ [Compare Inferred L](Compare_infer_L.html
 
 
