@@ -10,7 +10,7 @@ output:
 
 In this experiment, we compare the SuSiE model with true $L_0 = 4$ and fitted $L$ from 1 to 10. SuSiE has a notable feature that when fitting with $L > 4$, the PIP for all CSs after 4 will be diffused because all of the causual SNPs have been picked. Therefore we do not select CSs with low purity, where purity is defined by the minimum pairwise correlation of SNPs in a CS. The inferred $L$ is defined by the number of CSs that have purity excess a chosen threshold (default = 0.5). 
 
-```{r}
+```{r, warning=FALSE}
 library(susieR)
 gtex <- readRDS("data/Thyroid_ENSG00000132855.rds")
 
@@ -20,15 +20,15 @@ all_L_infer = array(0, dim=c(5, num_reps, 10))
 
 maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
 X0 = gtex[, maf > 0.01]
-dim(X0)
+# dim(X0)
 X = na.omit(X0)
-dim(X)
+# dim(X)
 snp_total = ncol(X0)
 
 
 for (seed in 1:num_reps){
   for (L in 1:10){
-    print(seed)
+    # print(seed)
     set.seed(seed)
     n = nrow(X0)
     # Remove SNPs with MAF < 0.01
