@@ -22,4 +22,6 @@ We investigate the performance of SuSiE model for summary statistics with variou
 
 + [Compare Inferred L](Compare_infer_L.html)
 
++ [Compare LD Matrices](Compare_LD_Mat.html)
+
 
