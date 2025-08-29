@@ -1,0 +1,387 @@
+---
+title: "Compare LD Matrices"
+Author: "Dat Do"
+output:
+  workflowr::wflow_html:
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width=8, fig.height=10, dpi=150)
+```
+```{r, warning=FALSE, message=FALSE}
+library(susieR)
+gtex <- readRDS("data/Thyroid_ENSG00000132855.rds")
+
+num_reps = 200
+
+num_covs = 8
+coverages = matrix(0, nrow = num_reps, ncol = num_covs)
+powers = matrix(0, nrow = num_reps, ncol = num_covs)
+no_CSs = matrix(0, nrow = num_reps, ncol = num_covs)
+no_SNPs_CS = matrix(0, nrow = num_reps, ncol = num_covs)
+compare_R = rep(0, num_reps)
+
+maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
+X0 = gtex[, maf > 0.01]
+dim(X0)
+X = na.omit(X0)
+dim(X)
+snp_total = ncol(X0)
+# L = 4 # true
+L = 10 # overfitting
+PVEs = rep(0, num_reps)
+
+proj_B <- function(R, v){
+  R_hat_minus = R - tcrossprod(v)
+  eigen_R = eigen(R_hat_minus)
+  
+  V <- eigen_R$vectors
+  D_plus <- diag(pmax(eigen_R$values, 0))
+  
+  R_hat_plus <- V %*% D_plus %*% t(V) + tcrossprod(v)
+  return(R_hat_plus)
+}
+
+symmetrize <- function(R){
+  (R + t(R)) / 2
+}
+
+for (seed in 1:num_reps){
+  set.seed(seed)
+  n = nrow(X0)
+  ## good example: seed 3, 4, 8, 10, 11, 12
+  ## bad example: seed 5
+  # Remove SNPs with MAF < 0.01
+  p = 200
+  min_cor = 0.5
+  # Start from a random point on the genome
+  indx_start = sample(1: (snp_total - p), 1)
+  X = X0[, indx_start:(indx_start + p -1)]
+  # View(cor(X)[1:10, 1:10])
+  
+  ## sub-sample into two
+  out_sample = sample(1:n, 100)
+  X_out = X[out_sample, ]
+  X_in = X[setdiff(1:n, out_sample), ]
+  sum(is.na(X_out))
+  
+  rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
+  length(rm_p)
+  indx_p = setdiff(1:p, rm_p)
+  X_in = X_in[, indx_p]
+  X_out = X_out[, indx_p]
+  
+  ## Standardize both sample matrices
+  X_in <- scale(X_in)
+  X_out <- scale(X_out)
+  
+  ## out-sample LD matrix
+  R_hat = cor(X_out)
+  R0 = cor(X_in)
+  
+  ## generate data from in-sample X matrix
+  p = ncol(X_in)
+  beta <- rep(0,p)
+  n = nrow(X_in)
+  truth = c(1, 50, 100, 150)
+  true_effect_val = c(2, 1, -2, 3)
+  beta[truth] <- true_effect_val
+  # plot(beta, pch=16, ylab='effect size')
+  sigma_true = 2
+  y <- X_in %*% beta + sigma_true * rnorm(n)
+  PVE_unnorm = var(X_in[, c(1, 50, 100, 150)] %*% true_effect_val) 
+  PVE = PVE_unnorm / (PVE_unnorm + sigma_true^2)
+  PVEs[seed] = PVE
+  y = scale(y)
+  
+  ## compute summary statistics 
+  sumstats <- univariate_regression(X_in, y)
+  z_scores <- sumstats$betahat / sumstats$sebetahat
+  # susie_plot(z_scores, y = "z", b=beta)
+  # L = 10 # overfitted
+  
+  
+  ## fit the susie-rss model with in-sample R
+  fitted_rss1 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                           R = R0, var_y = var(y), L = L,
+                           estimate_residual_variance = F,
+                           min_abs_corr=min_cor)
+  
+  summary(fitted_rss1)$cs
+  # p1 = susie_plot(fitted_rss1, y="PIP", b=beta)
+  
+  ## fit the model with out-sample R
+  fitted_rss2 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                           R = R_hat, var_y = var(y), L = L,
+                           estimate_residual_variance = F,
+                           min_abs_corr=min_cor)
+  # will have problem non-positive cov if estimate_residual_variance = TRUE
+  summary(fitted_rss2)$cs
+  # p2 = susie_plot(fitted_rss2, y="PIP", b=beta) ## miss the true or does not run
+  
+  
+  ## adjusted by identity matrix
+  lambda = 0.1
+  R_hat_lambd = (1-lambda) * R_hat + lambda * diag(p)
+  fitted_rss3 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                           R = R_hat_lambd, var_y = var(y), L = L,
+                           estimate_residual_variance = F,
+                           min_abs_corr=min_cor)
+  # will have problem non-positive cov if estimate_residual_variance = TRUE
+  # summary(fitted_rss3)$cs
+  # susie_plot(fitted_rss3, y="PIP", b=beta) 
+  
+  ## using truncated SVD
+  
+  XtY = t(X_in) %*% y
+  v = XtY / (n-1)
+  R_hat_plus = proj_B(R_hat, v)
+  
+  
+  fitted_rss4 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                           R = R_hat_plus, var_y = var(y), L = L,
+                           estimate_residual_variance = F,
+                           min_abs_corr=min_cor)
+  # summary(fitted_rss4)$cs
+  # susie_plot(fitted_rss4, y="PIP", b=beta)
+  
+  ## Dykstra projection algorithm
+  P = matrix(0, nrow = p, ncol = p)
+  Q = matrix(0, nrow = p, ncol = p)
+  R = R_hat
+  for (iter_proj in 1:20){
+    R_ = R + P 
+    diag(R_) = 1 ## project C (diagonal constraint)
+    P = R + P - R_
+    R = proj_B(R_ + Q, v) ## project B (semidefinite constraint)
+    Q = R_ + Q - R
+    # print(sum((R - R0)^2))
+  }
+  R_hat_dykstra = R
+  
+  fitted_rss5 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                           R = R_hat_dykstra, var_y = var(y), L = L,
+                           estimate_residual_variance = F,
+                           min_abs_corr=min_cor)
+  
+  ## multiple trait true covariance matrix of Y
+  M = 10  ## ntraits
+  betas = matrix(rnorm((M-1) * 4, mean = 0, sd=2), nrow=4, ncol=M-1)
+  Y = X_in[, truth] %*% betas + sigma_true * matrix(rnorm(n*(M-1)), nrow=n, ncol=M-1)
+  Y = cbind(y, Y)
+  Y = scale(Y)
+  C_Y = (t(Y) %*% Y) / (n-1)
+  V_XY = (t(X_in) %*% Y) / (n-1)
+  
+  R_hat_minus = R_hat - V_XY %*% solve(C_Y, t(V_XY))
+  eigen_R = eigen(R_hat_minus)
+  
+  V <- eigen_R$vectors
+  D_plus <- diag(pmax(eigen_R$values, 0))
+  
+  R_hat_plus_multi <- V %*% D_plus %*% solve(V) + V_XY %*% solve(C_Y, t(V_XY))
+  R_hat_plus_multi = symmetrize(R_hat_plus_multi)
+  
+  err_1trait = sum((R_hat_plus - R0)^2)
+  err_Mtrait = sum((R_hat_plus_multi - R0)^2)
+  print(err_1trait)
+  print(err_Mtrait)
+  print((err_Mtrait < err_1trait))
+  fitted_rss6 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n,
+                           R = R_hat_plus_multi, var_y = var(y), L = L,
+                           estimate_residual_variance = F,
+                           min_abs_corr=min_cor)
+  
+  ## multiple trait true covariance matrix of Y
+  M = 100  ## ntraits
+  betas = matrix(rnorm((M-1) * 4, mean = 0, sd=2), nrow=4, ncol=M-1)
+  Y = X_in[, truth] %*% betas + sigma_true * matrix(rnorm(n*(M-1)), nrow=n, ncol=M-1)
+  Y = cbind(y, Y)
+  Y = scale(Y)
+  C_Y = (t(Y) %*% Y) / (n-1)
+  V_XY = (t(X_in) %*% Y) / (n-1)
+  
+  R_hat_minus = R_hat - V_XY %*% solve(C_Y, t(V_XY))
+  eigen_R = eigen(R_hat_minus)
+  
+  V <- eigen_R$vectors
+  D_plus <- diag(pmax(eigen_R$values, 0))
+  
+  R_hat_plus_multi <- V %*% D_plus %*% t(V) + V_XY %*% solve(C_Y, t(V_XY))
+  R_hat_plus_multi = symmetrize(R_hat_plus_multi)
+  
+  err_1trait = sum((R_hat_plus - R0)^2)
+  err_Mtrait = sum((R_hat_plus_multi - R0)^2)
+  print(err_1trait)
+  print(err_Mtrait)
+  print((err_Mtrait < err_1trait))
+  fitted_rss7 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n,
+                           R = R_hat_plus_multi, var_y = var(y), L = L,
+                           estimate_residual_variance = F,
+                           min_abs_corr=min_cor)
+  
+  M = 200  ## ntraits
+  betas = matrix(rnorm((M-1) * 4, mean = 0, sd=2), nrow=4, ncol=M-1)
+  Y = X_in[, truth] %*% betas + sigma_true * matrix(rnorm(n*(M-1)), nrow=n, ncol=M-1)
+  Y = cbind(y, Y)
+  Y = scale(Y)
+  C_Y = (t(Y) %*% Y) / (n-1)
+  V_XY = (t(X_in) %*% Y) / (n-1)
+  
+  R_hat_minus = R_hat - V_XY %*% solve(C_Y, t(V_XY))
+  eigen_R = eigen(R_hat_minus)
+  
+  V <- eigen_R$vectors
+  D_plus <- diag(pmax(eigen_R$values, 0))
+  
+  R_hat_plus_multi <- V %*% D_plus %*% t(V) + V_XY %*% solve(C_Y, t(V_XY))
+  R_hat_plus_multi = symmetrize(R_hat_plus_multi)
+  
+  fitted_rss8 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n,
+                           R = R_hat_plus_multi, var_y = var(y), L = L,
+                           estimate_residual_variance = F,
+                           min_abs_corr=min_cor)
+  
+  ## multiple trait Dykstra
+  # y2 <- X_in %*% beta + sigma_true * rnorm(n)
+  # y3 <- X_in %*% beta + sigma_true * rnorm(n)
+  # y2 = scale(y2)
+  # y3 = scale(y3)
+  # 
+  # XtY2 = t(X_in) %*% y2
+  # v2 = XtY2 / (n-1)
+  # XtY3 = t(X_in) %*% y3
+  # v3 = XtY3 / (n-1)
+  # 
+  # Q_ = matrix(0, nrow = p, ncol = p)
+  # Q1 = matrix(0, nrow = p, ncol = p)
+  # Q2 = matrix(0, nrow = p, ncol = p)
+  # Q3 = matrix(0, nrow = p, ncol = p)
+  # R3 = R_hat
+  # for (iter_proj in 1:20){
+  #   R_ = R3 + Q3
+  #   diag(R_) = 1 ## project C (diagonal constraint)
+  #   Q3 = R3 + Q3 - R_
+  #   
+  #   R1 = proj_B(symmetrize(R_ + Q_), v) ## project B1 (semidefinite constraint)
+  #   Q_ = R_ + Q_ - R1
+  #   
+  #   R2 = proj_B(symmetrize(R1 + Q1), v2) ## project B2 (semidefinite constraint)
+  #   Q1 = R1 + Q1 - R2
+  #   
+  #   R3 = proj_B(symmetrize(R2 + Q2), v3) ## project B3 (semidefinite constraint)
+  #   Q2 = R2 + Q2 - R3
+  #   
+  #   print(sum((R3 - R0)^2))
+  # }
+  # R_hat_dykstra_multi = symmetrize(R3)
+  # 
+  # fitted_rss7 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+  #                          R = R_hat_dykstra_multi, var_y = var(y), L = L,
+  #                          estimate_residual_variance = F,
+  #                          min_abs_corr=min_cor)
+  
+  fitted_rss = list(fitted_rss1, 
+                    fitted_rss2, 
+                    fitted_rss3, 
+                    fitted_rss4, 
+                    fitted_rss5, 
+                    fitted_rss6,
+                    fitted_rss7, 
+                    fitted_rss8)
+  
+  for (v in 1:num_covs){
+    L_infer = nrow(summary(fitted_rss[[v]])$cs)
+    if (is.null(summary(fitted_rss[[v]])$cs)) {
+      coverages[seed, v] = 0
+      powers[seed, v] = 0
+      no_CSs[seed, v] = 0
+      no_SNPs_CS[seed, v] = 0
+    } else{
+      no_contains = 0
+      all_selected_SNPs = c()
+      for (ell in 1:L_infer){
+        this_CS = unlist(strsplit((summary(fitted_rss[[v]])$cs$variable[ell]), ",\\s*"))
+        all_selected_SNPs = c(all_selected_SNPs, this_CS)
+        no_contains = no_contains + (length(intersect(this_CS, truth)) > 0)
+        ## coverage = proportion of CS that contains a true casual SNP
+        coverages[seed, v] = no_contains / L_infer
+        ## power = proportion of casual SNP that is contained in a CS
+        selected = length(intersect(all_selected_SNPs, truth)) 
+        powers[seed, v] = selected / 4
+        
+        ## number of CSs
+        no_CSs[seed, v] = L_infer
+        
+        ## number of SNPs per CSs
+        no_SNPs_CS[seed, v] = length(all_selected_SNPs) / L_infer
+    }
+    }
+    
+  }
+}
+
+# save(coverages, file='data/coverages_mat_overfit_worsePVE.RData')
+# save(powers, file='data/powers_mat_overfit_worsePVE.RData')
+# save(no_CSs, file='data/number_CSs_mat_overfit_worsePVE.RData')
+# save(no_SNPs_CS, file='data/number_SNPs_per_CS_mat_overfit_worsePVE.RData')
+# save(PVEs, file='data/PVE_worsePVE.RData')
+
+
+
+# 
+# 
+
+
+```
+
+
+```{r}
+library(ggplot2)
+
+list_mat = list(coverages, powers, no_CSs, no_SNPs_CS)
+list_name = c("Coverages", "Power", "Number of CSs", "Number of SNPs per CS")
+plots = list()
+for (i in 1:4){
+  m = list_mat[[i]]
+  colnames(m) <- c('In-', 'Out-', 'Reg.', 'TSVD', 'Dykstra', '10trait', '100trait', '200')
+  means <- colMeans(m)
+  sds   <- apply(m, 2, sd)
+  df <- data.frame(
+    variable = factor(colnames(m), levels = colnames(m)),
+    mean = means,
+    sd = sds
+  )
+  
+  plots[[i]] = ggplot(df, aes(x = variable, y = mean)) +
+    geom_point(size = 3, color = "blue") +
+    geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd), width = 0.2) +
+    labs(title = list_name[i],
+         x = "Methods", y = "Mean ± SD")
+}
+
+library(patchwork)
+wrap_plots(plots, ncol = 2)
+```
+
+```{r}
+##Plot histogram of the number of CSs
+cov_type = c('In-sample cov mat', 'Out-sample cov mat', 'Reg. mat', 'Trunc. SVD mat')
+
+hists = list()
+for (i in 1:4){
+  df <- data.frame(x = no_CSs[, i])
+
+  hists[[i]] = ggplot(df, aes(x = x)) +
+    geom_histogram(binwidth = 1, fill = "skyblue", color = "black", boundary = 0.5) +
+    scale_x_continuous(breaks = 1:max(df)) +
+    labs(title = paste("Number of CSs for", cov_type[i]),
+         x = "Value",
+         y = "Count") +
+    theme_minimal()
+}
+
+wrap_plots(hists, ncol = 2)
+```
