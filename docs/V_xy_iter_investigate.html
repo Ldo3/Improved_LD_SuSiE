@@ -397,7 +397,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-09-08
+<strong>Last updated:</strong> 2025-09-09
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -554,15 +554,15 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree0e1cebc4fed26b39e3731305f94690653d89c348targetblank0e1cebca">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree5e0c2a76c113860bf1ee34f3fe1535068e19d1a5targetblank5e0c2a7a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/0e1cebc4fed26b39e3731305f94690653d89c348" target="_blank">0e1cebc</a>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/5e0c2a76c113860bf1ee34f3fe1535068e19d1a5" target="_blank">5e0c2a7</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree0e1cebc4fed26b39e3731305f94690653d89c348targetblank0e1cebca"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree5e0c2a76c113860bf1ee34f3fe1535068e19d1a5targetblank5e0c2a7a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -572,7 +572,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/0e1cebc4fed26b39e3731305f94690653d89c348" target="_blank">0e1cebc</a>.
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/5e0c2a76c113860bf1ee34f3fe1535068e19d1a5" target="_blank">5e0c2a7</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -656,6 +656,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/5e0c2a76c113860bf1ee34f3fe1535068e19d1a5/analysis/V_xy_iter_investigate.Rmd" target="_blank">5e0c2a7</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-09
+</td>
+<td>
+wflow_publish(c("analysis/V_xy_iter_investigate.Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/V_xy_iter_investigate.html" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/0e1cebc4fed26b39e3731305f94690653d89c348/analysis/V_xy_iter_investigate.Rmd" target="_blank">0e1cebc</a>
 </td>
 <td>
@@ -684,7 +718,7 @@ class="math display">\[\overline{r} = X^{\top} y - X^{\top} X
 class="math inline">\(\overline{b} = \sum_{\ell=1}^{L}
 \overline{b}_{\ell}\)</span> is the sum of the posterior mean of all
 effects.</p>
-<p>We expect that after detecting all ``true’’ casual SNP, <span
+<p>We expect that after detecting all ``true’’ causal SNP, <span
 class="math inline">\(\overline{r}\)</span> will be a vector of <span
 class="math inline">\(J\)</span> equally small numbers so that the PIP
 of over-fitted <span class="math inline">\(\ell\)</span> will be close
@@ -692,21 +726,120 @@ to 0 (diffused). Hence the purity of over-fitted <span
 class="math inline">\(\ell\)</span>-th CS is small and is not
 reported.</p>
 <p>However, it can be seen that because of mis-specified <span
-class="math inline">\(R\)</span>, after controlling for all casual SNP,
+class="math inline">\(R\)</span>, after controlling for all causal SNP,
 the residual <span class="math inline">\(\overline{r}\)</span> of other
 SNPs can ``increase’’, leading to large PIP, thus creates false
-discovery.</p>
+discovery (Matthew’s intuition). The second case is that when
+subtracting <span class="math inline">\(\widehat{R}
+\overline{b}\)</span> from <span class="math inline">\(v\)</span>,
+because of the mismatch between <span
+class="math inline">\(\widehat{R}\)</span> and <span
+class="math inline">\(R\)</span>, some of the correlated SNP to the
+causal SNP is not subtracted enough. Consider an example: <span
+class="math inline">\(v_i = 5, v_j = 6\)</span> and <span
+class="math inline">\(R_{ij} \approx 1\)</span>, all other <span
+class="math inline">\(v_{k}= 0\)</span>. After one iteration that SuSiE
+pick the credible set <span class="math inline">\(\{i, j\}\)</span>, we
+expect <span class="math inline">\(\overline{v}_{i} = \overline{v}_j =
+0\)</span>. However, if <span class="math inline">\(\widehat{R}_{ij} \ll
+R_{ij}\)</span>, then the PIP of SNP <span
+class="math inline">\(i\)</span> in the first CS will be much smaller,
+leading to smaller subtraction term <span class="math inline">\(R
+\overline{b}\)</span>, which causes big residual <span
+class="math inline">\(\overline{r}_j\)</span>.</p>
 <p>We will also see that our method (projected <span
-class="math inline">\(R\)</span>) will experience this bad behavior much
-less.</p>
-<p>In-sample Covariance matrix</p>
-<p>Out-sample Covariance matrix</p>
-<pre class="r"><code>## 2. Out-sample covariance matrix
-V_xx = R_hat
+class="math inline">\(R\)</span>) will experience the second behavior
+(not subtracting enough) much less.</p>
+<p>In the experiment below, the true <span class="math inline">\(L =
+1\)</span> and causal SNP’s position is randomly chosen between 1 and
+<span class="math inline">\(J = 200\)</span>. Set <span
+class="math inline">\(L = 3\)</span> in SuSiE and in every iteration, we
+will look at three figures: (1) <span
+class="math inline">\(\overline{r}\)</span> after adding back <span
+class="math inline">\(\ell\)</span>-th CS; (2) PIP got from Single
+Effect Model; (3) <span class="math inline">\(\overline{r}\)</span>
+after subtracting <span class="math inline">\(R \overline{b}\)</span>.
+We consider In-sample, Out-of-sample, and Projected (our method)
+covariance matrices.</p>
+<p>Note that the title of the figure corresponds to SuSiE’s outer loop.
+Each figure has 3 rows correspond to the inner loop from 1 to <span
+class="math inline">\(L = 3\)</span>. The algorithm often converges
+after around 5 iteration (outer loop) so we only look at the first
+5.</p>
+<p>It is helpful to pay attention to the scale of <span
+class="math inline">\(y\)</span>-axis (of <span
+class="math inline">\(v\)</span> and of PIP) in each figure, as it can
+change from figure to figure.</p>
+<p>First we look at In-sample Covariance matrix. All is good</p>
+<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE, fig.width=8, fig.height=7, dpi=150)
+library(susieR)
+setwd(&quot;~/Documents/Improved_LD_SuSiE&quot;)
+source(&quot;code/SuSiE_rss.R&quot;)
+source(&quot;code/R_algorithms.R&quot;)
+
+## using gtex data
+gtex = readRDS(&quot;data/Thyroid_ENSG00000132855.rds&quot;)
+
+## seed present: 1, 2
+seed = 1
+set.seed(seed)
+print(paste(&quot;This is seed number&quot;, seed))</code></pre>
+<pre><code>[1] &quot;This is seed number 1&quot;</code></pre>
+<pre class="r"><code># Remove SNPs with MAF &lt; 0.01
+maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
+X0 = gtex[, maf &gt; 0.01]
+ 
+X = na.omit(X0)
+ 
+snp_total = ncol(X0)
+n = nrow(X0)
+J = 200
+# Start from a random point on the genome
+indx_start = sample(1: (snp_total - J), 1)
+X = X0[, indx_start:(indx_start + J -1)]
+# View(cor(X)[1:10, 1:10])
+
+## sub-sample into two
+out_sample = sample(1:n, 100)
+X_out = X[out_sample, ]
+X_in = X[setdiff(1:n, out_sample), ]
+  
+
+rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
+   
+indx_p = setdiff(1:J, rm_p)
+X_in = X_in[, indx_p]
+X_out = X_out[, indx_p]
+
+## Standardize both sample matrices
+X_in &lt;- scale(X_in)
+X_out &lt;- scale(X_out)
+
+## out-sample LD matrix
+R_hat = cor(X_out)
+R = cor(X_in)
+
+
+## generate data from in-sample X matrix
+J = ncol(X_in)
+beta &lt;- rep(0, J)
+n = nrow(X_in)
+num_causal_SNP = 1
+gamma = sample(c(1:J), size = num_causal_SNP, replace = FALSE)
+b = rnorm(num_causal_SNP) * 3
+beta = rep(0, J)
+beta[gamma] = b
+y = X_in %*% beta + rnorm(n)
+y = scale(y) 
+
+V_xy = t(X_in) %*% y / (n-1)
+
+## 1. In-sample covariance matrix
+V_xx = R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -716,7 +849,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -736,17 +869,439 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = &quot;z&quot;, b=beta)
     
   }
-  mtext(paste0(&quot;Out-sample R, Iteration &quot;, iter), outer = TRUE, cex = 1.5)
+  mtext(paste0(&quot;In-sample R, Iteration &quot;, iter), outer = TRUE, cex = 1.5, line = 1)
 }</code></pre>
-<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-1.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-2.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-3.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-4.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-5.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-6.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-7.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-8.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-9.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-10.png" width="1200" style="display: block; margin: auto;" /></p>
-<p>Projected Covariance matrix</p>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-1">
+Past versions of unnamed-chunk-1-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-1.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-2">
+Past versions of unnamed-chunk-1-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-2.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-3">
+Past versions of unnamed-chunk-1-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-3.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-4">
+Past versions of unnamed-chunk-1-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-4.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-5">
+Past versions of unnamed-chunk-1-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-1-5.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Out-sample Covariance matrix: We can see that after subtracting the
+first CS, the remaining <span
+class="math inline">\(\overline{v}\)</span> is still big (not
+subtracting enough; compare to the in-sample covariance matrix).</p>
+<pre class="r"><code>## 2. Out-sample covariance matrix
+V_xx = R_hat
+sigma2 = 1
+sigma02 = 1
+L = 3
+ max_iter = 5  
+
+b_bar = matrix(0, nrow = L, ncol = J)
+b_bar2 = matrix(0, nrow = L, ncol = J)
+alphas = matrix(0, nrow = L, ncol = J)
+mus = matrix(0, nrow = L, ncol = J)
+sigmas = matrix(0, nrow = L, ncol = J)
+
+
+for (iter in (1:max_iter)){
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
+  V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
+  
+  for (ell in 1:L){
+    V_xy_bar_ell = V_xy_bar + V_xx %*% b_bar[ell, ]  ## add back ell-th signal
+    
+    susie_plot(V_xy_bar_ell, y = &quot;z&quot;, b=beta)
+    
+    ret = SER(V_xx, V_xy_bar_ell, n, sigma2, sigma02)
+    alphas[ell, ] = ret$alpha
+    mus[ell, ] = ret$mus
+    sigmas[ell, ] = ret$sigma12
+    b_bar[ell, ] = alphas[ell, ] * mus[ell, ]
+    b_bar2[ell, ] = alphas[ell, ] * (mus[ell, ]^2 + sigmas[ell, ])
+    V_xy_bar = V_xy_bar_ell - V_xx %*% b_bar[ell, ]
+    
+    susie_plot(ret$alpha, y = &quot;PIP&quot;, b=beta)
+    susie_plot(V_xy_bar, y = &quot;z&quot;, b=beta)
+    
+  }
+  mtext(paste0(&quot;Out-sample R, Iteration &quot;, iter), outer = TRUE, cex = 1.5, line = 1)
+}</code></pre>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-1.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-1">
+Past versions of unnamed-chunk-2-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-1.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-2.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-2">
+Past versions of unnamed-chunk-2-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-2.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-3.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-3">
+Past versions of unnamed-chunk-2-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-3.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-4.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-4">
+Past versions of unnamed-chunk-2-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-4.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-5.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-5">
+Past versions of unnamed-chunk-2-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-5.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Projected Covariance matrix: After subtracting the first CS, the
+remaining <span class="math inline">\(\overline{v}\)</span> is better
+controlled.</p>
 <pre class="r"><code>## 3. Projected R
 ret = proj_Dykstra(R=R_hat, v=V_xy)
 V_xx = ret$R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -756,7 +1311,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -776,9 +1331,198 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = &quot;z&quot;, b=beta)
     
   }
-  mtext(paste0(&quot;Projected R, Iteration &quot;, iter), outer = TRUE, cex = 1.5)
+  mtext(paste0(&quot;Projected R, Iteration &quot;, iter), outer = TRUE, cex = 1.5, line = 1)
 }</code></pre>
-<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-1.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-2.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-3.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-4.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-5.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-6.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-7.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-8.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-9.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-2-10.png" width="1200" style="display: block; margin: auto;" /></p>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-1.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
+Past versions of unnamed-chunk-3-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-1.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-2.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-2">
+Past versions of unnamed-chunk-3-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-3-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-2.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-3.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-3">
+Past versions of unnamed-chunk-3-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-3-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-3.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-4.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-4">
+Past versions of unnamed-chunk-3-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-3-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-4.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-5.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-5">
+Past versions of unnamed-chunk-3-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-3-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-5.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Let us look at some other seeds.</p>
 <pre class="r"><code>seed = 1
 set.seed(seed)
@@ -787,12 +1531,10 @@ print(paste(&quot;This is seed number&quot;, seed))</code></pre>
 <pre class="r"><code># Remove SNPs with MAF &lt; 0.01
 maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
 X0 = gtex[, maf &gt; 0.01]
-dim(X0)</code></pre>
-<pre><code>[1]  574 7154</code></pre>
-<pre class="r"><code>X = na.omit(X0)
-dim(X)</code></pre>
-<pre><code>[1]  574 7154</code></pre>
-<pre class="r"><code>snp_total = ncol(X0)
+ 
+X = na.omit(X0)
+ 
+snp_total = ncol(X0)
 n = nrow(X0)
 J = 200
 # Start from a random point on the genome
@@ -804,12 +1546,11 @@ X = X0[, indx_start:(indx_start + J -1)]
 out_sample = sample(1:n, 100)
 X_out = X[out_sample, ]
 X_in = X[setdiff(1:n, out_sample), ]
-sum(is.na(X_out))</code></pre>
-<pre><code>[1] 0</code></pre>
-<pre class="r"><code>rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
-length(rm_p)</code></pre>
-<pre><code>[1] 0</code></pre>
-<pre class="r"><code>indx_p = setdiff(1:J, rm_p)
+  
+
+rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
+   
+indx_p = setdiff(1:J, rm_p)
 X_in = X_in[, indx_p]
 X_out = X_out[, indx_p]
 
@@ -826,9 +1567,9 @@ R = cor(X_in)
 J = ncol(X_in)
 beta &lt;- rep(0, J)
 n = nrow(X_in)
-num_casual_SNP = 1
-gamma = sample(c(1:J), size = num_casual_SNP, replace = FALSE)
-b = rnorm(num_casual_SNP) * 3
+num_causal_SNP = 1
+gamma = sample(c(1:J), size = num_causal_SNP, replace = FALSE)
+b = rnorm(num_causal_SNP) * 3
 beta = rep(0, J)
 beta[gamma] = b
 y = X_in %*% beta + rnorm(n)
@@ -841,7 +1582,7 @@ V_xx = R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -851,7 +1592,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -871,15 +1612,204 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = &quot;z&quot;, b=beta)
     
   }
-  mtext(paste0(&quot;In-sample R, Iteration &quot;, iter), outer = TRUE, cex = 1.5)
+  mtext(paste0(&quot;In-sample R, Iteration &quot;, iter), outer = TRUE, cex = 1.5, line = 1)
 }</code></pre>
-<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-1.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-2.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-3.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-4.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-5.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-6.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-7.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-8.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-9.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-3-10.png" width="1200" style="display: block; margin: auto;" /></p>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-1.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
+Past versions of unnamed-chunk-4-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-4-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-1.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-2.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-2">
+Past versions of unnamed-chunk-4-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-4-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-2.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-3.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-3">
+Past versions of unnamed-chunk-4-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-4-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-3.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-4.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-4">
+Past versions of unnamed-chunk-4-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-4-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-4.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-5.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-5">
+Past versions of unnamed-chunk-4-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-4-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-5.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>## 2. Out-sample covariance matrix
 V_xx = R_hat
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -889,7 +1819,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -909,16 +1839,205 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = &quot;z&quot;, b=beta)
     
   }
-  mtext(paste0(&quot;Out-sample R, Iteration &quot;, iter), outer = TRUE, cex = 1.5)
+  mtext(paste0(&quot;Out-sample R, Iteration &quot;, iter), outer = TRUE, cex = 1.5, line = 1)
 }</code></pre>
-<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-1.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-2.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-3.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-4.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-5.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-6.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-7.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-8.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-9.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-4-10.png" width="1200" style="display: block; margin: auto;" /></p>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-1.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-1.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-2.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-2">
+Past versions of unnamed-chunk-5-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-2.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-3.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-3">
+Past versions of unnamed-chunk-5-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-3.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-4.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-4">
+Past versions of unnamed-chunk-5-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-4.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-5.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-5">
+Past versions of unnamed-chunk-5-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-5.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>## 3. Projected R
 ret = proj_Dykstra(R=R_hat, v=V_xy)
 V_xx = ret$R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -928,7 +2047,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -948,9 +2067,198 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = &quot;z&quot;, b=beta)
     
   }
-  mtext(paste0(&quot;Projected R, Iteration &quot;, iter), outer = TRUE, cex = 1.5)
+  mtext(paste0(&quot;Projected R, Iteration &quot;, iter), outer = TRUE, cex = 1.5, line = 1)
 }</code></pre>
-<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-1.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-2.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-3.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-4.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-5.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-6.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-7.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-8.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-9.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-5-10.png" width="1200" style="display: block; margin: auto;" /></p>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-1.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
+Past versions of unnamed-chunk-6-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-1.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-2.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-2">
+Past versions of unnamed-chunk-6-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-2.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-3.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-3">
+Past versions of unnamed-chunk-6-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-3.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-4.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-4">
+Past versions of unnamed-chunk-6-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-4.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-5.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-5">
+Past versions of unnamed-chunk-6-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-5.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>seed = 2
 set.seed(seed)
 print(paste(&quot;This is seed number&quot;, seed))</code></pre>
@@ -958,12 +2266,10 @@ print(paste(&quot;This is seed number&quot;, seed))</code></pre>
 <pre class="r"><code># Remove SNPs with MAF &lt; 0.01
 maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
 X0 = gtex[, maf &gt; 0.01]
-dim(X0)</code></pre>
-<pre><code>[1]  574 7154</code></pre>
-<pre class="r"><code>X = na.omit(X0)
-dim(X)</code></pre>
-<pre><code>[1]  574 7154</code></pre>
-<pre class="r"><code>snp_total = ncol(X0)
+ 
+X = na.omit(X0)
+ 
+snp_total = ncol(X0)
 n = nrow(X0)
 J = 200
 # Start from a random point on the genome
@@ -975,12 +2281,11 @@ X = X0[, indx_start:(indx_start + J -1)]
 out_sample = sample(1:n, 100)
 X_out = X[out_sample, ]
 X_in = X[setdiff(1:n, out_sample), ]
-sum(is.na(X_out))</code></pre>
-<pre><code>[1] 0</code></pre>
-<pre class="r"><code>rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
-length(rm_p)</code></pre>
-<pre><code>[1] 3</code></pre>
-<pre class="r"><code>indx_p = setdiff(1:J, rm_p)
+  
+
+rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
+   
+indx_p = setdiff(1:J, rm_p)
 X_in = X_in[, indx_p]
 X_out = X_out[, indx_p]
 
@@ -997,9 +2302,9 @@ R = cor(X_in)
 J = ncol(X_in)
 beta &lt;- rep(0, J)
 n = nrow(X_in)
-num_casual_SNP = 1
-gamma = sample(c(1:J), size = num_casual_SNP, replace = FALSE)
-b = rnorm(num_casual_SNP) * 3
+num_causal_SNP = 1
+gamma = sample(c(1:J), size = num_causal_SNP, replace = FALSE)
+b = rnorm(num_causal_SNP) * 3
 beta = rep(0, J)
 beta[gamma] = b
 y = X_in %*% beta + rnorm(n)
@@ -1012,7 +2317,7 @@ V_xx = R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -1022,7 +2327,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -1042,15 +2347,204 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = &quot;z&quot;, b=beta)
     
   }
-  mtext(paste0(&quot;In-sample R, Iteration &quot;, iter), outer = TRUE, cex = 1.5)
+  mtext(paste0(&quot;In-sample R, Iteration &quot;, iter), outer = TRUE, cex = 1.5, line = 1)
 }</code></pre>
-<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-1.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-2.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-3.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-4.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-5.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-6.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-7.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-8.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-9.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-10.png" width="1200" style="display: block; margin: auto;" /></p>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-1.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
+Past versions of unnamed-chunk-7-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-1.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-2.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-2">
+Past versions of unnamed-chunk-7-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-2.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-3.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-3">
+Past versions of unnamed-chunk-7-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-3.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-4.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-4">
+Past versions of unnamed-chunk-7-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-4.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-5.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-5">
+Past versions of unnamed-chunk-7-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-5.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>## 2. Out-sample covariance matrix
 V_xx = R_hat
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -1060,7 +2554,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -1080,16 +2574,205 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = &quot;z&quot;, b=beta)
     
   }
-  mtext(paste0(&quot;Out-sample R, Iteration &quot;, iter), outer = TRUE, cex = 1.5)
+  mtext(paste0(&quot;Out-sample R, Iteration &quot;, iter), outer = TRUE, cex = 1.5, line = 1)
 }</code></pre>
-<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-11.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-12.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-13.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-14.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-15.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-16.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-17.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-18.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-19.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-20.png" width="1200" style="display: block; margin: auto;" /></p>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-6.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-6">
+Past versions of unnamed-chunk-7-6.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-6.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-7.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-7">
+Past versions of unnamed-chunk-7-7.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-7" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-7.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-8.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-8">
+Past versions of unnamed-chunk-7-8.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-8" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-8.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-9.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-9">
+Past versions of unnamed-chunk-7-9.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-9" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-9.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-10.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-10">
+Past versions of unnamed-chunk-7-10.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-10" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-10.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>## 3. Projected R
 ret = proj_Dykstra(R=R_hat, v=V_xy)
 V_xx = ret$R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -1099,7 +2782,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -1119,9 +2802,198 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = &quot;z&quot;, b=beta)
     
   }
-  mtext(paste0(&quot;Projected R, Iteration &quot;, iter), outer = TRUE, cex = 1.5)
+  mtext(paste0(&quot;Projected R, Iteration &quot;, iter), outer = TRUE, cex = 1.5, line = 1)
 }</code></pre>
-<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-21.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-22.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-23.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-24.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-25.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-26.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-27.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-28.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-29.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-6-30.png" width="1200" style="display: block; margin: auto;" /></p>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-11.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-11">
+Past versions of unnamed-chunk-7-11.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-11" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-11.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-12.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-12">
+Past versions of unnamed-chunk-7-12.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-12" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-12.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-13.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-13">
+Past versions of unnamed-chunk-7-13.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-13" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-13.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-14.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-14">
+Past versions of unnamed-chunk-7-14.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-14" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-14.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-15.png" width="1200" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-15">
+Past versions of unnamed-chunk-7-15.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-15" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/c1960a3441a11d38cdbeda78786c25c908ae2296/docs/figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-15.png" target="_blank">c1960a3</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-09-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>seed = 3
 set.seed(seed)
 print(paste(&quot;This is seed number&quot;, seed))</code></pre>
@@ -1129,12 +3001,10 @@ print(paste(&quot;This is seed number&quot;, seed))</code></pre>
 <pre class="r"><code># Remove SNPs with MAF &lt; 0.01
 maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
 X0 = gtex[, maf &gt; 0.01]
-dim(X0)</code></pre>
-<pre><code>[1]  574 7154</code></pre>
-<pre class="r"><code>X = na.omit(X0)
-dim(X)</code></pre>
-<pre><code>[1]  574 7154</code></pre>
-<pre class="r"><code>snp_total = ncol(X0)
+ 
+X = na.omit(X0)
+ 
+snp_total = ncol(X0)
 n = nrow(X0)
 J = 200
 # Start from a random point on the genome
@@ -1146,12 +3016,11 @@ X = X0[, indx_start:(indx_start + J -1)]
 out_sample = sample(1:n, 100)
 X_out = X[out_sample, ]
 X_in = X[setdiff(1:n, out_sample), ]
-sum(is.na(X_out))</code></pre>
-<pre><code>[1] 0</code></pre>
-<pre class="r"><code>rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
-length(rm_p)</code></pre>
-<pre><code>[1] 1</code></pre>
-<pre class="r"><code>indx_p = setdiff(1:J, rm_p)
+  
+
+rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
+   
+indx_p = setdiff(1:J, rm_p)
 X_in = X_in[, indx_p]
 X_out = X_out[, indx_p]
 
@@ -1168,9 +3037,9 @@ R = cor(X_in)
 J = ncol(X_in)
 beta &lt;- rep(0, J)
 n = nrow(X_in)
-num_casual_SNP = 1
-gamma = sample(c(1:J), size = num_casual_SNP, replace = FALSE)
-b = rnorm(num_casual_SNP) * 3
+num_causal_SNP = 1
+gamma = sample(c(1:J), size = num_causal_SNP, replace = FALSE)
+b = rnorm(num_causal_SNP) * 3
 beta = rep(0, J)
 beta[gamma] = b
 y = X_in %*% beta + rnorm(n)
@@ -1183,7 +3052,7 @@ V_xx = R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -1193,7 +3062,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -1213,15 +3082,15 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = &quot;z&quot;, b=beta)
     
   }
-  mtext(paste0(&quot;In-sample R, Iteration &quot;, iter), outer = TRUE, cex = 1.5)
+  mtext(paste0(&quot;In-sample R, Iteration &quot;, iter), outer = TRUE, cex = 1.5, line = 1)
 }</code></pre>
-<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-1.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-2.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-3.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-4.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-5.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-6.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-7.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-8.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-9.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-10.png" width="1200" style="display: block; margin: auto;" /></p>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-8-1.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-8-2.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-8-3.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-8-4.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-8-5.png" width="1200" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>## 2. Out-sample covariance matrix
 V_xx = R_hat
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -1231,7 +3100,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -1251,16 +3120,16 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = &quot;z&quot;, b=beta)
     
   }
-  mtext(paste0(&quot;Out-sample R, Iteration &quot;, iter), outer = TRUE, cex = 1.5)
+  mtext(paste0(&quot;Out-sample R, Iteration &quot;, iter), outer = TRUE, cex = 1.5, line = 1)
 }</code></pre>
-<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-11.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-12.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-13.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-14.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-15.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-16.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-17.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-18.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-19.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-20.png" width="1200" style="display: block; margin: auto;" /></p>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-8-6.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-8-7.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-8-8.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-8-9.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-8-10.png" width="1200" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>## 3. Projected R
 ret = proj_Dykstra(R=R_hat, v=V_xy)
 V_xx = ret$R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -1270,7 +3139,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -1290,9 +3159,9 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = &quot;z&quot;, b=beta)
     
   }
-  mtext(paste0(&quot;Projected R, Iteration &quot;, iter), outer = TRUE, cex = 1.5)
+  mtext(paste0(&quot;Projected R, Iteration &quot;, iter), outer = TRUE, cex = 1.5, line = 1)
 }</code></pre>
-<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-21.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-22.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-23.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-24.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-25.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-26.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-27.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-28.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-29.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-7-30.png" width="1200" style="display: block; margin: auto;" /></p>
+<p><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-8-11.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-8-12.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-8-13.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-8-14.png" width="1200" style="display: block; margin: auto;" /><img src="figure/V_xy_iter_investigate.Rmd/unnamed-chunk-8-15.png" width="1200" style="display: block; margin: auto;" /></p>
 <p>It remains a question whether we can make it as good as the in-sample
 LD matrix…</p>
 <br>
