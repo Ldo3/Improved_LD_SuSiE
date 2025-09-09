@@ -13,16 +13,24 @@ Here we want to investigate why using out-of-sample LD matrix can cause many fal
 $$\overline{r} = X^{\top} y - X^{\top} X \overline{b} = v - R \overline{b} $$
 where $\overline{b} = \sum_{\ell=1}^{L} \overline{b}_{\ell}$ is the sum of the posterior mean of all effects.
 
-We expect that after detecting all ``true'' casual SNP, $\overline{r}$ will be a vector of $J$ equally small numbers so that the PIP of over-fitted $\ell$ will be close to 0 (diffused). Hence the purity of over-fitted $\ell$-th CS is small and is not reported. 
+We expect that after detecting all ``true'' causal SNP, $\overline{r}$ will be a vector of $J$ equally small numbers so that the PIP of over-fitted $\ell$ will be close to 0 (diffused). Hence the purity of over-fitted $\ell$-th CS is small and is not reported. 
 
-However, it can be seen that because of mis-specified $R$, after controlling for all casual SNP, the residual $\overline{r}$ of other SNPs can ``increase'', leading to large PIP, thus creates false discovery.
+However, it can be seen that because of mis-specified $R$, after controlling for all causal SNP, the residual $\overline{r}$ of other SNPs can ``increase'', leading to large PIP, thus creates false discovery (Matthew's intuition). The second case is that when subtracting $\widehat{R} \overline{b}$ from $v$, because of the mismatch between $\widehat{R}$ and $R$, some of the correlated SNP to the causal SNP is not subtracted enough. Consider an example: $v_i = 5, v_j = 6$ and $R_{ij} \approx 1$, all other $v_{k}= 0$. After one iteration that SuSiE pick the credible set $\{i, j\}$, we expect $\overline{v}_{i} = \overline{v}_j = 0$. However, if $\widehat{R}_{ij} \ll R_{ij}$, then the PIP of SNP $i$ in the first CS will be much smaller, leading to smaller subtraction term $R \overline{b}$, which causes big residual $\overline{r}_j$.      
 
-We will also see that our method (projected $R$) will experience this bad behavior much less. 
+We will also see that our method (projected $R$) will experience the second behavior (not subtracting enough) much less.
 
+In the experiment below, the true $L = 1$ and causal SNP's position is randomly chosen between 1 and $J = 200$. Set $L = 3$ in SuSiE and in every iteration, we will look at three figures: 
+(1) $\overline{r}$ after adding back $\ell$-th CS;
+(2) PIP got from Single Effect Model;
+(3) $\overline{r}$ after subtracting $R \overline{b}$. We consider In-sample, Out-of-sample, and Projected (our method) covariance matrices.
 
-In-sample Covariance matrix
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.width=8, fig.height=5, dpi=150)
+Note that the title of the figure corresponds to SuSiE's outer loop. Each figure has 3 rows correspond to the inner loop from 1 to $L = 3$. The algorithm often converges after around 5 iteration (outer loop) so we only look at the first 5.
+
+It is helpful to pay attention to the scale of $y$-axis (of $v$ and of PIP) in each figure, as it can change from figure to figure.
+
+First we look at In-sample Covariance matrix. All is good
+```{r}
+knitr::opts_chunk$set(echo = TRUE, fig.width=8, fig.height=7, dpi=150)
 library(susieR)
 setwd("~/Documents/Improved_LD_SuSiE")
 source("code/SuSiE_rss.R")
@@ -39,9 +47,9 @@ print(paste("This is seed number", seed))
 # Remove SNPs with MAF < 0.01
 maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
 X0 = gtex[, maf > 0.01]
-dim(X0)
+ 
 X = na.omit(X0)
-dim(X)
+ 
 snp_total = ncol(X0)
 n = nrow(X0)
 J = 200
@@ -54,10 +62,10 @@ X = X0[, indx_start:(indx_start + J -1)]
 out_sample = sample(1:n, 100)
 X_out = X[out_sample, ]
 X_in = X[setdiff(1:n, out_sample), ]
-sum(is.na(X_out))
+  
 
 rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
-length(rm_p)
+   
 indx_p = setdiff(1:J, rm_p)
 X_in = X_in[, indx_p]
 X_out = X_out[, indx_p]
@@ -75,9 +83,9 @@ R = cor(X_in)
 J = ncol(X_in)
 beta <- rep(0, J)
 n = nrow(X_in)
-num_casual_SNP = 1
-gamma = sample(c(1:J), size = num_casual_SNP, replace = FALSE)
-b = rnorm(num_casual_SNP) * 3
+num_causal_SNP = 1
+gamma = sample(c(1:J), size = num_causal_SNP, replace = FALSE)
+b = rnorm(num_causal_SNP) * 3
 beta = rep(0, J)
 beta[gamma] = b
 y = X_in %*% beta + rnorm(n)
@@ -90,7 +98,7 @@ V_xx = R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -100,7 +108,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -120,13 +128,13 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = "z", b=beta)
     
   }
-  mtext(paste0("In-sample R, Iteration ", iter), outer = TRUE, cex = 1.5)
+  mtext(paste0("In-sample R, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
 }
 ```
 
 
 
-Out-sample Covariance matrix
+Out-sample Covariance matrix: We can see that after subtracting the first CS, the remaining $\overline{v}$ is still big (not subtracting enough; compare to the in-sample covariance matrix). 
 ```{r}
 
 ## 2. Out-sample covariance matrix
@@ -134,7 +142,7 @@ V_xx = R_hat
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -144,7 +152,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -164,13 +172,13 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = "z", b=beta)
     
   }
-  mtext(paste0("Out-sample R, Iteration ", iter), outer = TRUE, cex = 1.5)
+  mtext(paste0("Out-sample R, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
 }
 
 ```
 
 
-Projected Covariance matrix
+Projected Covariance matrix: After subtracting the first CS, the remaining $\overline{v}$ is better controlled. 
 ```{r}
 ## 3. Projected R
 ret = proj_Dykstra(R=R_hat, v=V_xy)
@@ -178,7 +186,7 @@ V_xx = ret$R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -188,7 +196,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -208,7 +216,7 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = "z", b=beta)
     
   }
-  mtext(paste0("Projected R, Iteration ", iter), outer = TRUE, cex = 1.5)
+  mtext(paste0("Projected R, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
 }
 
 ```
@@ -223,9 +231,9 @@ print(paste("This is seed number", seed))
 # Remove SNPs with MAF < 0.01
 maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
 X0 = gtex[, maf > 0.01]
-dim(X0)
+ 
 X = na.omit(X0)
-dim(X)
+ 
 snp_total = ncol(X0)
 n = nrow(X0)
 J = 200
@@ -238,10 +246,10 @@ X = X0[, indx_start:(indx_start + J -1)]
 out_sample = sample(1:n, 100)
 X_out = X[out_sample, ]
 X_in = X[setdiff(1:n, out_sample), ]
-sum(is.na(X_out))
+  
 
 rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
-length(rm_p)
+   
 indx_p = setdiff(1:J, rm_p)
 X_in = X_in[, indx_p]
 X_out = X_out[, indx_p]
@@ -259,9 +267,9 @@ R = cor(X_in)
 J = ncol(X_in)
 beta <- rep(0, J)
 n = nrow(X_in)
-num_casual_SNP = 1
-gamma = sample(c(1:J), size = num_casual_SNP, replace = FALSE)
-b = rnorm(num_casual_SNP) * 3
+num_causal_SNP = 1
+gamma = sample(c(1:J), size = num_causal_SNP, replace = FALSE)
+b = rnorm(num_causal_SNP) * 3
 beta = rep(0, J)
 beta[gamma] = b
 y = X_in %*% beta + rnorm(n)
@@ -274,7 +282,7 @@ V_xx = R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -284,7 +292,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -304,7 +312,7 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = "z", b=beta)
     
   }
-  mtext(paste0("In-sample R, Iteration ", iter), outer = TRUE, cex = 1.5)
+  mtext(paste0("In-sample R, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
 }
 ```
 
@@ -317,7 +325,7 @@ V_xx = R_hat
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -327,7 +335,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -347,7 +355,7 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = "z", b=beta)
     
   }
-  mtext(paste0("Out-sample R, Iteration ", iter), outer = TRUE, cex = 1.5)
+  mtext(paste0("Out-sample R, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
 }
 
 ```
@@ -359,7 +367,7 @@ V_xx = ret$R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -369,7 +377,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -389,7 +397,7 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = "z", b=beta)
     
   }
-  mtext(paste0("Projected R, Iteration ", iter), outer = TRUE, cex = 1.5)
+  mtext(paste0("Projected R, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
 }
 
 ```
@@ -402,9 +410,9 @@ print(paste("This is seed number", seed))
 # Remove SNPs with MAF < 0.01
 maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
 X0 = gtex[, maf > 0.01]
-dim(X0)
+ 
 X = na.omit(X0)
-dim(X)
+ 
 snp_total = ncol(X0)
 n = nrow(X0)
 J = 200
@@ -417,10 +425,10 @@ X = X0[, indx_start:(indx_start + J -1)]
 out_sample = sample(1:n, 100)
 X_out = X[out_sample, ]
 X_in = X[setdiff(1:n, out_sample), ]
-sum(is.na(X_out))
+  
 
 rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
-length(rm_p)
+   
 indx_p = setdiff(1:J, rm_p)
 X_in = X_in[, indx_p]
 X_out = X_out[, indx_p]
@@ -438,9 +446,9 @@ R = cor(X_in)
 J = ncol(X_in)
 beta <- rep(0, J)
 n = nrow(X_in)
-num_casual_SNP = 1
-gamma = sample(c(1:J), size = num_casual_SNP, replace = FALSE)
-b = rnorm(num_casual_SNP) * 3
+num_causal_SNP = 1
+gamma = sample(c(1:J), size = num_causal_SNP, replace = FALSE)
+b = rnorm(num_causal_SNP) * 3
 beta = rep(0, J)
 beta[gamma] = b
 y = X_in %*% beta + rnorm(n)
@@ -453,7 +461,7 @@ V_xx = R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -463,7 +471,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -483,7 +491,7 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = "z", b=beta)
     
   }
-  mtext(paste0("In-sample R, Iteration ", iter), outer = TRUE, cex = 1.5)
+  mtext(paste0("In-sample R, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
 }
 
 ## 2. Out-sample covariance matrix
@@ -491,7 +499,7 @@ V_xx = R_hat
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -501,7 +509,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -521,7 +529,7 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = "z", b=beta)
     
   }
-  mtext(paste0("Out-sample R, Iteration ", iter), outer = TRUE, cex = 1.5)
+  mtext(paste0("Out-sample R, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
 }
 
 ## 3. Projected R
@@ -530,7 +538,7 @@ V_xx = ret$R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -540,7 +548,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -560,7 +568,7 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = "z", b=beta)
     
   }
-  mtext(paste0("Projected R, Iteration ", iter), outer = TRUE, cex = 1.5)
+  mtext(paste0("Projected R, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
 }
 
 ```
@@ -574,9 +582,9 @@ print(paste("This is seed number", seed))
 # Remove SNPs with MAF < 0.01
 maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
 X0 = gtex[, maf > 0.01]
-dim(X0)
+ 
 X = na.omit(X0)
-dim(X)
+ 
 snp_total = ncol(X0)
 n = nrow(X0)
 J = 200
@@ -589,10 +597,10 @@ X = X0[, indx_start:(indx_start + J -1)]
 out_sample = sample(1:n, 100)
 X_out = X[out_sample, ]
 X_in = X[setdiff(1:n, out_sample), ]
-sum(is.na(X_out))
+  
 
 rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
-length(rm_p)
+   
 indx_p = setdiff(1:J, rm_p)
 X_in = X_in[, indx_p]
 X_out = X_out[, indx_p]
@@ -610,9 +618,9 @@ R = cor(X_in)
 J = ncol(X_in)
 beta <- rep(0, J)
 n = nrow(X_in)
-num_casual_SNP = 1
-gamma = sample(c(1:J), size = num_casual_SNP, replace = FALSE)
-b = rnorm(num_casual_SNP) * 3
+num_causal_SNP = 1
+gamma = sample(c(1:J), size = num_causal_SNP, replace = FALSE)
+b = rnorm(num_causal_SNP) * 3
 beta = rep(0, J)
 beta[gamma] = b
 y = X_in %*% beta + rnorm(n)
@@ -625,7 +633,7 @@ V_xx = R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -635,7 +643,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -655,7 +663,7 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = "z", b=beta)
     
   }
-  mtext(paste0("In-sample R, Iteration ", iter), outer = TRUE, cex = 1.5)
+  mtext(paste0("In-sample R, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
 }
 
 ## 2. Out-sample covariance matrix
@@ -663,7 +671,7 @@ V_xx = R_hat
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -673,7 +681,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -693,7 +701,7 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = "z", b=beta)
     
   }
-  mtext(paste0("Out-sample R, Iteration ", iter), outer = TRUE, cex = 1.5)
+  mtext(paste0("Out-sample R, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
 }
 
 ## 3. Projected R
@@ -702,7 +710,7 @@ V_xx = ret$R
 sigma2 = 1
 sigma02 = 1
 L = 3
-max_iter = 10
+ max_iter = 5  
 
 b_bar = matrix(0, nrow = L, ncol = J)
 b_bar2 = matrix(0, nrow = L, ncol = J)
@@ -712,7 +720,7 @@ sigmas = matrix(0, nrow = L, ncol = J)
 
 
 for (iter in (1:max_iter)){
-  par(mfrow = c(3, 3))
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
   V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
   
   for (ell in 1:L){
@@ -732,7 +740,7 @@ for (iter in (1:max_iter)){
     susie_plot(V_xy_bar, y = "z", b=beta)
     
   }
-  mtext(paste0("Projected R, Iteration ", iter), outer = TRUE, cex = 1.5)
+  mtext(paste0("Projected R, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
 }
 
 ```
