@@ -32,12 +32,11 @@ First we look at In-sample Covariance matrix. All is good
 ```{r}
 knitr::opts_chunk$set(echo = TRUE, fig.width=8, fig.height=7, dpi=150)
 library(susieR)
-setwd("~/Documents/Improved_LD_SuSiE")
 source("code/SuSiE_rss.R")
 source("code/R_algorithms.R")
 
 ## using gtex data
-gtex = readRDS("data/Thyroid_ENSG00000132855.rds")
+gtex = readRDS("./data/Thyroid_ENSG00000132855.rds")
 
 ## seed present: 1, 2
 seed = 1
@@ -220,6 +219,113 @@ for (iter in (1:max_iter)){
 }
 
 ```
+
+Consider multiplying $vv^{\top}$ with some $\alpha > 1$. We find that it does not improve control of the residual. When setting $\alpha > 1.4$, SuSiE often gives error in training....
+
+```{r} 
+alpha = 1.1
+ret = proj_Dykstra(R=R_hat, v= sqrt(alpha) * V_xy)
+sigma2 = 1
+sigma02 = 1
+L = 3
+max_iter = 5  
+
+b_bar = matrix(0, nrow = L, ncol = J)
+b_bar2 = matrix(0, nrow = L, ncol = J)
+alphas = matrix(0, nrow = L, ncol = J)
+mus = matrix(0, nrow = L, ncol = J)
+sigmas = matrix(0, nrow = L, ncol = J)
+
+
+for (iter in (1:max_iter)){
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
+  V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
+  
+  for (ell in 1:L){
+    V_xy_bar_ell = V_xy_bar + V_xx %*% b_bar[ell, ]  ## add back ell-th signal
+    
+    susie_plot(V_xy_bar_ell, y = "z", b=beta)
+    
+    ret = SER(V_xx, V_xy_bar_ell, n, sigma2, sigma02)
+    alphas[ell, ] = ret$alpha
+    mus[ell, ] = ret$mus
+    sigmas[ell, ] = ret$sigma12
+    b_bar[ell, ] = alphas[ell, ] * mus[ell, ]
+    b_bar2[ell, ] = alphas[ell, ] * (mus[ell, ]^2 + sigmas[ell, ])
+    V_xy_bar = V_xy_bar_ell - V_xx %*% b_bar[ell, ]
+    
+    susie_plot(ret$alpha, y = "PIP", b=beta)
+    susie_plot(V_xy_bar, y = "z", b=beta)
+    
+  }
+  mtext(paste0("Projected R w/ alpha =", alpha, "Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
+}
+
+```
+
+Let us experiment with interpolating between Projected $\tilde{R}$ and $vv^{\top}$
+Consider $R = \lambda \tilde{R} + (1-\lambda) vv^{\top}$ and set $diag(R) = 1$. We find it helps controlling the residual a little bit.
+
+```{r} 
+lam = 0.5
+ret = proj_Dykstra(R=R_hat, v = V_xy)
+V_xx = lam * ret$R + (1-lam) * tcrossprod(V_xy)
+diag(V_xx) <- 1
+sigma2 = 1
+sigma02 = 1
+L = 3
+ max_iter = 5  
+
+b_bar = matrix(0, nrow = L, ncol = J)
+b_bar2 = matrix(0, nrow = L, ncol = J)
+alphas = matrix(0, nrow = L, ncol = J)
+mus = matrix(0, nrow = L, ncol = J)
+sigmas = matrix(0, nrow = L, ncol = J)
+
+
+for (iter in (1:max_iter)){
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
+  V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
+  
+  for (ell in 1:L){
+    V_xy_bar_ell = V_xy_bar + V_xx %*% b_bar[ell, ]  ## add back ell-th signal
+    
+    susie_plot(V_xy_bar_ell, y = "z", b=beta)
+    
+    ret = SER(V_xx, V_xy_bar_ell, n, sigma2, sigma02)
+    alphas[ell, ] = ret$alpha
+    mus[ell, ] = ret$mus
+    sigmas[ell, ] = ret$sigma12
+    b_bar[ell, ] = alphas[ell, ] * mus[ell, ]
+    b_bar2[ell, ] = alphas[ell, ] * (mus[ell, ]^2 + sigmas[ell, ])
+    V_xy_bar = V_xy_bar_ell - V_xx %*% b_bar[ell, ]
+    
+    susie_plot(ret$alpha, y = "PIP", b=beta)
+    susie_plot(V_xy_bar, y = "z", b=beta)
+    
+  }
+  mtext(paste0("Projected R w/ lam =", lam, "Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Let us look at some other seeds.
 
