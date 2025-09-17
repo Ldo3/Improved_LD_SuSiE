@@ -1,0 +1,137 @@
+seed = 20
+##### try fitting SuSiE
+set.seed(seed)
+print(paste("This is seed number", seed))
+## good example: seed 3, 4, 8, 10, 11, 12
+## bad example: seed 5
+# Remove SNPs with MAF < 0.01
+maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
+X0 = gtex[, maf > 0.01]
+dim(X0)
+X = na.omit(X0)
+dim(X)
+snp_total = ncol(X0)
+n = nrow(X0)
+p = 200
+# Start from a random point on the genome
+indx_start = sample(1: (snp_total - p), 1)
+X = X0[, indx_start:(indx_start + p -1)]
+# View(cor(X)[1:10, 1:10])
+
+## sub-sample into two
+out_sample = sample(1:n, 100)
+X_out = X[out_sample, ]
+X_in = X[setdiff(1:n, out_sample), ]
+sum(is.na(X_out))
+
+rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
+length(rm_p)
+indx_p = setdiff(1:p, rm_p)
+X_in = X_in[, indx_p]
+X_out = X_out[, indx_p]
+
+## Standardize both sample matrices
+X_in <- scale(X_in)
+X_out <- scale(X_out)
+
+## out-sample LD matrix
+R_hat = cor(X_out)
+R = cor(X_in)
+# View(R_hat[1:10, 1:10])
+# View(R[1:10, 1:10])
+# View(cor(X)[1:10, 1:10])
+
+## generate data from in-sample X matrix
+n = nrow(X_in)
+p = ncol(X_in)
+beta <- rep(0,p)
+num_causal_SNP = 1
+true_causal_SNPs = sample(c(1:p), size = num_causal_SNP) 
+true_effect = rnorm(num_causal_SNP)
+beta[true_causal_SNPs] <- true_effect
+# plot(beta, pch=16, ylab='effect size')
+y <- X_in %*% beta + rnorm(n)
+y = scale(y)
+
+## compute summary statistics 
+sumstats <- univariate_regression(X_in, y)
+z_scores <- sumstats$betahat / sumstats$sebetahat
+# susie_plot(z_scores, y = "z", b=beta)
+min_cor = 0.01
+## fit the susie-rss model with in-sample R
+fitted_rss1 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                         R = R, var_y = var(y), L = 10,
+                         estimate_residual_variance = TRUE,
+                         min_abs_corr=min_cor)
+# summary(fitted_rss1)$cs
+# p1 = susie_plot(fitted_rss1, y="PIP", b=beta)
+
+## fit the model with out-sample R
+fitted_rss2 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                         R = R_hat, var_y = var(y), L = 10,
+                         estimate_residual_variance = FALSE,
+                         min_abs_corr=min_cor)
+# will have problem non-positive cov if estimate_residual_variance = TRUE
+# summary(fitted_rss2)$cs
+# p2 = susie_plot(fitted_rss2, y="PIP", b=beta) ## miss the true or does not run
+
+
+## adjusted by identity matrix
+lambda = 0.1
+R_hat_lambd = (1-lambda) * R_hat + lambda * diag(p)
+fitted_rss3 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                         R = R_hat_lambd, var_y = var(y), L = 10,
+                         estimate_residual_variance = F,
+                         min_abs_corr=min_cor)
+# will have problem non-positive cov if estimate_residual_variance = TRUE
+# summary(fitted_rss3)$cs
+# susie_plot(fitted_rss3, y="PIP", b=beta) 
+
+## using truncated SVD
+alph = 1
+XtY = t(X_in) %*% y
+ZZ = XtY %*% t(XtY) 
+R_hat_minus = R_hat - alph * ZZ / (n-1)^2
+eigen_R = eigen(R_hat_minus)
+eigen_R$values
+
+V <- eigen_R$vectors
+D_plus <- diag(pmax(eigen_R$values, 0))
+
+R_hat_plus <- V %*% D_plus %*% solve(V) + alph * ZZ / (n-1)^2
+
+fitted_rss4 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                         R = R_hat_plus, var_y = var(y), L = 10,
+                         estimate_residual_variance = F,
+                         min_abs_corr=min_cor)
+# summary(fitted_rss4)$cs
+# susie_plot(fitted_rss4, y="PIP", b=beta)
+
+## alpha 
+v = t(X_in) %*% y / (n-1)
+alpha = 1 / max(abs(v))^2
+R_S1 = alpha * tcrossprod(v)
+diag(R_S1) <- 1
+fitted_rss5 <- susie_rss(bhat = sumstats$betahat, shat = sumstats$sebetahat, n = n, 
+                         R = R_S1, var_y = var(y), L = 10,
+                         estimate_residual_variance = F,
+                         min_abs_corr=min_cor)
+
+
+# summary(fitted_rss5)$cs
+# susie_plot(fitted_rss5, y="PIP", b=beta)
+
+par(mfrow = c(3, 2))
+susie_plot(z_scores, y = "z", b=beta)
+title('Z-score')
+susie_plot(fitted_rss1, y="PIP", b=beta)
+title('in-sample LD')
+susie_plot(fitted_rss2, y="PIP", b=beta)
+title('out-sample LD')
+susie_plot(fitted_rss3, y="PIP", b=beta)
+title('reg.+out-sample LD')
+susie_plot(fitted_rss4, y="PIP", b=beta)
+title('trunc.SVD out-sample LD')
+susie_plot(fitted_rss5, y="PIP", b=beta)
+title('alpha vvT, diag 1')
+

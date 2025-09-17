@@ -1,0 +1,8 @@
+library(workflowr)
+# wflow_git_config(user.name = "dodat97", user.email = "trongdat.math@gmail.com")
+wflow_status()
+setwd("~/Documents/Improved_LD_SuSiE")
+wflow_publish(c("analysis/V_xy_iter_investigate.Rmd"))
+# wflow_publish(c("analysis/V_xy_iter_L2.Rmd"))
+wflow_publish(c("analysis/index.Rmd"))
+wflow_git_push()
