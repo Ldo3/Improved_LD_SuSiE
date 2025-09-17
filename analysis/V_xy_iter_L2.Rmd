@@ -1,0 +1,268 @@
+---
+title: "Investigate V after every iteration in SuSiE RSS (True L=2)"
+author: "Dat Do"
+date: "2025-09-08"
+output:
+  workflowr::wflow_html:
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
+
+In this experiment we consider the case true $L = 2$. 
+
+Here we want to investigate why using out-of-sample LD matrix can cause many false discovery by looking that the result after every training iteration. Recall that SuSiE_rss work by iteratively fitting Single Effect Model to the residuals: $$\overline{r} = X^{\top} y - X^{\top} X \overline{b} = v - R \overline{b} $$ where $\overline{b} = \sum_{\ell=1}^{L} \overline{b}_{\ell}$ is the sum of the posterior mean of all effects.
+
+We expect that after detecting all \`\`true'' causal SNP, $\overline{r}$ will be a vector of $J$ equally small numbers so that the PIP of over-fitted $\ell$ will be close to 0 (diffused). Hence the purity of over-fitted $\ell$-th CS is small and is not reported.
+
+However, it can be seen that because of mis-specified $R$, after controlling for all causal SNP, the residual $\overline{r}$ of other SNPs can \`\`increase'', leading to large PIP, thus creates false discovery. The second (related) case is that when subtracting $\widehat{R} \overline{b}$ from $v$, because of the mismatch between $\widehat{R}$ and $R$, some of the correlated SNP to the causal SNP is not subtracted enough. Consider an example: $v_i = 5, v_j = 6$ and $R_{ij} \approx 1$, all other $v_{k}= 0$. After one iteration that SuSiE pick the credible set $\{i, j\}$, we expect $\overline{v}_{i} = \overline{v}_j = 0$. However, if $\widehat{R}_{ij} \ll R_{ij}$, then the PIP of SNP $i$ in the first CS will be much smaller, leading to smaller subtraction term $R \overline{b}$, which causes big residual $\overline{r}_j$.
+
+We will also see that our method (projected $R$) will experience the second behavior (not subtracting enough) much less.
+
+In the experiment below, the causal SNP's position is randomly chosen between 1 and $J = 200$. Set $L = 3$ in SuSiE and in every iteration, we will look at three figures: (1) $\overline{r}$ after adding back $\ell$-th CS; (2) PIP got from Single Effect Model; (3) $\overline{r}$ after subtracting $R \overline{b}$. We consider In-sample, Out-of-sample, and Projected (our method) covariance matrices.
+
+Note that the title of the figure corresponds to SuSiE's outer loop. Each figure has 3 rows correspond to the inner loop from 1 to $L = 3$. The algorithm often converges after around 5 iteration (outer loop) so we only look at the first 5.
+
+It is helpful to pay attention to the scale of $y$-axis (of $v$ and of PIP) in each figure, as it can change from figure to figure.
+
+First we look at In-sample Covariance matrix.
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE, fig.width=8, fig.height=7, dpi=150)
+
+## seed present: 1 (not subtract enough), 8 (v increase after subtracting)
+seed = 8
+
+library(susieR)
+source("code/SuSiE_rss.R")
+source("code/R_algorithms.R")
+
+plot_r <- function(V, b){
+  J = length(V)
+  gamma = which(b != 0)
+  cols <- rep('black', J)
+  cols[gamma] <- 'red'
+  plot(V, pch=16, ylab='residual', col=cols)
+}
+
+## using gtex data
+gtex = readRDS("./data/Thyroid_ENSG00000132855.rds")
+
+
+set.seed(seed)
+print(paste("This is seed number", seed))
+
+# Remove SNPs with MAF < 0.01
+maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
+X0 = gtex[, maf > 0.01]
+ 
+X = na.omit(X0)
+ 
+snp_total = ncol(X0)
+n = nrow(X0)
+J = 200
+# Start from a random point on the genome
+indx_start = sample(1: (snp_total - J), 1)
+X = X0[, indx_start:(indx_start + J -1)]
+# View(cor(X)[1:10, 1:10])
+
+## sub-sample into two
+out_sample = sample(1:n, 100)
+X_out = X[out_sample, ]
+X_in = X[setdiff(1:n, out_sample), ]
+  
+
+rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
+   
+indx_p = setdiff(1:J, rm_p)
+X_in = X_in[, indx_p]
+X_out = X_out[, indx_p]
+
+## Standardize both sample matrices
+X_in <- scale(X_in)
+X_out <- scale(X_out)
+
+## out-sample LD matrix
+R_hat = cor(X_out)
+R = cor(X_in)
+
+
+## generate data from in-sample X matrix
+J = ncol(X_in)
+beta <- rep(0, J)
+n = nrow(X_in)
+num_causal_SNP = 2
+gamma = sample(c(1:J), size = num_causal_SNP, replace = FALSE)
+b = rnorm(num_causal_SNP) * 2
+beta = rep(0, J)
+beta[gamma] = b
+y = X_in %*% beta + rnorm(n)
+y = scale(y) 
+
+V_xy = t(X_in) %*% y / (n-1)
+
+```
+
+```{r}
+## 1. In-sample covariance matrix
+V_xx = R
+sigma2 = 1
+sigma02 = 1
+L = 3
+max_iter = 5  
+
+b_bar = matrix(0, nrow = L, ncol = J)
+b_bar2 = matrix(0, nrow = L, ncol = J)
+alphas = matrix(0, nrow = L, ncol = J)
+mus = matrix(0, nrow = L, ncol = J)
+sigmas = matrix(0, nrow = L, ncol = J)
+
+
+for (iter in (1:max_iter)){
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
+  V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
+  
+  for (ell in 1:L){
+    V_xy_bar_ell = V_xy_bar + V_xx %*% b_bar[ell, ]  ## add back ell-th signal
+    
+    plot_r(V_xy_bar_ell, b=beta)
+    
+    ret = SER(V_xx, V_xy_bar_ell, n, sigma2, sigma02)
+    alphas[ell, ] = ret$alpha
+    mus[ell, ] = ret$mus
+    sigmas[ell, ] = ret$sigma12
+    b_bar[ell, ] = alphas[ell, ] * mus[ell, ]
+    b_bar2[ell, ] = alphas[ell, ] * (mus[ell, ]^2 + sigmas[ell, ])
+    V_xy_bar = V_xy_bar_ell - V_xx %*% b_bar[ell, ]
+    
+    susie_plot(ret$alpha, y = "PIP", b=beta)
+    plot_r(V_xy_bar, b=beta)
+    
+  }
+  mtext(paste0("In-sample R, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
+}
+```
+
+Out-sample Covariance matrix: We can see that after subtracting the first CS, the remaining $\overline{v}$ is still big (not subtracting enough; compare to the in-sample covariance matrix).
+
+```{r}
+
+## 2. Out-sample covariance matrix
+V_xx = R_hat
+sigma2 = 1
+sigma02 = 1
+L = 3
+ max_iter = 5  
+
+b_bar = matrix(0, nrow = L, ncol = J)
+b_bar2 = matrix(0, nrow = L, ncol = J)
+alphas = matrix(0, nrow = L, ncol = J)
+mus = matrix(0, nrow = L, ncol = J)
+sigmas = matrix(0, nrow = L, ncol = J)
+
+
+for (iter in (1:max_iter)){
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
+  V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
+  
+  for (ell in 1:L){
+    V_xy_bar_ell = V_xy_bar + V_xx %*% b_bar[ell, ]  ## add back ell-th signal
+    
+    plot_r(V_xy_bar_ell, b=beta)
+    
+    ret = SER(V_xx, V_xy_bar_ell, n, sigma2, sigma02)
+    alphas[ell, ] = ret$alpha
+    mus[ell, ] = ret$mus
+    sigmas[ell, ] = ret$sigma12
+    b_bar[ell, ] = alphas[ell, ] * mus[ell, ]
+    b_bar2[ell, ] = alphas[ell, ] * (mus[ell, ]^2 + sigmas[ell, ])
+    V_xy_bar = V_xy_bar_ell - V_xx %*% b_bar[ell, ]
+    
+    susie_plot(ret$alpha, y = "PIP", b=beta)
+    plot_r(V_xy_bar, b=beta)
+    
+  }
+  mtext(paste0("Out-sample R, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
+}
+
+```
+
+Projected Covariance matrix: After subtracting the first CS, the remaining $\overline{v}$ is better controlled.
+
+```{r}
+## 3. Projected R
+ret = proj_Dykstra(R=R_hat, v=V_xy)
+V_xx = ret$R
+sigma2 = 1
+sigma02 = 1
+L = 3
+ max_iter = 5  
+
+b_bar = matrix(0, nrow = L, ncol = J)
+b_bar2 = matrix(0, nrow = L, ncol = J)
+alphas = matrix(0, nrow = L, ncol = J)
+mus = matrix(0, nrow = L, ncol = J)
+sigmas = matrix(0, nrow = L, ncol = J)
+
+
+for (iter in (1:max_iter)){
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
+  V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
+  
+  for (ell in 1:L){
+    V_xy_bar_ell = V_xy_bar + V_xx %*% b_bar[ell, ]  ## add back ell-th signal
+    
+    plot_r(V_xy_bar_ell, b=beta)
+    
+    ret = SER(V_xx, V_xy_bar_ell, n, sigma2, sigma02)
+    alphas[ell, ] = ret$alpha
+    mus[ell, ] = ret$mus
+    sigmas[ell, ] = ret$sigma12
+    b_bar[ell, ] = alphas[ell, ] * mus[ell, ]
+    b_bar2[ell, ] = alphas[ell, ] * (mus[ell, ]^2 + sigmas[ell, ])
+    V_xy_bar = V_xy_bar_ell - V_xx %*% b_bar[ell, ]
+    
+    susie_plot(ret$alpha, y = "PIP", b=beta)
+    plot_r(V_xy_bar, b=beta)
+    
+  }
+  mtext(paste0("Projected R, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
+}
+
+```
+
+```{r}
+#### 4. R_{alpha}
+alpha = 1 / max(abs(V_xy))^2
+V_xx = alpha * tcrossprod(V_xy)
+diag(V_xx) <- 1
+sigma2 = 1
+sigma02 = 1
+L = 3
+max_iter = 5
+b_bar = matrix(0, nrow = L, ncol = J)
+b_bar2 = matrix(0, nrow = L, ncol = J)
+alphas = matrix(0, nrow = L, ncol = J)
+mus = matrix(0, nrow = L, ncol = J)
+sigmas = matrix(0, nrow = L, ncol = J)
+for (iter in (1:max_iter)){
+  par(mfrow = c(3, 3), mar = c(4, 4, 2, 1), oma = c(0, 0, 4, 0))
+  V_xy_bar = V_xy - V_xx %*% colSums(b_bar)  ## residual signal
+  for (ell in 1:L){
+    V_xy_bar_ell = V_xy_bar + V_xx %*% b_bar[ell, ]  ## add back ell-th signal
+    plot_r(V_xy_bar_ell, b=beta)
+    ret = SER(V_xx, V_xy_bar_ell, n, sigma2, sigma02)
+    alphas[ell, ] = ret$alpha
+    mus[ell, ] = ret$mus
+    sigmas[ell, ] = ret$sigma12
+    b_bar[ell, ] = alphas[ell, ] * mus[ell, ]
+    b_bar2[ell, ] = alphas[ell, ] * (mus[ell, ]^2 + sigmas[ell, ])
+    V_xy_bar = V_xy_bar_ell - V_xx %*% b_bar[ell, ]
+    susie_plot(ret$alpha, y = "PIP", b=beta)
+    plot_r(V_xy_bar, b=beta)
+  }
+  mtext(paste0("R alpha, Iteration ", iter), outer = TRUE, cex = 1.5, line = 1)
+}
+
+print(alpha)
+```
