@@ -27,3 +27,5 @@ We investigate the performance of SuSiE model for summary statistics with variou
 + [Investigate V after every iteration](V_xy_iter_investigate.html)
 
 + [Investigate V after every iteration, L=2](V_xy_iter_L2.html)
+
++ [Example of fine-mapping a blood cell trait using SuSiE-RSS](susie_rss_ukbb.html)

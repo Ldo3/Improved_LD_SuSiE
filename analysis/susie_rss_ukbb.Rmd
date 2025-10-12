@@ -1,0 +1,10 @@
+---
+title: Example of fine-mapping a blood cell trait using SuSiE-RSS
+author: Peter Carbonetto
+output: workflowr::wflow_html
+---
+
+```{r knitr-opts, include=FALSE}
+knitr::opts_chunk$set(comment = "#",collapse = TRUE,results = "hold",
+                      fig.align = "center",dpi = 120)
+```
