@@ -4,7 +4,67 @@ author: Peter Carbonetto
 output: workflowr::wflow_html
 ---
 
+To run this analysis, you will first need to download the association
+statistics from the UK Biobank data and the LD matrix. Download these
+two files from the
+[Box folder][box]
+and move them into the "data" directory of this repository:
+
+```
+bloodcells_chr1.153094636.157301801.z.rds
+bloodcells_chr1.153094636.157301801.matrix.gz
+```
+
 ```{r knitr-opts, include=FALSE}
 knitr::opts_chunk$set(comment = "#",collapse = TRUE,results = "hold",
                       fig.align = "center",dpi = 120)
 ```
+
+Load the packages needed for this analysis:
+
+```{r load-pkgs, message=FALSE}
+library(data.table)
+library(susieR)
+library(ggplot2)
+library(ggrepel)
+library(cowplot)
+```
+
+Set the seed for reproducibility:
+
+```{r set-seed}
+set.seed(1)
+```
+
+Get the *z*-scores:
+
+```{r z-scores}
+dat <- readRDS("data/bloodcells_chr1.153094636.157301801.z.rds")
+n <- dat$n
+z <- dat$Z[,"Reticulocyte_perc"]
+pos <- dat$pos$POS/1e6
+ids <- dat$pos$ID
+names(z) <- ids
+```
+
+Import the "in-sample" LD matrix:
+
+```{r ld}
+R <- fread("data/bloodcells_chr1.153094636.157301801.matrix.gz",
+           sep = " ",verbose = TRUE)
+R <- as.matrix(R)
+rownames(R) <- ids
+colnames(R) <- ids
+```
+
+### Notes
+
+The file `bloodcells_chr1.153094636.157301801.z.rds` was originally
+downloaded from the directory
+`/gpfs/data/stephens-lab/finemap-uk-biobank/data/raw/BloodCells/regions_zscores_maf001_info6` on randi.
+
+bloodcells_chr1.153094636.157301801.matrix.gz was downloaded # from
+/gpfs/data/stephens-lab/finemap-uk-biobank/data/raw/BloodCells/ #
+regions_ld_maf001_info6 on randi.
+
+[box]: https://uchicago.box.com/s/yo4tted3hgfha2f0lkclk9r4upxb66mw
