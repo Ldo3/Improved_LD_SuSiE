@@ -70,9 +70,6 @@ Run SuSiE-RSS with at most 5 "single effects" (i.e., causal SNPs):
 ```{r susie-rss}
 fit <- susie_rss(z,R,n,L = 5,min_abs_corr = 0,coverage = 0.95,
                  max_iter = 100,verbose = TRUE)
-```
-
-```{r}
 fit$lbf
 fit$V
 ```
@@ -127,12 +124,12 @@ susie_pip_plot <-
 
 This PIP plot summarizes the results of the fine-mapping analysis:
 
-```{r plot-pips, fig.height=3, fig.width=7}
+```{r plot-pips, fig.height=2.5, fig.width=7}
 susie_pip_plot(fit)
 ```
 
-SuSiE identified the missense variant but also identified 2 SNPs near
-*PKLR* with fairly high confidence.
+SuSiE identified the missense variant but also identified 2 SNPs
+within 500 kb of *PKLR* with fairly high confidence.
 
 ### Notes
 
