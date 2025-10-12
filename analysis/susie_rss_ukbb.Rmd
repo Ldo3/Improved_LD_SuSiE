@@ -4,6 +4,14 @@ author: Peter Carbonetto
 output: workflowr::wflow_html
 ---
 
+This is an illustration of using SuSiE-RSS to finemap a blood cell
+trait, reticulocyte percentage, using summary statistics from a PLINK
+association analysis of the UK Biobank data. Here we focus on a region
+on chromosome 1 near the gene *PKLR* which is known to contain a rare
+missense variant rs116100695 causing red cell pyruvate kinase
+deficiency (see [Astle et al, Cell, 2016][astle-cell-2016] and the
+[OMIM entry][pklr-omim]).
+
 To run this analysis, you will first need to download the association
 statistics from the UK Biobank data and the LD matrix. Download these
 two files from the
@@ -51,20 +59,90 @@ Import the "in-sample" LD matrix:
 
 ```{r ld}
 R <- fread("data/bloodcells_chr1.153094636.157301801.matrix.gz",
-           sep = " ",verbose = TRUE)
+           sep = " ",verbose = FALSE)
 R <- as.matrix(R)
 rownames(R) <- ids
 colnames(R) <- ids
 ```
 
+Run SuSiE-RSS with at most 5 "single effects" (i.e., causal SNPs):
+
+```{r susie-rss}
+fit <- susie_rss(z,R,n,L = 5,min_abs_corr = 0,coverage = 0.95,
+                 max_iter = 100,verbose = TRUE)
+```
+
+```{r}
+fit$lbf
+fit$V
+```
+
+This is my custom function to visualize the PIPs and the CSs:
+
+```{r susie-pip-plot}
+susie_pip_plot <-
+  function (fit,
+            max_snps = 100,
+			font_size = 10,
+            cs_colors = c("#e41a1c","#4daf4a","#ff7f00","#ffff33",
+                          "#a65628","#f781bf","#984ea3","#377eb8")) {
+  cs  <- fit$sets$cs
+  pip <- fit$pip
+  m   <- length(cs)
+  pdat_cs <- NULL
+  for (i in 1:m) {
+    j <- cs[[i]]
+    if (length(j) < max_snps) {
+      x <- data.frame(cs  = sprintf("CS%d (%d SNPs)",i,length(j)),
+                      pos = pos[j],
+                      id  = "",
+                      pip = pip[j])
+      k <- which.max(x$pip)
+      x[k,"id"] <- ids[j[k]]
+      pdat_cs <- rbind(pdat_cs,x)
+    } 
+  }
+  pdat_cs <- transform(pdat_cs,cs = factor(cs))
+  pdat_pip <- data.frame(pip = pip,pos = pos)
+  return(ggplot() +
+    geom_point(data = pdat_pip,
+               mapping = aes(x = pos,y = pip),
+               size = 1,color = "black") +
+    geom_point(data = pdat_cs,
+               mapping = aes(x = pos,y = pip,color = cs),
+               size = 2) +
+    geom_text_repel(data = pdat_cs,
+                    mapping = aes(x = pos,y = pip,label = id),
+                    size = 3,min.segment.length = 0,max.overlaps = Inf) +
+    scale_x_continuous(breaks = seq(0,300,0.5)) +
+    scale_color_manual(values = cs_colors) +
+    labs(x = "base-pair position on chromosome 1 (Mb)",
+	     y = "PIP",
+         color = "CS") +
+    theme_cowplot(font_size = font_size) +
+    theme(legend.position = "bottom",
+          legend.direction = "vertical"))
+}
+```
+
+This PIP plot summarizes the results of the fine-mapping analysis:
+
+```{r plot-pips, fig.height=3, fig.width=7}
+susie_pip_plot(fit)
+```
+
+SuSiE identified the missense variant but also identified 2 SNPs near
+*PKLR* with fairly high confidence.
+
 ### Notes
 
-The file `bloodcells_chr1.153094636.157301801.z.rds` was originally
-downloaded from the directory
-`/gpfs/data/stephens-lab/finemap-uk-biobank/data/raw/BloodCells/regions_zscores_maf001_info6` on randi.
+The files `bloodcells_chr1.153094636.157301801.z.rds` and
+`bloodcells_chr1.153094636.157301801.matrix.gz` were originally
+downloaded from the subdirectories `regions_zscores_maf001_info6` and
+`regions_ld_maf001_info6` within directory
+`/gpfs/data/stephens-lab/finemap-uk-biobank/data/raw/BloodCells`
+on randi.
 
-bloodcells_chr1.153094636.157301801.matrix.gz was downloaded # from
-/gpfs/data/stephens-lab/finemap-uk-biobank/data/raw/BloodCells/ #
-regions_ld_maf001_info6 on randi.
-
+[astle-cell-2016]: http://doi.org/10.1016/j.cell.2016.10.042
+[pklr-omim]: https://www.omim.org/entry/609712
 [box]: https://uchicago.box.com/s/yo4tted3hgfha2f0lkclk9r4upxb66mw
