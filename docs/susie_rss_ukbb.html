@@ -438,15 +438,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree2c643c95b176c017127aaae2bc276f6433cb08e3targetblank2c643c9a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree7f64b6319e9ebba00d7fce5974d528c7d56b7ccdtargetblank7f64b63a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/2c643c95b176c017127aaae2bc276f6433cb08e3" target="_blank">2c643c9</a>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/7f64b6319e9ebba00d7fce5974d528c7d56b7ccd" target="_blank">7f64b63</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree2c643c95b176c017127aaae2bc276f6433cb08e3targetblank2c643c9a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree7f64b6319e9ebba00d7fce5974d528c7d56b7ccdtargetblank7f64b63a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -456,7 +456,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/2c643c95b176c017127aaae2bc276f6433cb08e3" target="_blank">2c643c9</a>.
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/7f64b6319e9ebba00d7fce5974d528c7d56b7ccd" target="_blank">7f64b63</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -523,6 +523,57 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/7f64b6319e9ebba00d7fce5974d528c7d56b7ccd/analysis/susie_rss_ukbb.Rmd" target="_blank">7f64b63</a>
+</td>
+<td>
+Peter Carbonetto
+</td>
+<td>
+2025-10-12
+</td>
+<td>
+wflow_publish("analysis/susie_rss_ukbb.Rmd", view = F, verbose = T)
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/b9ed7b4015f32abfa2df79f678c76364094e3b3c/analysis/susie_rss_ukbb.Rmd" target="_blank">b9ed7b4</a>
+</td>
+<td>
+Peter Carbonetto
+</td>
+<td>
+2025-10-12
+</td>
+<td>
+Working on the susie_rss_ukbb demo.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/26e7b47cd259d9e026594ef9a03ea34bd1d5fe6b/docs/susie_rss_ukbb.html" target="_blank">26e7b47</a>
+</td>
+<td>
+Peter Carbonetto
+</td>
+<td>
+2025-10-12
+</td>
+<td>
+First build of the susie_rss_ukbb workflowr page.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/2c643c95b176c017127aaae2bc276f6433cb08e3/analysis/susie_rss_ukbb.Rmd" target="_blank">2c643c9</a>
 </td>
 <td>
@@ -559,6 +610,15 @@ wflow_publish("analysis/index.Rmd")
 </div>
 </div>
 </div>
+<p>This is an illustration of using SuSiE-RSS to finemap a blood cell
+trait, reticulocyte percentage, using summary statistics from a PLINK
+association analysis of the UK Biobank data. Here we focus on a region
+on chromosome 1 near the gene <em>PKLR</em> which is known to contain a
+rare missense variant rs116100695 causing red cell pyruvate kinase
+deficiency (see <a
+href="http://doi.org/10.1016/j.cell.2016.10.042">Astle et al, Cell,
+2016</a> and the <a href="https://www.omim.org/entry/609712">OMIM
+entry</a>).</p>
 <p>To run this analysis, you will first need to download the association
 statistics from the UK Biobank data and the LD matrix. Download these
 two files from the <a
@@ -584,88 +644,81 @@ ids &lt;- dat$pos$ID
 names(z) &lt;- ids</code></pre>
 <p>Import the “in-sample” LD matrix:</p>
 <pre class="r"><code>R &lt;- fread(&quot;data/bloodcells_chr1.153094636.157301801.matrix.gz&quot;,
-           sep = &quot; &quot;,verbose = TRUE)
+           sep = &quot; &quot;,verbose = FALSE)
 R &lt;- as.matrix(R)
 rownames(R) &lt;- ids
-colnames(R) &lt;- ids
-#   OpenMP version (_OPENMP)       201811
-#   omp_get_num_procs()            8
-#   R_DATATABLE_NUM_PROCS_PERCENT  unset (default 50)
-#   R_DATATABLE_NUM_THREADS        unset
-#   R_DATATABLE_THROTTLE           unset (default 1024)
-#   omp_get_thread_limit()         2147483647
-#   omp_get_max_threads()          8
-#   OMP_THREAD_LIMIT               unset
-#   OMP_NUM_THREADS                unset
-#   RestoreAfterFork               true
-#   data.table is using 4 threads with throttle==1024. See ?setDTthreads.
-# freadR.c has been passed a filename: /var/folders/9b/ck4lp8s140lcksryyh4dppdr0000gp/T//RtmpbkVxkq/filefb341eebd464
-# [01] Check arguments
-#   Using 4 threads (omp_get_max_threads()=8, nth=4)
-#   NAstrings = [&lt;&lt;NA&gt;&gt;]
-#   None of the NAstrings look like numbers.
-#   show progress = 0
-#   0/1 column will be read as integer
-#   Y/N column will be read as character
-# [02] Opening the file
-#   Opening file /var/folders/9b/ck4lp8s140lcksryyh4dppdr0000gp/T//RtmpbkVxkq/filefb341eebd464
-#   File opened, size = 3.061GB (3286687694 bytes).
-#   Memory mapped ok
-# [03] Detect and skip BOM
-# [04] Arrange mmap to be \0 terminated
-#   \n has been found in the input and different lines can end with different line endings (e.g. mixed \n and \r\n in one file). This is common and ideal.
-# [05] Skipping initial rows if needed
-#   Positioned on line 1 starting: &lt;&lt;1 -0.016736 -0.00106111 -0.001&gt;&gt;
-# [06] Detect separator, quoting rule, and ncolumns
-#   Using supplied sep &#39; &#39;
-#   sep=&#39; &#39;  with 100 lines of 17048 fields using quote rule 0
-#   Detected 17048 columns on line 1. This line is either column names or first data row. Line starts as: &lt;&lt;1 -0.016736 -0.00106111 -0.001&gt;&gt;
-#   Quote rule picked = 0
-#   fill=false and the most number of columns found is 17048
-# [07] Detect column types, dec, good nrow estimate and whether first row is column names
-#   Number of sampling jump points = 10 because (3286687693 bytes from row 1 to eof) / (2 * 19613164 jump0size) == 83
-#   dec=&#39;.&#39; detected based on a balance of 1704799 parsed fields
-#   Type codes (jump 000)    : 99999999999999999999999999999999999999999999999999999999999999999999999999999999...9999999999  Quote rule 0
-#   Type codes (jump 010)    : 99999999999999999999999999999999999999999999999999999999999999999999999999999999...9999999999  Quote rule 0
-#   &#39;header&#39; determined to be false because there are some number columns and those columns do not have a string field at the top of them
-#   =====
-#   Sampled 1050 rows (handled \n inside quoted fields) at 11 jump points
-#   Bytes from first data row on line 1 to the end of last row: 3286490092
-#   Line length: mean=192865.54 sd=4221.24 min=184037 max=199377
-#   Estimated number of rows: 3286490092 / 192865.54 = 17041
-#   Initial alloc = 18745 rows (17041 + 9%) using bytes/max(mean-2*sd,min) clamped between [1.1*estn, 2.0*estn]
-#   =====
-# [08] Assign column names
-# [09] Apply user overrides on column types
-#   After 0 type and 0 drop user overrides : 99999999999999999999999999999999999999999999999999999999999999999999999999999999...9999999999
-# [10] Allocate memory for the datatable
-#   Allocating 17048 column slots (17048 - 0 dropped) with 18745 rows
-# [11] Read the data
-#   jumps=[0..20), chunk_size=164324504, total_size=3286687693
-# Read 17048 rows x 17048 columns from 3.061GB (3286687694 bytes) file in 00:10.230 wall clock time
-# [12] Finalizing the datatable
-#   Type counts:
-#      17048 : float64   &#39;9&#39;
-# =============================
-#    0.009s (  0%) Memory map 3.061GB file
-#    0.943s (  9%) sep=&#39; &#39; ncol=17048 and header detection
-#    0.005s (  0%) Column type detection using 1050 sample rows
-#    1.547s ( 15%) Allocation of 18745 rows x 17048 cols (2.381GB) of which 17048 ( 91%) rows used
-#    7.727s ( 76%) Reading 20 chunks (0 swept) of 156.712MB (each chunk 852 rows) using 4 threads
-#    +    7.209s ( 70%) Parse to row-major thread buffers (grown 0 times)
-#    +    0.392s (  4%) Transpose
-#    +    0.126s (  1%) Waiting
-#    0.000s (  0%) Rereading 0 columns due to out-of-sample type exceptions
-#   10.230s        Total</code></pre>
+colnames(R) &lt;- ids</code></pre>
+<p>Run SuSiE-RSS with at most 5 “single effects” (i.e., causal
+SNPs):</p>
+<pre class="r"><code>fit &lt;- susie_rss(z,R,n,L = 5,min_abs_corr = 0,coverage = 0.95,
+                 max_iter = 100,verbose = TRUE)
+fit$lbf
+fit$V
+# [1] &quot;objective:-353173.931322825&quot;
+# [1] &quot;objective:-353173.606429479&quot;
+# [1] &quot;objective:-353173.597867136&quot;
+# [1] &quot;objective:-353173.597254807&quot;
+# [1] 64.4319821 42.7729293  4.4479161  1.6243978  0.4958185
+# [1] 6.160781e-04 4.377370e-04 1.180881e-04 6.350878e-05 2.699047e-05</code></pre>
+<p>This is my custom function to visualize the PIPs and the CSs:</p>
+<pre class="r"><code>susie_pip_plot &lt;-
+  function (fit,
+            max_snps = 100,
+            font_size = 10,
+            cs_colors = c(&quot;#e41a1c&quot;,&quot;#4daf4a&quot;,&quot;#ff7f00&quot;,&quot;#ffff33&quot;,
+                          &quot;#a65628&quot;,&quot;#f781bf&quot;,&quot;#984ea3&quot;,&quot;#377eb8&quot;)) {
+  cs  &lt;- fit$sets$cs
+  pip &lt;- fit$pip
+  m   &lt;- length(cs)
+  pdat_cs &lt;- NULL
+  for (i in 1:m) {
+    j &lt;- cs[[i]]
+    if (length(j) &lt; max_snps) {
+      x &lt;- data.frame(cs  = sprintf(&quot;CS%d (%d SNPs)&quot;,i,length(j)),
+                      pos = pos[j],
+                      id  = &quot;&quot;,
+                      pip = pip[j])
+      k &lt;- which.max(x$pip)
+      x[k,&quot;id&quot;] &lt;- ids[j[k]]
+      pdat_cs &lt;- rbind(pdat_cs,x)
+    } 
+  }
+  pdat_cs &lt;- transform(pdat_cs,cs = factor(cs))
+  pdat_pip &lt;- data.frame(pip = pip,pos = pos)
+  return(ggplot() +
+    geom_point(data = pdat_pip,
+               mapping = aes(x = pos,y = pip),
+               size = 1,color = &quot;black&quot;) +
+    geom_point(data = pdat_cs,
+               mapping = aes(x = pos,y = pip,color = cs),
+               size = 2) +
+    geom_text_repel(data = pdat_cs,
+                    mapping = aes(x = pos,y = pip,label = id),
+                    size = 3,min.segment.length = 0,max.overlaps = Inf) +
+    scale_x_continuous(breaks = seq(0,300,0.5)) +
+    scale_color_manual(values = cs_colors) +
+    labs(x = &quot;base-pair position on chromosome 1 (Mb)&quot;,
+         y = &quot;PIP&quot;,
+         color = &quot;CS&quot;) +
+    theme_cowplot(font_size = font_size) +
+    theme(legend.position = &quot;bottom&quot;,
+          legend.direction = &quot;vertical&quot;))
+}</code></pre>
+<p>This PIP plot summarizes the results of the fine-mapping
+analysis:</p>
+<pre class="r"><code>susie_pip_plot(fit)</code></pre>
+<p><img src="figure/susie_rss_ukbb.Rmd/plot-pips-1.png" width="840" style="display: block; margin: auto;" /></p>
+<p>SuSiE identified the missense variant but also identified 2 SNPs
+within 500 kb of <em>PKLR</em> with fairly high confidence.</p>
 <div id="notes" class="section level3">
 <h3>Notes</h3>
-<p>The file <code>bloodcells_chr1.153094636.157301801.z.rds</code> was
-originally downloaded from the directory
-<code>/gpfs/data/stephens-lab/finemap-uk-biobank/data/raw/BloodCells/regions_zscores_maf001_info6</code>
+<p>The files <code>bloodcells_chr1.153094636.157301801.z.rds</code> and
+<code>bloodcells_chr1.153094636.157301801.matrix.gz</code> were
+originally downloaded from the subdirectories
+<code>regions_zscores_maf001_info6</code> and
+<code>regions_ld_maf001_info6</code> within directory
+<code>/gpfs/data/stephens-lab/finemap-uk-biobank/data/raw/BloodCells</code>
 on randi.</p>
-<p>bloodcells_chr1.153094636.157301801.matrix.gz was downloaded # from
-/gpfs/data/stephens-lab/finemap-uk-biobank/data/raw/BloodCells/ #
-regions_ld_maf001_info6 on randi.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -697,22 +750,29 @@ Session information
 # [5] data.table_1.17.6 workflowr_1.7.1  
 # 
 # loaded via a namespace (and not attached):
-#  [1] sass_0.4.10        generics_0.1.4     stringi_1.8.7      lattice_0.22-5    
-#  [5] digest_0.6.37      magrittr_2.0.3     evaluate_1.0.4     grid_4.3.3        
-#  [9] RColorBrewer_1.1-3 fastmap_1.2.0      R.oo_1.26.0        plyr_1.8.9        
-# [13] rprojroot_2.0.4    jsonlite_2.0.0     Matrix_1.6-5       R.utils_2.12.3    
-# [17] processx_3.8.3     whisker_0.4.1      reshape_0.8.9      ps_1.7.6          
-# [21] mixsqp_0.3-54      promises_1.3.3     httr_1.4.7         scales_1.4.0      
-# [25] jquerylib_0.1.4    cli_3.6.5          rlang_1.1.6        crayon_1.5.3      
-# [29] R.methodsS3_1.8.2  withr_3.0.2        cachem_1.1.0       yaml_2.3.10       
-# [33] tools_4.3.3        dplyr_1.1.4        httpuv_1.6.14      vctrs_0.6.5       
-# [37] R6_2.6.1           matrixStats_1.2.0  lifecycle_1.0.4    git2r_0.33.0      
-# [41] stringr_1.5.1      fs_1.6.6           irlba_2.3.5.1      pkgconfig_2.0.3   
-# [45] callr_3.7.5        pillar_1.11.0      bslib_0.9.0        later_1.4.2       
-# [49] gtable_0.3.6       glue_1.8.0         Rcpp_1.1.0         xfun_0.52         
-# [53] tibble_3.3.0       tidyselect_1.2.1   rstudioapi_0.15.0  knitr_1.50        
-# [57] dichromat_2.0-0.1  farver_2.1.2       htmltools_0.5.8.1  rmarkdown_2.29    
-# [61] compiler_4.3.3     getPass_0.2-4</code></pre>
+#  [1] sass_0.4.10         generics_0.1.4      stringi_1.8.7      
+#  [4] lattice_0.22-5      digest_0.6.37       magrittr_2.0.3     
+#  [7] evaluate_1.0.4      grid_4.3.3          RColorBrewer_1.1-3 
+# [10] fastmap_1.2.0       R.oo_1.26.0         plyr_1.8.9         
+# [13] rprojroot_2.0.4     jsonlite_2.0.0      Matrix_1.6-5       
+# [16] R.utils_2.12.3      processx_3.8.3      whisker_0.4.1      
+# [19] reshape_0.8.9       ps_1.7.6            mixsqp_0.3-54      
+# [22] promises_1.3.3      httr_1.4.7          scales_1.4.0       
+# [25] jquerylib_0.1.4     cli_3.6.5           rlang_1.1.6        
+# [28] crayon_1.5.3        R.methodsS3_1.8.2   withr_3.0.2        
+# [31] cachem_1.1.0        yaml_2.3.10         parallel_4.3.3     
+# [34] tools_4.3.3         dplyr_1.1.4         httpuv_1.6.14      
+# [37] RcppZiggurat_0.1.6  Rfast_2.1.0         vctrs_0.6.5        
+# [40] R6_2.6.1            matrixStats_1.2.0   lifecycle_1.0.4    
+# [43] git2r_0.33.0        stringr_1.5.1       fs_1.6.6           
+# [46] irlba_2.3.5.1       pkgconfig_2.0.3     callr_3.7.5        
+# [49] RcppParallel_5.1.10 pillar_1.11.0       bslib_0.9.0        
+# [52] later_1.4.2         gtable_0.3.6        glue_1.8.0         
+# [55] Rcpp_1.1.0          xfun_0.52           tibble_3.3.0       
+# [58] tidyselect_1.2.1    rstudioapi_0.15.0   knitr_1.50         
+# [61] dichromat_2.0-0.1   farver_2.1.2        htmltools_0.5.8.1  
+# [64] labeling_0.4.3      rmarkdown_2.29      compiler_4.3.3     
+# [67] getPass_0.2-4</code></pre>
 </div>
 </div>
 
