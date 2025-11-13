@@ -43,6 +43,7 @@ sim_wishart <- function (n, d, v = d + 1, S = diag(d),
     x <- X[,,i]
 	if (dist == "invwish")
       x <- solve(x)
+    x <- cov2cor(x)
     X[,,i] <- x
   }
   return(drop(X[1,2,]))
@@ -104,4 +105,3 @@ create_cor_hist(x,title = "IW(d+1,I), d=3")
 
 This illustrates the ability of the inverse Wishart to maintain a
 "diffuse" prior in higher dimensions.
-
