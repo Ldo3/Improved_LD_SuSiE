@@ -1,0 +1,26 @@
+---
+title: Notes on the Wishart and inverse Wishart distributions
+author: Peter Carbonetto
+output: workflowr::wflow_html
+---
+
+In the *Bayesian data analysis* book (3rd ed), the authors make the
+following claim: *Setting ${\bf\Sigma} \sim
+\mbox{Inv-Wishart}_{d+1}({\bf I})$ has the appealing feature that each
+of the correlations in Σ has, marginally, a uniform prior
+distribution.*
+[Note: ${\bf\Sigma}$ and ${\bf I}$ are $d \times d$ matrices.] Here I
+check this claim in some small simulations.
+
+```{r knitr-opts, include=FALSE}
+knitr::opts_chunk$set(comment = "#",collapse = TRUE,results = "hold",
+                      fig.align = "center",dpi = 120)
+```
+
+Load the packages needed for this analysis:
+
+```{r load-pkgs}
+library(ggplot2)
+library(cowplot)
+```
+
