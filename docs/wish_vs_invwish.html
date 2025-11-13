@@ -438,15 +438,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree75537b7283479120195366f0f2d9ae562ad7a57ftargetblank75537b7a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree3d69b133009acf4346e753117efcce011110e2ebtargetblank3d69b13a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/75537b7283479120195366f0f2d9ae562ad7a57f" target="_blank">75537b7</a>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/3d69b133009acf4346e753117efcce011110e2eb" target="_blank">3d69b13</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree75537b7283479120195366f0f2d9ae562ad7a57ftargetblank75537b7a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree3d69b133009acf4346e753117efcce011110e2ebtargetblank3d69b13a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -456,7 +456,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/75537b7283479120195366f0f2d9ae562ad7a57f" target="_blank">75537b7</a>.
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/3d69b133009acf4346e753117efcce011110e2eb" target="_blank">3d69b13</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -518,6 +518,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/3d69b133009acf4346e753117efcce011110e2eb/analysis/wish_vs_invwish.Rmd" target="_blank">3d69b13</a>
+</td>
+<td>
+Peter Carbonetto
+</td>
+<td>
+2025-11-13
+</td>
+<td>
+wflow_publish("wish_vs_invwish.Rmd", verbose = T, view = F)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/74721a145a1dd2edfb61e87dde97ab9a5d076476/docs/wish_vs_invwish.html" target="_blank">74721a1</a>
+</td>
+<td>
+Peter Carbonetto
+</td>
+<td>
+2025-11-13
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -620,6 +654,7 @@ correlations between dimensions 1 and 2:</p>
     x &lt;- X[,,i]
     if (dist == &quot;invwish&quot;)
       x &lt;- solve(x)
+    x &lt;- cov2cor(x)
     X[,,i] &lt;- x
   }
   return(drop(X[1,2,]))
@@ -639,26 +674,211 @@ Wishart:</p>
 <pre class="r"><code>x &lt;- sim_wishart(1000,2,dist = &quot;invwish&quot;)
 create_cor_hist(x,title = &quot;IW(d+1,I), d=2&quot;)</code></pre>
 <p><img src="figure/wish_vs_invwish.Rmd/invwish-2d-unif-1.png" width="300" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-invwish-2d-unif-1">
+Past versions of invwish-2d-unif-1.png
+</button>
+</p>
+<div id="fig-invwish-2d-unif-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/74721a145a1dd2edfb61e87dde97ab9a5d076476/docs/figure/wish_vs_invwish.Rmd/invwish-2d-unif-1.png" target="_blank">74721a1</a>
+</td>
+<td>
+Peter Carbonetto
+</td>
+<td>
+2025-11-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>As we increase the number of degrees of freedom, the correlations
 become more concentrated around zero:</p>
 <pre class="r"><code>x &lt;- sim_wishart(1000,2,v = 6,dist = &quot;invwish&quot;)
 create_cor_hist(x,title = &quot;IW(d+4,I), d=2&quot;)</code></pre>
 <p><img src="figure/wish_vs_invwish.Rmd/invwish-2d-nonunif-1.png" width="300" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-invwish-2d-nonunif-1">
+Past versions of invwish-2d-nonunif-1.png
+</button>
+</p>
+<div id="fig-invwish-2d-nonunif-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/74721a145a1dd2edfb61e87dde97ab9a5d076476/docs/figure/wish_vs_invwish.Rmd/invwish-2d-nonunif-1.png" target="_blank">74721a1</a>
+</td>
+<td>
+Peter Carbonetto
+</td>
+<td>
+2025-11-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Interestingly, the Wishart distribution with <span
 class="math inline">\(d + 1\)</span> degrees of freedom also generates a
 uniform distribution for the correlations, at least in 2 dimensions:</p>
 <pre class="r"><code>x &lt;- sim_wishart(1000,2,dist = &quot;wish&quot;)
 create_cor_hist(x,title = &quot;W(d+1,I), d=2&quot;)</code></pre>
 <p><img src="figure/wish_vs_invwish.Rmd/wish-2d-unif-1.png" width="300" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-wish-2d-unif-1">
+Past versions of wish-2d-unif-1.png
+</button>
+</p>
+<div id="fig-wish-2d-unif-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/74721a145a1dd2edfb61e87dde97ab9a5d076476/docs/figure/wish_vs_invwish.Rmd/wish-2d-unif-1.png" target="_blank">74721a1</a>
+</td>
+<td>
+Peter Carbonetto
+</td>
+<td>
+2025-11-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>However, for more than 2 dimensions, the distribution of correlations
 is no longer uniform:</p>
 <pre class="r"><code>x &lt;- sim_wishart(1000,3,dist = &quot;wish&quot;)
 create_cor_hist(x,title = &quot;W(d+1,I), d=3&quot;)</code></pre>
 <p><img src="figure/wish_vs_invwish.Rmd/wish-3d-unif-1.png" width="300" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-wish-3d-unif-1">
+Past versions of wish-3d-unif-1.png
+</button>
+</p>
+<div id="fig-wish-3d-unif-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/74721a145a1dd2edfb61e87dde97ab9a5d076476/docs/figure/wish_vs_invwish.Rmd/wish-3d-unif-1.png" target="_blank">74721a1</a>
+</td>
+<td>
+Peter Carbonetto
+</td>
+<td>
+2025-11-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>By contrast, the inverse Wishart retains a uniform distribution:</p>
 <pre class="r"><code>x &lt;- sim_wishart(1000,3,dist = &quot;invwish&quot;)
 create_cor_hist(x,title = &quot;IW(d+1,I), d=3&quot;)</code></pre>
 <p><img src="figure/wish_vs_invwish.Rmd/invwish-3d-unif-1.png" width="300" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-invwish-3d-unif-1">
+Past versions of invwish-3d-unif-1.png
+</button>
+</p>
+<div id="fig-invwish-3d-unif-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/74721a145a1dd2edfb61e87dde97ab9a5d076476/docs/figure/wish_vs_invwish.Rmd/invwish-3d-unif-1.png" target="_blank">74721a1</a>
+</td>
+<td>
+Peter Carbonetto
+</td>
+<td>
+2025-11-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>This illustrates the ability of the inverse Wishart to maintain a
 “diffuse” prior in higher dimensions.</p>
 <br>
