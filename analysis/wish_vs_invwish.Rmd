@@ -7,10 +7,10 @@ output: workflowr::wflow_html
 In the *Bayesian data analysis* book (3rd ed), the authors make the
 following claim: *Setting ${\bf\Sigma} \sim
 \mbox{Inv-Wishart}_{d+1}({\bf I})$ has the appealing feature that each
-of the correlations in Σ has, marginally, a uniform prior
+of the correlations in ${\bf\Sigma}$ has, marginally, a uniform prior
 distribution.*
 [Note: ${\bf\Sigma}$ and ${\bf I}$ are $d \times d$ matrices.] Here I
-check this claim in some small simulations.
+check this claim in a few small simulations.
 
 ```{r knitr-opts, include=FALSE}
 knitr::opts_chunk$set(comment = "#",collapse = TRUE,results = "hold",
@@ -23,4 +23,85 @@ Load the packages needed for this analysis:
 library(ggplot2)
 library(cowplot)
 ```
+
+Set the seed to make the results reproducible:
+
+```{r set-seed}
+set.seed(1)
+```
+
+Here's a function I will use to simulate covariance matrices from the
+Wishart or inverse Wishart with $\nu = d + 1$, and then output
+(without loss of generality) the simulated correlations between
+dimensions 1 and 2:
+
+```{r sim-wishart}
+sim_wishart <- function (n, d, v = d + 1, S = diag(d),
+                         dist = c("wish", "invwish")) {
+  X <- rWishart(n,v,S)
+  for (i in 1:n) {
+    x <- X[,,i]
+	if (dist == "invwish")
+      x <- solve(x)
+    X[,,i] <- x
+  }
+  return(drop(X[1,2,]))
+}
+```
+
+This is a function I will use to create the histograms to visualize
+the distribution of the correlations:
+
+```{r create-cor-hist}
+create_cor_hist <- function (x, title = "") {
+  pdat <- data.frame(cor = x)
+  return(ggplot(pdat,aes(x = x)) +
+    geom_histogram(bins = 24,fill = "black",color = "black") +
+	labs(x = "correlation",title = title) +
+	theme_cowplot(font_size = 12) +
+	theme(plot.title = element_text(size = 12,face = "plain")))
+}
+```
+
+In 2 dimensions, the claim appears to hold for the inverse Wishart:
+
+```{r invwish-2d-unif, fig.height=2.5, fig.width=2.5}
+x <- sim_wishart(1000,2,dist = "invwish")
+create_cor_hist(x,title = "IW(d+1,I), d=2")
+```
+
+As we increase the number of degrees of freedom, the correlations
+become more concentrated around zero:
+
+```{r invwish-2d-nonunif, fig.height=2.5, fig.width=2.5}
+x <- sim_wishart(1000,2,v = 6,dist = "invwish")
+create_cor_hist(x,title = "IW(d+4,I), d=2")
+```
+
+Interestingly, the Wishart distribution with $d + 1$ degrees of
+freedom also generates a uniform distribution for the correlations, at
+least in 2 dimensions:
+
+```{r wish-2d-unif, fig.height=2.5, fig.width=2.5}
+x <- sim_wishart(1000,2,dist = "wish")
+create_cor_hist(x,title = "W(d+1,I), d=2")
+```
+
+However, for more than 2 dimensions, the distribution of correlations
+is no longer uniform:
+
+```{r wish-3d-unif, fig.height=2.5, fig.width=2.5}
+x <- sim_wishart(1000,3,dist = "wish")
+create_cor_hist(x,title = "W(d+1,I), d=3")
+```
+
+By contrast, the inverse Wishart retains a uniform distribution:
+
+```{r invwish-3d-unif, fig.height=2.5, fig.width=2.5}
+x <- sim_wishart(1000,3,dist = "invwish")
+create_cor_hist(x,title = "IW(d+1,I), d=3")
+```
+
+This illustrates the ability of the inverse Wishart to maintain a
+"diffuse" prior in higher dimensions.
 
