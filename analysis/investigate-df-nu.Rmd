@@ -13,7 +13,7 @@ seed = 4  ## change this value to see other examples
 library(susieR)
 library(Matrix)
 set.seed(seed)
-# setwd("~/Documents/Improved_LD_SuSiE")
+setwd("~/Documents/Improved_LD_SuSiE")
 gtex = readRDS("data/Thyroid_ENSG00000132855.rds")
 maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
 X0 = gtex[, maf > 0.01]
@@ -108,9 +108,22 @@ print(sum(t(Rp) * solve(R0))) ## trace term
 determinant(R0, logarithm = TRUE)$modulus  ## log det term
 ```
 
-This can be because both matrix R0 and Rp are almost low-rank (due to LD). 
+This can be because both matrix R0 and Rp are almost low-rank (due to LD). Let us try two things (1) Plot the eigenvalues of R0 and Rp; (2) try this experiment again with full-rank population covariance matrix.
 
-Let us try the full-rank covariance matrix:
+```{r}
+eig <- eigen(Rp)
+plot(eig$values,
+        main = "Eigenvalues of Rp",
+        ylab = "Value",
+        xlab = "Eigenvalue index")
+
+print(eig$values)
+```
+
+
+
+
+(2) Let us try re-doing this experiment with the full-rank covariance matrix:
 
 ```{r}
 
@@ -149,3 +162,9 @@ plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood")
 
 print(paste0("the optimal nu for full-rank R is ", nu_vec[which.max(llhs)]))
 ```
+
+
+TO-DO:
+(1) Try to vary rank $r$ in the low-rank-plus-diag
+(2) Try to directly model the low-rank part of $R$, i.e., set $R = V C V^\top$ for $R \in \mathbb{R}^{p\times r}$ and $C \in \mathbb{R}^{r\times r}$ and model $C$ by Inverse-Wishart instead of $R$. (Does this corresponds to the generalized Inverse-Wishart?)
+
