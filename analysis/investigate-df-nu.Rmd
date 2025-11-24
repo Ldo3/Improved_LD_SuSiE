@@ -8,11 +8,12 @@ output:
 ---
 
 ```{r}
+
+seed = 4  ## change this value to see other examples
 library(susieR)
 library(Matrix)
-seed = 3
 set.seed(seed)
-
+# setwd("~/Documents/Improved_LD_SuSiE")
 gtex = readRDS("data/Thyroid_ENSG00000132855.rds")
 maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
 X0 = gtex[, maf > 0.01]
@@ -44,6 +45,8 @@ library(ggplot2)
 library(reshape2)
 df1 <- melt(R0)
 df2 <- melt(Rp)
+N_in = nrow(X_in)
+N_out = nrow(X_out)
 p1 <- ggplot(df1, aes(Var1, Var2, fill = value)) +
   geom_tile() +
   scale_fill_gradient2(low="blue", mid="white", high="red") +
@@ -59,7 +62,7 @@ grid.arrange(p1, p2, ncol = 2)
 
 ```
 
-The in-sample R0 and out-of-sample Rp look pretty similar. Now let us plot the log density $IW(R0 | \nu Rp, \nu + p + 1)$ for various $\nu$
+The in-sample R0 and out-of-sample Rp look pretty similar. Now let us plot the log density $IW(R_0 | \nu R', \nu + p + 1)$ for various $\nu$
 
 ```{r}
 
@@ -93,7 +96,7 @@ log_iw <- function(R0, Rp, nu_vec) {
 
 nu_vec = c(1:100) / 10
 llhs = log_iw(R0, Rp, nu_vec)
-plot(nu_vec, llhs)
+plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood")
 
 ```
 
@@ -105,5 +108,44 @@ print(sum(t(Rp) * solve(R0))) ## trace term
 determinant(R0, logarithm = TRUE)$modulus  ## log det term
 ```
 
-This can be because both matrix R0 and Rp are almost low-rank (due to LD).
+This can be because both matrix R0 and Rp are almost low-rank (due to LD). 
 
+Let us try the full-rank covariance matrix:
+
+```{r}
+
+X_in = matrix(rnorm(N_in * p), nrow=N_in, ncol=p)
+X_out = matrix(rnorm(N_out * p), nrow=N_out, ncol=p)
+Rp = cov(X_out)
+R0 = cov(X_in)
+library(ggplot2)
+library(reshape2)
+df1 <- melt(R0)
+df2 <- melt(Rp)
+N_in = nrow(X_in)
+N_out = nrow(X_out)
+p1 <- ggplot(df1, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(paste0("In-sample Cov, sample =", nrow(X_in)))
+p2 <- ggplot(df2, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(paste0("Out-of-sample Cov, sample =", nrow(X_out)))
+library(gridExtra)
+grid.arrange(p1, p2, ncol = 2)
+
+```
+
+
+
+
+```{r}
+nu_vec = c(1:100) 
+llhs = log_iw(R0, Rp, nu_vec)
+plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood")
+
+print(paste0("the optimal nu for full-rank R is ", nu_vec[which.max(llhs)]))
+```
