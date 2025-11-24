@@ -359,7 +359,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -370,8 +370,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -380,13 +380,13 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-11-23
+<strong>Last updated:</strong> 2025-11-24
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>Improved_LD_SuSiE/</code> <span
@@ -496,30 +496,56 @@ run.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
 </p>
 </div>
-<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great job! Using relative paths to the files within your workflowr
-project makes it easier to run your code on other machines.</p>
+<p>
+Using absolute paths to the files within your workflowr project makes it
+difficult for you and others to run your code on a different machine.
+Change the absolute path(s) below to the suggested relative path(s) to
+make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+~/Documents/Improved_LD_SuSiE
+</td>
+<td style="text-align:left;">
+.
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree0289377dfc6124387866a62b9477d10752d17465targetblank0289377a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree542074c361a77f90f7ad47d851be0de8cfa21719targetblank542074ca">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/0289377dfc6124387866a62b9477d10752d17465" target="_blank">0289377</a>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/542074c361a77f90f7ad47d851be0de8cfa21719" target="_blank">542074c</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree0289377dfc6124387866a62b9477d10752d17465targetblank0289377a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree542074c361a77f90f7ad47d851be0de8cfa21719targetblank542074ca"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -529,7 +555,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/0289377dfc6124387866a62b9477d10752d17465" target="_blank">0289377</a>.
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/542074c361a77f90f7ad47d851be0de8cfa21719" target="_blank">542074c</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -545,10 +571,11 @@ were generated:
 <pre><code>
 Ignored files:
     Ignored:    .DS_Store
+    Ignored:    .RData
+    Ignored:    .Rhistory
     Ignored:    analysis/.DS_Store
 
 Unstaged changes:
-    Modified:   analysis/index.Rmd
     Modified:   code_push.R
 
 </code></pre>
@@ -600,6 +627,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/542074c361a77f90f7ad47d851be0de8cfa21719/analysis/investigate-df-nu.Rmd" target="_blank">542074c</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-11-24
+</td>
+<td>
+wflow_publish(c("analysis/investigate-df-nu.Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/eba6c9586f05a88cec0cf0dbd0ef6e1dda6fdc7f/docs/investigate-df-nu.html" target="_blank">eba6c95</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-11-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/0289377dfc6124387866a62b9477d10752d17465/analysis/investigate-df-nu.Rmd" target="_blank">0289377</a>
 </td>
 <td>
@@ -619,12 +680,12 @@ add file
 </div>
 </div>
 </div>
-<pre class="r"><code>library(susieR)</code></pre>
+<pre class="r"><code>seed = 4  ## change this value to see other examples
+library(susieR)</code></pre>
 <pre><code>Warning: package &#39;susieR&#39; was built under R version 4.3.3</code></pre>
 <pre class="r"><code>library(Matrix)
-seed = 3
 set.seed(seed)
-
+# setwd(&quot;~/Documents/Improved_LD_SuSiE&quot;)
 gtex = readRDS(&quot;data/Thyroid_ENSG00000132855.rds&quot;)
 maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
 X0 = gtex[, maf &gt; 0.01]
@@ -658,6 +719,8 @@ library(ggplot2)</code></pre>
 <pre class="r"><code>library(reshape2)
 df1 &lt;- melt(R0)
 df2 &lt;- melt(Rp)
+N_in = nrow(X_in)
+N_out = nrow(X_out)
 p1 &lt;- ggplot(df1, aes(Var1, Var2, fill = value)) +
   geom_tile() +
   scale_fill_gradient2(low=&quot;blue&quot;, mid=&quot;white&quot;, high=&quot;red&quot;) +
@@ -671,9 +734,47 @@ p2 &lt;- ggplot(df2, aes(Var1, Var2, fill = value)) +
 library(gridExtra)
 grid.arrange(p1, p2, ncol = 2)</code></pre>
 <p><img src="figure/investigate-df-nu.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-1">
+Past versions of unnamed-chunk-1-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/eba6c9586f05a88cec0cf0dbd0ef6e1dda6fdc7f/docs/figure/investigate-df-nu.Rmd/unnamed-chunk-1-1.png" target="_blank">eba6c95</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-11-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>The in-sample R0 and out-of-sample Rp look pretty similar. Now let us
-plot the log density <span class="math inline">\(IW(R0 | \nu Rp, \nu + p
-+ 1)\)</span> for various <span class="math inline">\(\nu\)</span></p>
+plot the log density <span class="math inline">\(IW(R_0 | \nu R&#39;,
+\nu + p + 1)\)</span> for various <span
+class="math inline">\(\nu\)</span></p>
 <pre class="r"><code>#### log IW(R0 | nu0 * Rp, nu0 + J + 1)
 log_multigamma_vec &lt;- function(a, p) {
   # vectorized multivariate gamma
@@ -703,19 +804,86 @@ log_iw &lt;- function(R0, Rp, nu_vec) {
 
 nu_vec = c(1:100) / 10
 llhs = log_iw(R0, Rp, nu_vec)
-plot(nu_vec, llhs)</code></pre>
+plot(nu_vec, llhs, xlab = &quot;nu value&quot;, ylab = &quot;log-likelihood&quot;)</code></pre>
 <p><img src="figure/investigate-df-nu.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-1">
+Past versions of unnamed-chunk-2-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/eba6c9586f05a88cec0cf0dbd0ef6e1dda6fdc7f/docs/figure/investigate-df-nu.Rmd/unnamed-chunk-2-1.png" target="_blank">eba6c95</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-11-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>The trace term is too large compared to other term:</p>
 <pre class="r"><code>R0 = R0 + 1e-6 * diag(rep(1, p))
 Rp = Rp + 1e-6 * diag(rep(1, p))
 print(sum(t(Rp) * solve(R0))) ## trace term</code></pre>
-<pre><code>[1] 9529.681</code></pre>
+<pre><code>[1] 11942.6</code></pre>
 <pre class="r"><code>determinant(R0, logarithm = TRUE)$modulus  ## log det term</code></pre>
-<pre><code>[1] -182.3425
+<pre><code>[1] -202.9556
 attr(,&quot;logarithm&quot;)
 [1] TRUE</code></pre>
 <p>This can be because both matrix R0 and Rp are almost low-rank (due to
 LD).</p>
+<p>Let us try the full-rank covariance matrix:</p>
+<pre class="r"><code>X_in = matrix(rnorm(N_in * p), nrow=N_in, ncol=p)
+X_out = matrix(rnorm(N_out * p), nrow=N_out, ncol=p)
+Rp = cov(X_out)
+R0 = cov(X_in)
+library(ggplot2)
+library(reshape2)
+df1 &lt;- melt(R0)
+df2 &lt;- melt(Rp)
+N_in = nrow(X_in)
+N_out = nrow(X_out)
+p1 &lt;- ggplot(df1, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low=&quot;blue&quot;, mid=&quot;white&quot;, high=&quot;red&quot;) +
+  coord_fixed() +
+  ggtitle(paste0(&quot;In-sample Cov, sample =&quot;, nrow(X_in)))
+p2 &lt;- ggplot(df2, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low=&quot;blue&quot;, mid=&quot;white&quot;, high=&quot;red&quot;) +
+  coord_fixed() +
+  ggtitle(paste0(&quot;Out-of-sample Cov, sample =&quot;, nrow(X_out)))
+library(gridExtra)
+grid.arrange(p1, p2, ncol = 2)</code></pre>
+<p><img src="figure/investigate-df-nu.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>nu_vec = c(1:100) 
+llhs = log_iw(R0, Rp, nu_vec)
+plot(nu_vec, llhs, xlab = &quot;nu value&quot;, ylab = &quot;log-likelihood&quot;)</code></pre>
+<p><img src="figure/investigate-df-nu.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>print(paste0(&quot;the optimal nu for full-rank R is &quot;, nu_vec[which.max(llhs)]))</code></pre>
+<pre><code>[1] &quot;the optimal nu for full-rank R is 58&quot;</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -759,8 +927,8 @@ loaded via a namespace (and not attached):
 [37] lifecycle_1.0.3    git2r_0.36.2       stringr_1.5.0      fs_1.6.3          
 [41] irlba_2.3.5.1      pkgconfig_2.0.3    callr_3.7.3        pillar_1.9.0      
 [45] bslib_0.5.1        later_1.4.2        gtable_0.3.6       glue_1.6.2        
-[49] Rcpp_1.1.0         highr_0.10         xfun_0.41          tibble_3.2.1      
-[53] tidyselect_1.2.0   rstudioapi_0.15.0  knitr_1.45         farver_2.1.1      
+[49] Rcpp_1.1.0         xfun_0.52          tibble_3.2.1       tidyselect_1.2.0  
+[53] highr_0.10         rstudioapi_0.15.0  knitr_1.45         farver_2.1.1      
 [57] htmltools_0.5.7    labeling_0.4.3     rmarkdown_2.25     compiler_4.3.2    
 [61] getPass_0.2-4     </code></pre>
 </div>
