@@ -2,7 +2,7 @@ library(susieR)
 library(Matrix)
 
 
-# setwd("~/Documents/Improved_LD_SuSiE")
+setwd("~/Documents/Improved_LD_SuSiE")
 # setwd("~/SuSiE-covariance/Improved_LD_SuSiE")
 
 source("code/R_algorithms.R")
