@@ -13,7 +13,7 @@
 
 <title>Investigate learn degree-of-freedom nu</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -537,15 +537,15 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree542074c361a77f90f7ad47d851be0de8cfa21719targetblank542074ca">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtreeab503255743e6e1f7607170359901d718d4c78aatargetblankab50325a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/542074c361a77f90f7ad47d851be0de8cfa21719" target="_blank">542074c</a>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/ab503255743e6e1f7607170359901d718d4c78aa" target="_blank">ab50325</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree542074c361a77f90f7ad47d851be0de8cfa21719targetblank542074ca"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtreeab503255743e6e1f7607170359901d718d4c78aatargetblankab50325a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -555,7 +555,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/542074c361a77f90f7ad47d851be0de8cfa21719" target="_blank">542074c</a>.
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/ab503255743e6e1f7607170359901d718d4c78aa" target="_blank">ab50325</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -569,12 +569,6 @@ depends on. Below is the status of the Git repository when the results
 were generated:
 </p>
 <pre><code>
-Ignored files:
-    Ignored:    .DS_Store
-    Ignored:    .RData
-    Ignored:    .Rhistory
-    Ignored:    analysis/.DS_Store
-
 Unstaged changes:
     Modified:   code_push.R
 
@@ -591,7 +585,6 @@ have uncommitted changes.
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
-
 <p>
 These are the previous versions of the repository in which changes were
 made to the R Markdown (<code>analysis/investigate-df-nu.Rmd</code>) and
@@ -622,6 +615,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/ab503255743e6e1f7607170359901d718d4c78aa/analysis/investigate-df-nu.Rmd" target="_blank">ab50325</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-11-24
+</td>
+<td>
+wflow_publish(c("analysis/investigate-df-nu.Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/701ab1e5110301dfd892c720f3209324b786ca91/docs/investigate-df-nu.html" target="_blank">701ab1e</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-11-24
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -681,11 +708,10 @@ add file
 </div>
 </div>
 <pre class="r"><code>seed = 4  ## change this value to see other examples
-library(susieR)</code></pre>
-<pre><code>Warning: package &#39;susieR&#39; was built under R version 4.3.3</code></pre>
-<pre class="r"><code>library(Matrix)
+library(susieR)
+library(Matrix)
 set.seed(seed)
-# setwd(&quot;~/Documents/Improved_LD_SuSiE&quot;)
+setwd(&quot;~/Documents/Improved_LD_SuSiE&quot;)
 gtex = readRDS(&quot;data/Thyroid_ENSG00000132855.rds&quot;)
 maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
 X0 = gtex[, maf &gt; 0.01]
@@ -714,9 +740,8 @@ X_out = X_out[, indx_p]
 p = length(indx_p)
 Rp = cov(X_out)
 R0 = cov(X_in)
-library(ggplot2)</code></pre>
-<pre><code>Warning: package &#39;ggplot2&#39; was built under R version 4.3.3</code></pre>
-<pre class="r"><code>library(reshape2)
+library(ggplot2)
+library(reshape2)
 df1 &lt;- melt(R0)
 df2 &lt;- melt(Rp)
 N_in = nrow(X_in)
@@ -756,6 +781,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/701ab1e5110301dfd892c720f3209324b786ca91/docs/figure/investigate-df-nu.Rmd/unnamed-chunk-1-1.png" target="_blank">701ab1e</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-11-24
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/eba6c9586f05a88cec0cf0dbd0ef6e1dda6fdc7f/docs/figure/investigate-df-nu.Rmd/unnamed-chunk-1-1.png" target="_blank">eba6c95</a>
@@ -830,6 +866,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/701ab1e5110301dfd892c720f3209324b786ca91/docs/figure/investigate-df-nu.Rmd/unnamed-chunk-2-1.png" target="_blank">701ab1e</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-11-24
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/eba6c9586f05a88cec0cf0dbd0ef6e1dda6fdc7f/docs/figure/investigate-df-nu.Rmd/unnamed-chunk-2-1.png" target="_blank">eba6c95</a>
 </td>
 <td>
@@ -853,8 +900,63 @@ print(sum(t(Rp) * solve(R0))) ## trace term</code></pre>
 attr(,&quot;logarithm&quot;)
 [1] TRUE</code></pre>
 <p>This can be because both matrix R0 and Rp are almost low-rank (due to
-LD).</p>
-<p>Let us try the full-rank covariance matrix:</p>
+LD). Let us try two things (1) Plot the eigenvalues of R0 and Rp; (2)
+try this experiment again with full-rank population covariance
+matrix.</p>
+<pre class="r"><code>eig &lt;- eigen(Rp)
+plot(eig$values,
+        main = &quot;Eigenvalues of Rp&quot;,
+        ylab = &quot;Value&quot;,
+        xlab = &quot;Eigenvalue index&quot;)</code></pre>
+<p><img src="figure/investigate-df-nu.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
+Past versions of unnamed-chunk-4-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-4-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/701ab1e5110301dfd892c720f3209324b786ca91/docs/figure/investigate-df-nu.Rmd/unnamed-chunk-4-1.png" target="_blank">701ab1e</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-11-24
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>print(eig$values)</code></pre>
+<pre><code> [1] 1.434889e+00 1.232171e+00 7.860183e-01 3.563626e-01 2.524908e-01
+ [6] 1.633243e-01 7.745190e-02 5.945554e-02 5.034201e-02 3.878367e-02
+[11] 1.884320e-02 1.494342e-02 8.783745e-03 5.370828e-03 5.119441e-03
+[16] 3.706699e-03 2.444832e-03 2.166237e-03 1.969695e-03 1.797069e-03
+[21] 1.890547e-04 5.919595e-05 4.450706e-06 2.609377e-06 1.000000e-06
+[26] 1.000000e-06 1.000000e-06 1.000000e-06 1.000000e-06 1.000000e-06</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Let us try re-doing this experiment with the full-rank covariance
+matrix:</li>
+</ol>
 <pre class="r"><code>X_in = matrix(rnorm(N_in * p), nrow=N_in, ncol=p)
 X_out = matrix(rnorm(N_out * p), nrow=N_out, ncol=p)
 Rp = cov(X_out)
@@ -877,13 +979,59 @@ p2 &lt;- ggplot(df2, aes(Var1, Var2, fill = value)) +
   ggtitle(paste0(&quot;Out-of-sample Cov, sample =&quot;, nrow(X_out)))
 library(gridExtra)
 grid.arrange(p1, p2, ncol = 2)</code></pre>
-<p><img src="figure/investigate-df-nu.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/investigate-df-nu.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/701ab1e5110301dfd892c720f3209324b786ca91/docs/figure/investigate-df-nu.Rmd/unnamed-chunk-5-1.png" target="_blank">701ab1e</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-11-24
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>nu_vec = c(1:100) 
 llhs = log_iw(R0, Rp, nu_vec)
 plot(nu_vec, llhs, xlab = &quot;nu value&quot;, ylab = &quot;log-likelihood&quot;)</code></pre>
-<p><img src="figure/investigate-df-nu.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/investigate-df-nu.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>print(paste0(&quot;the optimal nu for full-rank R is &quot;, nu_vec[which.max(llhs)]))</code></pre>
 <pre><code>[1] &quot;the optimal nu for full-rank R is 58&quot;</code></pre>
+<p>TO-DO: (1) Try to vary rank <span class="math inline">\(r\)</span> in
+the low-rank-plus-diag (2) Try to directly model the low-rank part of
+<span class="math inline">\(R\)</span>, i.e., set <span
+class="math inline">\(R = V C V^\top\)</span> for <span
+class="math inline">\(R \in \mathbb{R}^{p\times r}\)</span> and <span
+class="math inline">\(C \in \mathbb{R}^{r\times r}\)</span> and model
+<span class="math inline">\(C\)</span> by Inverse-Wishart instead of
+<span class="math inline">\(R\)</span>. (Does this corresponds to the
+generalized Inverse-Wishart?)</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -893,13 +1041,13 @@ Session information
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.3.2 (2023-10-31)
-Platform: aarch64-apple-darwin20 (64-bit)
-Running under: macOS 15.6.1
+<pre><code>R version 4.5.1 (2025-06-13)
+Platform: aarch64-apple-darwin20
+Running under: macOS Sequoia 15.6.1
 
 Matrix products: default
-BLAS:   /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRblas.0.dylib 
-LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
+BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
 
 locale:
 [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -911,26 +1059,30 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] gridExtra_2.3   reshape2_1.4.4  ggplot2_3.5.2   Matrix_1.6-1.1 
+[1] gridExtra_2.3   reshape2_1.4.4  ggplot2_3.5.2   Matrix_1.7-3   
 [5] susieR_0.14.2   workflowr_1.7.1
 
 loaded via a namespace (and not attached):
- [1] sass_0.4.7         utf8_1.2.4         generics_0.1.3     stringi_1.7.12    
- [5] lattice_0.22-5     digest_0.6.33      magrittr_2.0.3     evaluate_0.23     
- [9] grid_4.3.2         RColorBrewer_1.1-3 fastmap_1.1.1      plyr_1.8.9        
-[13] rprojroot_2.0.3    jsonlite_1.8.7     processx_3.8.2     whisker_0.4.1     
-[17] reshape_0.8.10     mixsqp_0.3-54      ps_1.7.5           promises_1.3.3    
-[21] httr_1.4.7         fansi_1.0.5        scales_1.4.0       jquerylib_0.1.4   
-[25] cli_3.6.1          rlang_1.1.1        crayon_1.5.2       withr_2.5.2       
-[29] cachem_1.0.8       yaml_2.3.7         tools_4.3.2        dplyr_1.1.3       
-[33] httpuv_1.6.16      vctrs_0.6.4        R6_2.5.1           matrixStats_1.0.0 
-[37] lifecycle_1.0.3    git2r_0.36.2       stringr_1.5.0      fs_1.6.3          
-[41] irlba_2.3.5.1      pkgconfig_2.0.3    callr_3.7.3        pillar_1.9.0      
-[45] bslib_0.5.1        later_1.4.2        gtable_0.3.6       glue_1.6.2        
-[49] Rcpp_1.1.0         xfun_0.52          tibble_3.2.1       tidyselect_1.2.0  
-[53] highr_0.10         rstudioapi_0.15.0  knitr_1.45         farver_2.1.1      
-[57] htmltools_0.5.7    labeling_0.4.3     rmarkdown_2.25     compiler_4.3.2    
-[61] getPass_0.2-4     </code></pre>
+ [1] sass_0.4.10        generics_0.1.4     stringi_1.8.7      lattice_0.22-7    
+ [5] digest_0.6.37      magrittr_2.0.3     evaluate_1.0.4     grid_4.5.1        
+ [9] RColorBrewer_1.1-3 fastmap_1.2.0      plyr_1.8.9         rprojroot_2.1.0   
+[13] jsonlite_2.0.0     processx_3.8.6     whisker_0.4.1      reshape_0.8.10    
+[17] ps_1.9.1           mixsqp_0.3-54      promises_1.3.3     httr_1.4.7        
+[21] scales_1.4.0       jquerylib_0.1.4    cli_3.6.5          rlang_1.1.6       
+[25] crayon_1.5.3       withr_3.0.2        cachem_1.1.0       yaml_2.3.10       
+[29] tools_4.5.1        dplyr_1.1.4        httpuv_1.6.16      vctrs_0.6.5       
+[33] R6_2.6.1           matrixStats_1.5.0  lifecycle_1.0.4    git2r_0.36.2      
+[37] stringr_1.5.1      fs_1.6.6           irlba_2.3.5.1      pkgconfig_2.0.3   
+[41] callr_3.7.6        pillar_1.11.0      bslib_0.9.0        later_1.4.2       
+[45] gtable_0.3.6       glue_1.8.0         Rcpp_1.1.0         xfun_0.52         
+[49] tibble_3.3.0       tidyselect_1.2.1   rstudioapi_0.17.1  knitr_1.50        
+[53] farver_2.1.2       htmltools_0.5.8.1  labeling_0.4.3     rmarkdown_2.29    
+[57] compiler_4.5.1     getPass_0.2-4     </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 
