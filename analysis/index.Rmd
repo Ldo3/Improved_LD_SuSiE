@@ -31,3 +31,5 @@ We investigate the performance of SuSiE model for summary statistics with variou
 + [Example of fine-mapping a blood cell trait using SuSiE-RSS](susie_rss_ukbb.html)
 
 + [Notes on the Wishart and inverse Wishart distributions](wish_vs_invwish.html)
+
++ [Investigate learn nu](investigate-df-nu.html)
