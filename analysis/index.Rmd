@@ -33,3 +33,5 @@ We investigate the performance of SuSiE model for summary statistics with variou
 + [Notes on the Wishart and inverse Wishart distributions](wish_vs_invwish.html)
 
 + [Investigate learn nu](investigate-df-nu.html)
+
++ [Investigate learn nu with low-rank decomposition](df-nu-low-rank.html)
