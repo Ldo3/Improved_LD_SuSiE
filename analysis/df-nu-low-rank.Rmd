@@ -1,0 +1,171 @@
+---
+title: "Investigate learn degree-of-freedom nu for low-rank matrices"
+Author: "Dat Do"
+output:
+  workflowr::wflow_html:
+    toc: true
+    toc_float: true
+---
+
+```{r}
+
+seed = 4  ## change this value to see other examples
+library(susieR)
+library(Matrix)
+set.seed(seed)
+setwd("~/Documents/Improved_LD_SuSiE")
+gtex = readRDS("data/Thyroid_ENSG00000132855.rds")
+maf = apply(gtex, 2, function(x) sum(x)/2/length(x))
+X0 = gtex[, maf > 0.01]
+dim(X0)
+X = na.omit(X0)
+
+snp_total = ncol(X0)
+n = nrow(X0)
+p = 30
+# Start from a random point on the genome
+indx_start = sample(1: (snp_total - p), 1)
+X = X0[, indx_start:(indx_start + p -1)]
+# View(cor(X)[1:10, 1:10])
+## sub-sample into two
+out_sample_size = 250
+out_sample = sample(1:n, out_sample_size)
+X_out = X[out_sample, ]
+X_in = X[setdiff(1:n, out_sample), ]
+
+rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
+indx_p = setdiff(1:p, rm_p)
+X_in = X_in[, indx_p]
+X_out = X_out[, indx_p]
+## out-sample LD matrix
+p = length(indx_p)
+Rp = cov(X_out)
+R0 = cov(X_in)
+library(ggplot2)
+library(reshape2)
+df1 <- melt(R0)
+df2 <- melt(Rp)
+N_in = nrow(X_in)
+N_out = nrow(X_out)
+p1 <- ggplot(df1, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(paste0("In-sample Cov, sample =", nrow(X_in)))
+p2 <- ggplot(df2, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(paste0("Out-of-sample Cov, sample =", nrow(X_out)))
+library(gridExtra)
+grid.arrange(p1, p2, ncol = 2)
+
+```
+```{r}
+eig <- eigen(Rp)
+plot(eig$values,
+        main = "Eigenvalues of Rp",
+        ylab = "Value",
+        xlab = "Eigenvalue index")
+
+print(eig$values)
+
+```
+
+```{r}
+### Select rank
+eig <- eigen(Rp)
+eig_cumsum = cumsum(eig$values)
+eig_cumsum[p]
+r_p = sum(eig_cumsum < 0.95 * eig_cumsum[p]) ## percentage variance explained
+print(paste0("Chosen rank is ", r_p))
+
+Vp = eig$vectors[, c(1:r_p)]
+Dp = diag(eig$values[c(1:r_p)])
+print(sum((Rp - Vp %*% Dp %*% t(Vp))**2))
+Rp_FA = Vp %*% Dp %*% t(Vp) + diag(rep(1, p)) * sum(eig$values[c(r_p + 1, p)])
+
+eig <- eigen(R0)
+V0 = eig$vectors[, c(1:r_p)]
+D0 = diag(eig$values[c(1:r_p)])
+print(sum((R0 - V0 %*% D0 %*% t(V0))**2))
+R0_FA = V0 %*% D0 %*% t(V0) + diag(rep(1, p)) * sum(eig$values[c(r_p + 1, p)])
+
+df3 <- melt(R0_FA)
+df4 <- melt(Rp_FA)
+p3 <- ggplot(df3, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(paste0("In-sample FA"))
+p4 <- ggplot(df4, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(paste0("Out-of-sample FA"))
+
+grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
+
+```
+
+
+```{r}
+#### log IW(R0 | nu0 * Rp, nu0 + J + 1)
+log_multigamma_vec <- function(a, p) {
+  # vectorized multivariate gamma
+  j <- 1:p
+  # sum over j, but broadcasting a over j
+  (p*(p-1)/4)*log(pi) +
+    rowSums(matrix(lgamma(a), nrow=length(a), ncol=p, byrow=FALSE) +
+              matrix((1 - j)/2, nrow=length(a), ncol=p, byrow=TRUE))
+}
+
+log_iw <- function(R0, Rp, nu_vec) {
+  p <- nrow(R0)
+  jitter = 1e-10
+  R0 = R0 + jitter * diag(rep(1, p))
+  Rp = Rp + jitter * diag(rep(1, p))
+  # Precompute expensive shared quantities
+  logdet_nu_Rp <- determinant(Rp, logarithm = TRUE)$modulus + p * log(nu_vec)
+  logdetR0   <- determinant(R0,   logarithm = TRUE)$modulus
+  tr_term   <- nu_vec * sum(t(Rp) * solve(R0))
+  llhs = (.5 * (nu_vec + p + 1) * logdet_nu_Rp
+          - .5 * (nu_vec + p + 1) * p * log(2)
+          - log_multigamma_vec((nu_vec + p + 1) / 2, p)
+          - .5 * (nu_vec + 2 * (p + 1)) * logdetR0
+          - .5 * tr_term)
+  as.numeric(llhs)
+}
+
+nu_vec = c(1:100) 
+llhs = log_iw(R0_FA, Rp_FA, nu_vec)
+plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood")
+print(nu_vec[which.max(llhs)])
+```
+
+We can look at nu around the optimal point more closely.
+```{r}
+nu_opt = nu_vec[which.max(llhs)]
+nu_vec1 = c((nu_opt - 10): (nu_opt + 10)) 
+llhs1 = log_iw(R0_FA, Rp_FA, nu_vec1)
+plot(nu_vec1, llhs1, xlab = "nu value", ylab = "log-likelihood")
+```
+
+```{r}
+snp_total = ncol(X0)
+n = nrow(X0)
+p = 1000
+# Start from a random point on the genome
+indx_start = sample(1: (snp_total - p), 1)
+X = X0[, indx_start:(indx_start + p -1)]
+X_subsample = X[c(1:100), ]
+# X_subsample = X
+R_sample = cor(t(X_subsample))
+df = melt(R_sample)
+ggplot(df, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(paste0("Correlation matrix of 100 individuals"))
+
+```
