@@ -1,0 +1,184 @@
+---
+title: "Investigate Rank and Inverse-Wishart fit of N3finemapping data"
+Author: "Dat Do"
+output:
+  workflowr::wflow_html:
+    toc: true
+    toc_float: true
+---
+
+```{r}
+library(susieR)
+library(Matrix)
+
+data(N3finemapping)
+attach(N3finemapping)
+X0 = N3finemapping$X
+## getting covariance matrix from the whole sample
+## and examine the eigendecomposition to estimate numerical rank
+R = cov(X0)
+eig <- eigen(R)
+plot(eig$values,
+     main = "Eigenvalues of covariance matrix calculated using all samples",
+     ylab = "Value",
+     xlab = "Eigenvalue index")
+
+n0 = dim(X0)[1]
+p0 = dim(X0)[2]
+percent_explained = .95
+eig_cumsum = cumsum(eig$values)
+r_p = sum(eig_cumsum < percent_explained * eig_cumsum[p0]) ## percentage variance explained
+sprintf("%d first principle components explain %.1f percent of variance", r_p, percent_explained*100)
+snp_total = p0
+sprintf("Total number of SNPs is %d", p0)
+sprintf("Sample size %d", n0)
+
+```
+
+Now we proceed to split the data into half and look at the heatmap of the covariance matrices of two sub-samples.
+
+Later we want to examine the Inverse-Wishart likelihood so I also sub-sample the SNPs here to make sure that the number of SNPs is less than the sample size.
+
+```{r}
+#### randomly split the data into half
+#### randomly select p consecutive SNPs where p < n so IW is proper
+seed = 10
+p = 50
+# Start from a random point on the genome
+indx_start = sample(1: (snp_total - p), 1)
+X = X0[, indx_start:(indx_start + p -1)]
+# View(cor(X)[1:10, 1:10])
+## sub-sample into two
+out_sample_size = n0 / 2
+out_sample = sample(1:n0, out_sample_size)
+X_out = X[out_sample, ]
+X_in = X[setdiff(1:n0, out_sample), ]
+
+rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
+indx_p = setdiff(1:p, rm_p)
+X_in = X_in[, indx_p]
+X_out = X_out[, indx_p]
+## out-sample LD matrix
+p = length(indx_p)
+Rp = cov(X_out)
+R0 = cov(X_in)
+library(ggplot2)
+library(reshape2)
+df1 <- melt(R0)
+df2 <- melt(Rp)
+N_in = nrow(X_in)
+N_out = nrow(X_out)
+p1 <- ggplot(df1, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(sprintf("In-sample Cov, %d samples", nrow(X_in)))
+p2 <- ggplot(df2, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(sprintf("Out-of-sample Cov, %d samples", nrow(X_out)))
+library(gridExtra)
+grid.arrange(p1, p2, ncol = 2)
+```
+They look pretty similar, let us see what is the MLE of $\nu_0$ in the likelihood $IW(R_0 | mean = R', df=\nu_0 + p + 1)$.
+```{r}
+## IW and examine IW likelihood  
+#### log IW(R0 | nu0 * Rp, nu0 + J + 1)
+log_multigamma_vec <- function(a, p) {
+  # vectorized multivariate gamma
+  j <- 1:p
+  # sum over j, but broadcasting a over j
+  (p*(p-1)/4)*log(pi) +
+    rowSums(matrix(lgamma(a), nrow=length(a), ncol=p, byrow=FALSE) +
+              matrix((1 - j)/2, nrow=length(a), ncol=p, byrow=TRUE))
+}
+
+log_iw <- function(R0, Rp, nu_vec) {
+  p <- nrow(R0)
+  jitter = 1e-8
+  R0 = R0 + jitter * diag(rep(1, p))
+  Rp = Rp + jitter * diag(rep(1, p))
+  # Precompute expensive shared quantities
+  logdet_nu_Rp <- determinant(Rp, logarithm = TRUE)$modulus + p * log(nu_vec)
+  logdetR0   <- determinant(R0,   logarithm = TRUE)$modulus
+  tr_term   <- nu_vec * sum(t(Rp) * solve(R0))
+  llhs = (.5 * (nu_vec + p + 1) * logdet_nu_Rp
+          - .5 * (nu_vec + p + 1) * p * log(2)
+          - log_multigamma_vec((nu_vec + p + 1) / 2, p)
+          - .5 * (nu_vec + 2 * (p + 1)) * logdetR0
+          - .5 * tr_term)
+  as.numeric(llhs)
+}
+
+nu_vec = c(1:100) 
+llhs = log_iw(R0, Rp, nu_vec)
+plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood")
+
+
+```
+The likelihood just decreases linearly as $\nu_0$ increases. It is because of the term $\mathrm{trace}((R_0)^{-1} R')$ that dominates the log det term, and $\nu_0$ is multiplied into this trace term in the log-likelihood. This numerical behavior is similar to when calculating $v^\top R^{-1} v$ in the presentation in the group meeting we saw earlier (curse of dimensionality).
+
+```{r}
+jitter = 1e-8
+R0_ = R0 + jitter * diag(rep(1, p))
+Rp_ = Rp + jitter * diag(rep(1, p))
+trace_term = sum(t(Rp_) * solve(R0_))
+logdet_nu_Rp <- determinant(Rp_, logarithm = TRUE)$modulus
+logdetR0   <- determinant(R0_,   logarithm = TRUE)$modulus
+
+print(trace_term)
+print(logdetR0)
+print(logdet_nu_Rp)
+```
+
+
+
+
+```{r}
+## now let's try to turn it into the FA-like form and learn nu again
+
+eig <- eigen(Rp)
+eig_cumsum = cumsum(eig$values)
+percent_explained = .99
+eig_cumsum = cumsum(eig$values)
+r_p = sum(eig_cumsum < percent_explained * eig_cumsum[p]) 
+sprintf("%d first principle components explain %.1f percent of variance", r_p, percent_explained*100)
+
+Vp = eig$vectors[, c(1:r_p)]
+Dp = diag(eig$values[c(1:r_p)])
+print(sum((Rp - Vp %*% Dp %*% t(Vp))**2))
+Rp_FA = Vp %*% Dp %*% t(Vp) + diag(rep(1, p)) * sum(eig$values[c(r_p + 1, p)])
+
+eig <- eigen(R0)
+V0 = eig$vectors[, c(1:r_p)]
+D0 = diag(eig$values[c(1:r_p)])
+print(sum((R0 - V0 %*% D0 %*% t(V0))**2))
+R0_FA = V0 %*% D0 %*% t(V0) + diag(rep(1, p)) * sum(eig$values[c(r_p + 1, p)])
+
+df3 <- melt(R0_FA)
+df4 <- melt(Rp_FA)
+p3 <- ggplot(df3, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(paste0("In-sample FA"))
+p4 <- ggplot(df4, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(paste0("Out-of-sample FA"))
+
+grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
+```
+
+
+```{r}
+nu_vec = c(1:200) 
+llhs = log_iw(R0_FA, Rp_FA, nu_vec)
+plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood")
+print(nu_vec[which.max(llhs)])
+
+```
+
+Seems like we get more reasonable estimate of $\nu_0$ with 99% variance-explained Factor Analysis version of the covariance matrix. 
