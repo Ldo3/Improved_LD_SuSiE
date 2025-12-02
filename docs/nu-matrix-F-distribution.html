@@ -13,7 +13,7 @@
 
 <title>Investigate Rank and Inverse-Wishart fit of N3finemapping data</title>
 
-<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
@@ -512,15 +512,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree9d9f457e1bb70349318e36967531c3538df7a668targetblank9d9f457a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree153ece78453c420af358a2546f013ca6722f3faetargetblank153ece7a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/9d9f457e1bb70349318e36967531c3538df7a668" target="_blank">9d9f457</a>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/153ece78453c420af358a2546f013ca6722f3fae" target="_blank">153ece7</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree9d9f457e1bb70349318e36967531c3538df7a668targetblank9d9f457a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree153ece78453c420af358a2546f013ca6722f3faetargetblank153ece7a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -530,7 +530,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/9d9f457e1bb70349318e36967531c3538df7a668" target="_blank">9d9f457</a>.
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/153ece78453c420af358a2546f013ca6722f3fae" target="_blank">153ece7</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -546,18 +546,8 @@ were generated:
 <pre><code>
 Ignored files:
     Ignored:    .DS_Store
-    Ignored:    .RData
-    Ignored:    .Rhistory
-    Ignored:    analysis/.DS_Store
-    Ignored:    analysis/.RData
-    Ignored:    analysis/.Rhistory
-
-Untracked files:
-    Untracked:  code/PPCA.R
 
 Unstaged changes:
-    Modified:   analysis/genotype-matrix-rank-investigation.Rmd
-    Modified:   analysis/index.Rmd
     Modified:   code_push.R
 
 </code></pre>
@@ -573,7 +563,6 @@ have uncommitted changes.
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
-
 <p>
 These are the previous versions of the repository in which changes were
 made to the R Markdown
@@ -610,6 +599,41 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/153ece78453c420af358a2546f013ca6722f3fae/analysis/nu-matrix-F-distribution.Rmd" target="_blank">153ece7</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-12-02
+</td>
+<td>
+wflow_publish(c("analysis/nu-matrix-F-distribution.Rmd",
+"analysis/genotype-matrix-rank-investigation.Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/fc2f9c87578945eb53baeb6c2c975fd465f17cf3/docs/nu-matrix-F-distribution.html" target="_blank">fc2f9c8</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-12-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/9d9f457e1bb70349318e36967531c3538df7a668/analysis/nu-matrix-F-distribution.Rmd" target="_blank">9d9f457</a>
 </td>
 <td>
@@ -629,9 +653,8 @@ wflow_publish(c("analysis/nu-matrix-F-distribution.Rmd"))
 </div>
 </div>
 </div>
-<pre class="r"><code>library(susieR)</code></pre>
-<pre><code>Warning: package &#39;susieR&#39; was built under R version 4.3.3</code></pre>
-<pre class="r"><code>library(Matrix)
+<pre class="r"><code>library(susieR)
+library(Matrix)
 
 data(N3finemapping)
 attach(N3finemapping)
@@ -645,6 +668,43 @@ plot(eig$values,
      ylab = &quot;Value&quot;,
      xlab = &quot;Eigenvalue index&quot;)</code></pre>
 <p><img src="figure/nu-matrix-F-distribution.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-1">
+Past versions of unnamed-chunk-1-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/fc2f9c87578945eb53baeb6c2c975fd465f17cf3/docs/figure/nu-matrix-F-distribution.Rmd/unnamed-chunk-1-1.png" target="_blank">fc2f9c8</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-12-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>n0 = dim(X0)[1]
 p0 = dim(X0)[2]
 percent_explained = .95
@@ -700,6 +760,43 @@ p2 &lt;- ggplot(df2, aes(Var1, Var2, fill = value)) +
 library(gridExtra)
 grid.arrange(p1, p2, ncol = 2)</code></pre>
 <p><img src="figure/nu-matrix-F-distribution.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-1">
+Past versions of unnamed-chunk-2-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/fc2f9c87578945eb53baeb6c2c975fd465f17cf3/docs/figure/nu-matrix-F-distribution.Rmd/unnamed-chunk-2-1.png" target="_blank">fc2f9c8</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-12-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Now let us consider modeling the in-sample covariance matrix <span
 class="math inline">\(R_0\)</span> using the matrix F-distribution. We
 will consider two models: (1) one has mean being equal to the
@@ -723,7 +820,12 @@ class="math inline">\(R&#39;\)</span> and density:</p>
 \left(\tfrac{N}{2}\right) \Gamma_{\! p} \left(\tfrac{\nu + p +
 1}{2}\right)} \left| \dfrac{\nu R&#39;}{N} \right|^{- N / 2} |R|^{(N - p
 - 1) / 2}  \left|I + \dfrac{N}{\nu} R (R&#39;)^{-1}\right|^{-(N + \nu +
-p + 1) / 2}\]</span></p>
+p + 1) / 2},\]</span> equivalently, <span class="math display">\[p(R) =
+\dfrac{\Gamma_{\! p} \left(\tfrac{N + \nu + p + 1}{2}\right)}{\Gamma_{\!
+p} \left(\tfrac{N}{2}\right) \Gamma_{\! p} \left(\tfrac{\nu + p +
+1}{2}\right)} \left| \dfrac{\nu R&#39;}{N} \right|^{(\nu + p + 1) / 2}
+|R|^{(N - p - 1) / 2}  \left|R + \dfrac{\nu}{N} R&#39;\right|^{-(N + \nu
++ p + 1) / 2}.\]</span></p>
 <pre class="r"><code>## Matrix F-distribution likelihood
 #### log F(R0 | nu * Rp / N, N, nu + 2)
 log_multigamma_vec &lt;- function(a, p) {
@@ -746,16 +848,28 @@ log_F &lt;- function(R0, Rp, N, nu_vec) {
                           - p * log(N))
   logdetR0   &lt;- determinant(R0, logarithm = TRUE)$modulus
   
-  lambda_vec &lt;- eigen(solve(Rp, R0))$values
-  lambda_over_nu = tcrossprod(lambda_vec, N / nu_vec)
-  logdet_I_plus_RR &lt;- colSums(log(1 + lambda_over_nu))
+  # lambda_vec &lt;- eigen(solve(Rp, R0))$values
+  # lambda_over_nu = tcrossprod(lambda_vec, N / nu_vec)
+  # logdet_I_plus_RR &lt;- colSums(log(1 + lambda_over_nu))
+  # llhs = (log_multigamma_vec((N + nu_vec + p + 1) / 2, p)
+  #         - log_multigamma_vec(N / 2, p)
+  #         - log_multigamma_vec((nu_vec + p + 1) / 2, p)
+  #         - .5 * N * logdet_nu_Rp_over_N
+  #         + .5 * (N - p - 1) * logdetR0
+  #         - .5 * (N + nu_vec + p + 1) * logdet_I_plus_RR)
+  
+  logdet_Rplus_Rp = rep(0, length(nu_vec))
+  for (idx in 1:length(nu_vec)){
+    nu = nu_vec[idx]
+    logdet_Rplus_Rp[idx] &lt;- determinant(R0 + nu * Rp / N, logarithm = TRUE)$modulus
+  }
   
   llhs = (log_multigamma_vec((N + nu_vec + p + 1) / 2, p)
           - log_multigamma_vec(N / 2, p)
           - log_multigamma_vec((nu_vec + p + 1) / 2, p)
-          - .5 * N * logdet_nu_Rp_over_N
+          + .5 * (nu_vec + p + 1) * logdet_nu_Rp_over_N
           + .5 * (N - p - 1) * logdetR0
-          - .5 * (N + nu_vec + p + 1) * logdet_I_plus_RR)
+          - .5 * (N + nu_vec + p + 1) * logdet_Rplus_Rp)
   
   as.numeric(llhs)
 }
@@ -782,6 +896,43 @@ nu_vec = c(1:100)
 llhs = log_F(R0, Rp, N, nu_vec)
 plot(nu_vec, llhs, xlab = &quot;nu value&quot;, ylab = &quot;log-likelihood of matrix F-distribution&quot;)</code></pre>
 <p><img src="figure/nu-matrix-F-distribution.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
+Past versions of unnamed-chunk-3-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/fc2f9c87578945eb53baeb6c2c975fd465f17cf3/docs/figure/nu-matrix-F-distribution.Rmd/unnamed-chunk-3-1.png" target="_blank">fc2f9c8</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-12-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>print(paste0(&quot;Optimal nu is &quot;, nu_vec[which.max(llhs)]))</code></pre>
 <pre><code>[1] &quot;Optimal nu is 13&quot;</code></pre>
 <p>This is slightly better than the Inverse-Wishart distribution, since
@@ -815,11 +966,11 @@ F-distribution likelihood.</p>
 
 eig &lt;- eigen(Rp)
 eig_cumsum = cumsum(eig$values)
-percent_explained = .95
+percent_explained = .999
 eig_cumsum = cumsum(eig$values)
 q = sum(eig_cumsum &lt; percent_explained * eig_cumsum[p]) 
 sprintf(&quot;%d first principle components explain %.1f percent of variance&quot;, q, percent_explained*100)</code></pre>
-<pre><code>[1] &quot;13 first principle components explain 95.0 percent of variance&quot;</code></pre>
+<pre><code>[1] &quot;38 first principle components explain 99.9 percent of variance&quot;</code></pre>
 <pre class="r"><code>## PPCA
 lambda &lt;- eig$values
 U &lt;- eig$vectors
@@ -842,13 +993,87 @@ p3 &lt;- ggplot(df3, aes(Var1, Var2, fill = value)) +
 
 grid.arrange(p1, p2, p3, ncol = 3)</code></pre>
 <p><img src="figure/nu-matrix-F-distribution.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
+Past versions of unnamed-chunk-4-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-4-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/fc2f9c87578945eb53baeb6c2c975fd465f17cf3/docs/figure/nu-matrix-F-distribution.Rmd/unnamed-chunk-4-1.png" target="_blank">fc2f9c8</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-12-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>N = nrow(X_in)
 nu_vec = c(1:100) 
 llhs = log_F(R0, Psi_est, N, nu_vec)
 plot(nu_vec, llhs, xlab = &quot;nu value&quot;, ylab = &quot;log-likelihood of matrix F-distribution&quot;)</code></pre>
 <p><img src="figure/nu-matrix-F-distribution.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/fc2f9c87578945eb53baeb6c2c975fd465f17cf3/docs/figure/nu-matrix-F-distribution.Rmd/unnamed-chunk-5-1.png" target="_blank">fc2f9c8</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-12-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>print(paste0(&quot;Optimal nu is &quot;, nu_vec[which.max(llhs)]))</code></pre>
-<pre><code>[1] &quot;Optimal nu is 9&quot;</code></pre>
+<pre><code>[1] &quot;Optimal nu is 19&quot;</code></pre>
 <p>Now let us try the Bayesian estimate: For the uninformative prior
 <span class="math inline">\(\Psi&#39; \sim \mathcal{IW}(I, p)\)</span>
 and <span class="math inline">\(X&#39;_1, \dots, X&#39;_{N&#39;} \sim
@@ -865,8 +1090,79 @@ nu_vec = c(1:100)
 llhs = log_F(R0, Psi_Bayes, N, nu_vec)
 plot(nu_vec, llhs, xlab = &quot;nu value&quot;, ylab = &quot;log-likelihood of matrix F-distribution&quot;)</code></pre>
 <p><img src="figure/nu-matrix-F-distribution.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
+Past versions of unnamed-chunk-6-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/fc2f9c87578945eb53baeb6c2c975fd465f17cf3/docs/figure/nu-matrix-F-distribution.Rmd/unnamed-chunk-6-1.png" target="_blank">fc2f9c8</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-12-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>print(paste0(&quot;Optimal nu is &quot;, nu_vec[which.max(llhs)]))</code></pre>
 <pre><code>[1] &quot;Optimal nu is 15&quot;</code></pre>
+<pre class="r"><code>eig &lt;- eigen(R0)
+lambda &lt;- eig$values
+U &lt;- eig$vectors
+sigma2_est &lt;- mean(lambda[(q+1):p])
+L_diag &lt;- sqrt(lambda[1:q] - sigma2_est)
+# L_diag &lt;- sqrt(lambda[1:q])
+W_ppca &lt;- U[,1:q] %*% diag(L_diag)
+Psi &lt;- W_ppca %*% t(W_ppca) + sigma2_est * diag(p)
+
+nu_vec = c(1:100) 
+# llhs = log_F(Psi, Psi_est, N, nu_vec)
+llhs = log_iw(Psi, Psi_est, nu_vec)
+plot(nu_vec, llhs, xlab = &quot;nu value&quot;, ylab = &quot;log-likelihood of matrix F-distribution&quot;)</code></pre>
+<p><img src="figure/nu-matrix-F-distribution.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>print(paste0(&quot;Optimal nu is &quot;, nu_vec[which.max(llhs)]))</code></pre>
+<pre><code>[1] &quot;Optimal nu is 35&quot;</code></pre>
+<p>I have no idea why only when we optimize <span
+class="math inline">\(\nu\)</span> in the likelihood of <span
+class="math inline">\(p(\Psi | \Psi&#39;)\)</span> we have a good
+estimate of <span class="math inline">\(\nu\)</span>. Although the model
+<span class="math display">\[\Psi | \Psi&#39; \sim \mathcal{IW}(\nu
+\Psi&#39;, \nu + p + 1)\]</span> is equivalent to <span
+class="math display">\[R | \Psi&#39; \sim \mathrm{F}(\frac{\nu
+\Psi&#39;}{N}, N, \nu + 2). \]</span></p>
+<p>One explanation is that even the model <span
+class="math inline">\(X_1, \dots, X_N \sim N(0, \Psi)\)</span> is
+mis-specified.</p>
+<p>There are four players here: The sample covariance matrices <span
+class="math inline">\(R, R&#39;\)</span> and population covariance
+matrix <span class="math inline">\(\Psi, \Psi&#39;\)</span>. We need to
+have a smart model for them.</p>
+<p>Another strategy is to model the eigen-decomposition of <span
+class="math inline">\(R\)</span>, i.e., its eigenvalues and vectors. It
+looks like the low-rank is still a problem.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -876,13 +1172,13 @@ Session information
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.3.2 (2023-10-31)
-Platform: aarch64-apple-darwin20 (64-bit)
-Running under: macOS 15.6.1
+<pre><code>R version 4.5.1 (2025-06-13)
+Platform: aarch64-apple-darwin20
+Running under: macOS Sequoia 15.0
 
 Matrix products: default
-BLAS:   /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRblas.0.dylib 
-LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
+BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
 
 locale:
 [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -894,25 +1190,29 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] gridExtra_2.3   reshape2_1.4.5  ggplot2_4.0.1   Matrix_1.6-1.1 
+[1] gridExtra_2.3   reshape2_1.4.4  ggplot2_3.5.2   Matrix_1.7-3   
 [5] susieR_0.14.2   workflowr_1.7.2
 
 loaded via a namespace (and not attached):
- [1] sass_0.4.10        generics_0.1.4     stringi_1.8.7      lattice_0.22-7    
- [5] digest_0.6.39      magrittr_2.0.4     evaluate_1.0.5     grid_4.3.2        
- [9] RColorBrewer_1.1-3 fastmap_1.2.0      plyr_1.8.9         rprojroot_2.1.1   
-[13] jsonlite_2.0.0     processx_3.8.6     whisker_0.4.1      reshape_0.8.10    
-[17] mixsqp_0.3-54      ps_1.9.1           promises_1.5.0     httr_1.4.7        
-[21] scales_1.4.0       jquerylib_0.1.4    cli_3.6.5          rlang_1.1.6       
-[25] crayon_1.5.3       withr_3.0.2        cachem_1.1.0       yaml_2.3.11       
-[29] otel_0.2.0         tools_4.3.2        dplyr_1.1.4        httpuv_1.6.16     
-[33] vctrs_0.6.5        R6_2.6.1           matrixStats_1.5.0  lifecycle_1.0.4   
-[37] git2r_0.36.2       stringr_1.6.0      fs_1.6.6           irlba_2.3.5.1     
-[41] pkgconfig_2.0.3    callr_3.7.6        pillar_1.11.1      bslib_0.9.0       
-[45] later_1.4.4        gtable_0.3.6       glue_1.8.0         Rcpp_1.1.0        
-[49] xfun_0.54          tibble_3.3.0       tidyselect_1.2.1   rstudioapi_0.17.1 
-[53] knitr_1.50         farver_2.1.2       htmltools_0.5.8.1  labeling_0.4.3    
-[57] rmarkdown_2.30     compiler_4.3.2     getPass_0.2-4      S7_0.2.1          </code></pre>
+ [1] sass_0.4.10        stringi_1.8.7      lattice_0.22-7     digest_0.6.37     
+ [5] magrittr_2.0.3     evaluate_1.0.5     grid_4.5.1         RColorBrewer_1.1-3
+ [9] fastmap_1.2.0      rprojroot_2.1.1    plyr_1.8.9         jsonlite_2.0.0    
+[13] processx_3.8.6     whisker_0.4.1      reshape_0.8.10     ps_1.9.1          
+[17] mixsqp_0.3-54      promises_1.5.0     httr_1.4.7         scales_1.4.0      
+[21] jquerylib_0.1.4    cli_3.6.5          rlang_1.1.6        crayon_1.5.3      
+[25] withr_3.0.2        cachem_1.1.0       yaml_2.3.10        otel_0.2.0        
+[29] tools_4.5.1        httpuv_1.6.16      vctrs_0.6.5        R6_2.6.1          
+[33] matrixStats_1.5.0  lifecycle_1.0.4    git2r_0.36.2       stringr_1.5.2     
+[37] fs_1.6.6           irlba_2.3.5.1      pkgconfig_2.0.3    callr_3.7.6       
+[41] pillar_1.11.0      bslib_0.9.0        later_1.4.4        gtable_0.3.6      
+[45] glue_1.8.0         Rcpp_1.1.0         xfun_0.53          tibble_3.3.0      
+[49] rstudioapi_0.17.1  knitr_1.50         farver_2.1.2       htmltools_0.5.8.1 
+[53] labeling_0.4.3     rmarkdown_2.29     compiler_4.5.1     getPass_0.2-4     </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 
