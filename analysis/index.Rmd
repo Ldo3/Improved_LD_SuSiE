@@ -39,3 +39,5 @@ We investigate the performance of SuSiE model for summary statistics with variou
 + [Investigate rank and Inverse-Wishart likelihood with N3finemapping data](genotype-matrix-rank-investigation.html)
 
 + [Estimate nu in the matrix F-distribution](nu-matrix-F-distribution.html)
+
++ [Summarize estimated $\nu$ in various models](summary-learn-nu.html)
