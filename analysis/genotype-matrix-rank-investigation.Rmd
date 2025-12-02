@@ -136,38 +136,44 @@ print(logdet_nu_Rp)
 
 
 ```{r}
-## now let's try to turn it into the FA-like form and learn nu again
+## now let's try to turn it into the PCA-like form and learn nu again
 
 eig <- eigen(Rp)
 eig_cumsum = cumsum(eig$values)
 percent_explained = .99
 eig_cumsum = cumsum(eig$values)
-r_p = sum(eig_cumsum < percent_explained * eig_cumsum[p]) 
-sprintf("%d first principle components explain %.1f percent of variance", r_p, percent_explained*100)
+q = sum(eig_cumsum < percent_explained * eig_cumsum[p]) 
+sprintf("%d first principle components explain %.1f percent of variance", q, percent_explained*100)
 
-Vp = eig$vectors[, c(1:r_p)]
-Dp = diag(eig$values[c(1:r_p)])
-print(sum((Rp - Vp %*% Dp %*% t(Vp))**2))
-Rp_FA = Vp %*% Dp %*% t(Vp) + diag(rep(1, p)) * sum(eig$values[c(r_p + 1, p)])
+lambda <- eig$values
+U <- eig$vectors
+sigma2_est <- mean(lambda[(q+1):p])
+L_diag <- sqrt(lambda[1:q] - sigma2_est)
+# L_diag <- sqrt(lambda[1:q])
+W_ppca <- U[,1:q] %*% diag(L_diag)
+Rp_PCA <- W_ppca %*% t(W_ppca) + sigma2_est * diag(p)
 
 eig <- eigen(R0)
-V0 = eig$vectors[, c(1:r_p)]
-D0 = diag(eig$values[c(1:r_p)])
-print(sum((R0 - V0 %*% D0 %*% t(V0))**2))
-R0_FA = V0 %*% D0 %*% t(V0) + diag(rep(1, p)) * sum(eig$values[c(r_p + 1, p)])
+lambda <- eig$values
+U <- eig$vectors
+sigma2_est <- mean(lambda[(q+1):p])
+L_diag <- sqrt(lambda[1:q] - sigma2_est)
+# L_diag <- sqrt(lambda[1:q])
+W_ppca <- U[,1:q] %*% diag(L_diag)
+R0_PCA <- W_ppca %*% t(W_ppca) + sigma2_est * diag(p)
 
-df3 <- melt(R0_FA)
-df4 <- melt(Rp_FA)
+df3 <- melt(R0_PCA)
+df4 <- melt(Rp_PCA)
 p3 <- ggplot(df3, aes(Var1, Var2, fill = value)) +
   geom_tile() +
   scale_fill_gradient2(low="blue", mid="white", high="red") +
   coord_fixed() +
-  ggtitle(paste0("In-sample FA"))
+  ggtitle(paste0("In-sample PCA"))
 p4 <- ggplot(df4, aes(Var1, Var2, fill = value)) +
   geom_tile() +
   scale_fill_gradient2(low="blue", mid="white", high="red") +
   coord_fixed() +
-  ggtitle(paste0("Out-of-sample FA"))
+  ggtitle(paste0("Out-of-sample PCA"))
 
 grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
 ```
@@ -175,10 +181,12 @@ grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
 
 ```{r}
 nu_vec = c(1:200) 
-llhs = log_iw(R0_FA, Rp_FA, nu_vec)
+llhs = log_iw(R0_PCA, Rp_PCA, nu_vec)
+# llhs = log_iw(R0_PCA, Rp, nu_vec)
+# llhs = log_iw(R0, Rp_PCA, nu_vec)
 plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood")
 print(nu_vec[which.max(llhs)])
 
 ```
 
-Seems like we get more reasonable estimate of $\nu_0$ with 99% variance-explained Factor Analysis version of the covariance matrix. 
+Seems like we get more reasonable estimate of $\nu_0$ with 99% variance-explained PCA version of the covariance matrix. 

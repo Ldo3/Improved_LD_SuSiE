@@ -87,7 +87,9 @@ Firstly, when modeling $R | \Psi \sim \mathcal{W}(\Psi / N, N)$ and $\Psi | R' \
 $$R | R' \sim \mathrm{F}\left(\dfrac{\nu}{N} R', N, \nu + 2\right) $$
 This distribution has two degree-of-freedoms $N$ and $\nu+2$. It has mean $R'$ and density:
 
-$$p(R) = \dfrac{\Gamma_{\! p} \left(\tfrac{N + \nu + p + 1}{2}\right)}{\Gamma_{\! p} \left(\tfrac{N}{2}\right) \Gamma_{\! p} \left(\tfrac{\nu + p + 1}{2}\right)} \left| \dfrac{\nu R'}{N} \right|^{- N / 2} |R|^{(N - p - 1) / 2}  \left|I + \dfrac{N}{\nu} R (R')^{-1}\right|^{-(N + \nu + p + 1) / 2}$$
+$$p(R) = \dfrac{\Gamma_{\! p} \left(\tfrac{N + \nu + p + 1}{2}\right)}{\Gamma_{\! p} \left(\tfrac{N}{2}\right) \Gamma_{\! p} \left(\tfrac{\nu + p + 1}{2}\right)} \left| \dfrac{\nu R'}{N} \right|^{- N / 2} |R|^{(N - p - 1) / 2}  \left|I + \dfrac{N}{\nu} R (R')^{-1}\right|^{-(N + \nu + p + 1) / 2},$$
+equivalently,
+$$p(R) = \dfrac{\Gamma_{\! p} \left(\tfrac{N + \nu + p + 1}{2}\right)}{\Gamma_{\! p} \left(\tfrac{N}{2}\right) \Gamma_{\! p} \left(\tfrac{\nu + p + 1}{2}\right)} \left| \dfrac{\nu R'}{N} \right|^{(\nu + p + 1) / 2} |R|^{(N - p - 1) / 2}  \left|R + \dfrac{\nu}{N} R'\right|^{-(N + \nu + p + 1) / 2}.$$
 
 ```{r}
 ## Matrix F-distribution likelihood
@@ -112,16 +114,28 @@ log_F <- function(R0, Rp, N, nu_vec) {
                           - p * log(N))
   logdetR0   <- determinant(R0, logarithm = TRUE)$modulus
   
-  lambda_vec <- eigen(solve(Rp, R0))$values
-  lambda_over_nu = tcrossprod(lambda_vec, N / nu_vec)
-  logdet_I_plus_RR <- colSums(log(1 + lambda_over_nu))
+  # lambda_vec <- eigen(solve(Rp, R0))$values
+  # lambda_over_nu = tcrossprod(lambda_vec, N / nu_vec)
+  # logdet_I_plus_RR <- colSums(log(1 + lambda_over_nu))
+  # llhs = (log_multigamma_vec((N + nu_vec + p + 1) / 2, p)
+  #         - log_multigamma_vec(N / 2, p)
+  #         - log_multigamma_vec((nu_vec + p + 1) / 2, p)
+  #         - .5 * N * logdet_nu_Rp_over_N
+  #         + .5 * (N - p - 1) * logdetR0
+  #         - .5 * (N + nu_vec + p + 1) * logdet_I_plus_RR)
+  
+  logdet_Rplus_Rp = rep(0, length(nu_vec))
+  for (idx in 1:length(nu_vec)){
+    nu = nu_vec[idx]
+    logdet_Rplus_Rp[idx] <- determinant(R0 + nu * Rp / N, logarithm = TRUE)$modulus
+  }
   
   llhs = (log_multigamma_vec((N + nu_vec + p + 1) / 2, p)
           - log_multigamma_vec(N / 2, p)
           - log_multigamma_vec((nu_vec + p + 1) / 2, p)
-          - .5 * N * logdet_nu_Rp_over_N
+          + .5 * (nu_vec + p + 1) * logdet_nu_Rp_over_N
           + .5 * (N - p - 1) * logdetR0
-          - .5 * (N + nu_vec + p + 1) * logdet_I_plus_RR)
+          - .5 * (N + nu_vec + p + 1) * logdet_Rplus_Rp)
   
   as.numeric(llhs)
 }
@@ -166,7 +180,7 @@ In the following we consider two choices of $\Psi'$ by using (1) PPCA and (2) po
 
 eig <- eigen(Rp)
 eig_cumsum = cumsum(eig$values)
-percent_explained = .95
+percent_explained = .999
 eig_cumsum = cumsum(eig$values)
 q = sum(eig_cumsum < percent_explained * eig_cumsum[p]) 
 sprintf("%d first principle components explain %.1f percent of variance", q, percent_explained*100)
@@ -205,6 +219,7 @@ print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
 
 ```
 
+
 Now let us try the Bayesian estimate: For the uninformative prior $\Psi' \sim \mathcal{IW}(I, p)$ and $X'_1, \dots, X'_{N'} \sim N(0, \Psi')$, we have $\Psi' | X' \sim \mathcal{IW}(N' R' + I, N' + p)$, having the posterior mean $\dfrac{N'R' + I}{N' - 1}$ 
 
 ```{r}
@@ -221,7 +236,34 @@ plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood of matrix F-distrib
 print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
 
 ```
+```{r}
+eig <- eigen(R0)
+lambda <- eig$values
+U <- eig$vectors
+sigma2_est <- mean(lambda[(q+1):p])
+L_diag <- sqrt(lambda[1:q] - sigma2_est)
+# L_diag <- sqrt(lambda[1:q])
+W_ppca <- U[,1:q] %*% diag(L_diag)
+Psi <- W_ppca %*% t(W_ppca) + sigma2_est * diag(p)
 
+nu_vec = c(1:100) 
+# llhs = log_F(Psi, Psi_est, N, nu_vec)
+llhs = log_iw(Psi, Psi_est, nu_vec)
+plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood of matrix F-distribution")
+print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
+```
+
+I have no idea why only when we optimize $\nu$ in the likelihood of $p(\Psi | \Psi')$ we have a good estimate of $\nu$.
+Although the model $$\Psi | \Psi' \sim \mathcal{IW}(\nu \Psi', \nu + p + 1)$$ 
+is equivalent to $$R | \Psi' \sim \mathrm{F}(\frac{\nu \Psi'}{N}, N, \nu + 2). $$
+
+One explanation is that even the model $X_1, \dots, X_N \sim N(0, \Psi)$ is mis-specified.
+
+There are four players here: The sample covariance matrices $R, R'$ and population covariance matrix $\Psi, \Psi'$.
+We need to have a smart model for them.
+
+Another strategy is to model the eigen-decomposition of $R$, i.e., its eigenvalues and vectors. 
+It looks like the low-rank is still a problem.
 
 
 
