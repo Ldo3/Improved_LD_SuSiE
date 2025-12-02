@@ -41,3 +41,6 @@ We investigate the performance of SuSiE model for summary statistics with variou
 + [Estimate nu in the matrix F-distribution](nu-matrix-F-distribution.html)
 
 + [Summarize estimated $\nu$ in various models](summary-learn-nu.html)
+
++ [Jointly estimate $N$ and $\nu$ in matrix F-distribution](learn-N-nu-jointly.html)
+
