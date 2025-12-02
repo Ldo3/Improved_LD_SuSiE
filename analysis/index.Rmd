@@ -37,3 +37,5 @@ We investigate the performance of SuSiE model for summary statistics with variou
 + [Investigate learn nu with low-rank decomposition](df-nu-low-rank.html)
 
 + [Investigate rank and Inverse-Wishart likelihood with N3finemapping data](genotype-matrix-rank-investigation.html)
+
++ [Estimate nu in the matrix F-distribution](nu-matrix-F-distribution.html)
