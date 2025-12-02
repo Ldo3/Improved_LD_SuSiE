@@ -1,0 +1,284 @@
+---
+title: "Summary of learning nu in all considered models"
+Author: "Dat Do"
+output:
+  workflowr::wflow_html:
+    toc: true
+    toc_float: true
+---
+
+
+In conclusion, the considered models can be ordered as follows (MLE $\nu$ from large to small. Recall that we want $\nu$ to be reasonably large in this experiment):
+
+(1) $\mathcal{IW}(\Psi_{PCA} | \nu \Psi'_{PCA}, \nu + p + 1)$
+
+(2) $\mathrm{F}(R_0 | \frac{\nu R'}{N}, N, \nu + 2)$
+
+(3) $\mathrm{F}(R_0 | \frac{\nu \Psi_{Bayes}'}{N}, N, \nu + 2)$
+
+(4) $\mathrm{F}(R_0 | \frac{\nu \Psi_{PCA}'}{N}, N, \nu + 2)$
+
+(5) $\mathcal{IW}(R_0 | \frac{\nu \Psi_{Bayes}'}{N}, \nu + p + 1)$
+
+(6) $\mathcal{IW}(R_0 | \nu R', \nu + p + 1)$
+
+where $\Psi_{PCA} and $\Psi'_{PCA}$ are the PPCA of the in-sample and out-of-sample population covariance matrix with 99% variance explained, and
+$$\Psi'_{Bayes} = \dfrac{N' R' + \delta I}{N' + \delta},$$
+for very small $\delta$. This corresponds to learning the out-of-sample population using posterior mean in a Bayesian procedure. 
+
+I think (2) is simular to (3) since $\delta$ is small. I like those most because those models are natural to motivate.  
+
+In this Markdown, we subsample the data to get in-sample $R_0$ and out-of-sample $R'$ and check learned $\nu$ in all models above.
+
+
+## 1. Data preparation and log-likelihood functions
+First, load the data:
+
+```{r}
+seed = 5  ## change this to see different experiment
+set.seed(seed)
+library(susieR)
+library(Matrix)
+
+data(N3finemapping)
+attach(N3finemapping)
+X0 = N3finemapping$X
+## getting covariance matrix from the whole sample
+## and examine the eigendecomposition to estimate numerical rank
+R = cov(X0)
+eig <- eigen(R)
+plot(eig$values,
+     main = "Eigenvalues of covariance matrix calculated using all samples",
+     ylab = "Value",
+     xlab = "Eigenvalue index")
+
+n0 = dim(X0)[1]
+p0 = dim(X0)[2]
+snp_total = p0
+```
+
+We proceed to split the data into half and look at the heatmap of the covariance matrices of two sub-samples.
+
+```{r}
+#### randomly split the data into half
+#### randomly select p consecutive SNPs where p < n so IW is proper
+p = 100
+# Start from a random point on the genome
+indx_start = sample(1: (snp_total - p), 1)
+X = X0[, indx_start:(indx_start + p -1)]
+# View(cor(X)[1:10, 1:10])
+## sub-sample into two
+out_sample_size = n0 / 2
+out_sample = sample(1:n0, out_sample_size)
+X_out = X[out_sample, ]
+X_in = X[setdiff(1:n0, out_sample), ]
+
+rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
+indx_p = setdiff(1:p, rm_p)
+X_in = X_in[, indx_p]
+X_out = X_out[, indx_p]
+## out-sample LD matrix
+p = length(indx_p)
+Rp = cov(X_out)
+R0 = cov(X_in)
+library(ggplot2)
+library(reshape2)
+df1 <- melt(R0)
+df2 <- melt(Rp)
+N_in = nrow(X_in)
+N_out = nrow(X_out)
+p1 <- ggplot(df1, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(sprintf("In-sample Cov, %d samples", nrow(X_in)))
+p2 <- ggplot(df2, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(sprintf("Out-of-sample Cov, %d samples", nrow(X_out)))
+library(gridExtra)
+grid.arrange(p1, p2, ncol = 2)
+```
+
+Log-likelihood functions: 
+
+```{r}
+## Matrix F-distribution likelihood
+#### log F(R0 | nu * Rp / N, N, nu + 2)
+log_multigamma_vec <- function(a, p) {
+  # vectorized multivariate gamma
+  j <- 1:p
+  # sum over j, but broadcasting a over j
+  (p*(p-1)/4)*log(pi) +
+    rowSums(matrix(lgamma(a), nrow=length(a), ncol=p, byrow=FALSE) +
+              matrix((1 - j)/2, nrow=length(a), ncol=p, byrow=TRUE))
+}
+
+log_F <- function(R0, Rp, N, nu_vec) {
+  p <- nrow(R0)
+  jitter = 1e-8
+  R0 = R0 + jitter * diag(p)
+  Rp = Rp + jitter * diag(p)
+  # Precompute expensive shared quantities
+  logdet_nu_Rp_over_N <- (determinant(Rp, logarithm = TRUE)$modulus 
+                          + p * log(nu_vec)
+                          - p * log(N))
+  logdetR0   <- determinant(R0, logarithm = TRUE)$modulus
+  
+  # lambda_vec <- eigen(solve(Rp, R0))$values
+  # lambda_over_nu = tcrossprod(lambda_vec, N / nu_vec)
+  # logdet_I_plus_RR <- colSums(log(1 + lambda_over_nu))
+  # llhs = (log_multigamma_vec((N + nu_vec + p + 1) / 2, p)
+  #         - log_multigamma_vec(N / 2, p)
+  #         - log_multigamma_vec((nu_vec + p + 1) / 2, p)
+  #         - .5 * N * logdet_nu_Rp_over_N
+  #         + .5 * (N - p - 1) * logdetR0
+  #         - .5 * (N + nu_vec + p + 1) * logdet_I_plus_RR)
+  
+  logdet_Rplus_Rp = rep(0, length(nu_vec))
+  for (idx in 1:length(nu_vec)){
+    nu = nu_vec[idx]
+    logdet_Rplus_Rp[idx] <- determinant(R0 + nu * Rp / N, logarithm = TRUE)$modulus
+  }
+  
+  llhs = (log_multigamma_vec((N + nu_vec + p + 1) / 2, p)
+          - log_multigamma_vec(N / 2, p)
+          - log_multigamma_vec((nu_vec + p + 1) / 2, p)
+          + .5 * (nu_vec + p + 1) * logdet_nu_Rp_over_N
+          + .5 * (N - p - 1) * logdetR0
+          - .5 * (N + nu_vec + p + 1) * logdet_Rplus_Rp)
+  
+  as.numeric(llhs)
+}
+
+log_iw <- function(R0, Rp, nu_vec) {
+  p <- nrow(R0)
+  jitter = 1e-12
+  R0 = R0 + jitter * diag(p)
+  Rp = Rp + jitter * diag(p)
+  # Precompute expensive shared quantities
+  logdet_nu_Rp <- determinant(Rp, logarithm = TRUE)$modulus + p * log(nu_vec)
+  logdetR0   <- determinant(R0,   logarithm = TRUE)$modulus
+  tr_term   <- nu_vec * sum(t(Rp) * solve(R0))
+  llhs = (.5 * (nu_vec + p + 1) * logdet_nu_Rp
+          - .5 * (nu_vec + p + 1) * p * log(2)
+          - log_multigamma_vec((nu_vec + p + 1) / 2, p)
+          - .5 * (nu_vec + 2 * (p + 1)) * logdetR0
+          - .5 * tr_term)
+  as.numeric(llhs)
+}
+
+
+```
+
+## 2. Comparing $\nu$ learned in the considered models
+
+### Model 1
+
+$$\mathcal{IW}(\Psi_{PCA} | \nu \Psi'_{PCA}, \nu + p + 1)$$
+This is not really a model for $R_0$, but it gives largest $\nu$.
+
+```{r}
+eig <- eigen(Rp)
+eig_cumsum = cumsum(eig$values)
+percent_explained = .99
+eig_cumsum = cumsum(eig$values)
+q = sum(eig_cumsum < percent_explained * eig_cumsum[p]) 
+sprintf("%d first principle components explain %.1f percent of variance", q, percent_explained*100)
+
+lambda <- eig$values
+U <- eig$vectors
+sigma2_est <- mean(lambda[(q+1):p])
+L_diag <- sqrt(lambda[1:q] - sigma2_est)
+# L_diag <- sqrt(lambda[1:q])
+W_ppca <- U[,1:q] %*% diag(L_diag)
+Rp_PCA <- W_ppca %*% t(W_ppca) + sigma2_est * diag(p)
+
+eig <- eigen(R0)
+lambda <- eig$values
+U <- eig$vectors
+sigma2_est <- mean(lambda[(q+1):p])
+L_diag <- sqrt(lambda[1:q] - sigma2_est)
+# L_diag <- sqrt(lambda[1:q])
+W_ppca <- U[,1:q] %*% diag(L_diag)
+R0_PCA <- W_ppca %*% t(W_ppca) + sigma2_est * diag(p)
+
+nu_vec = c(1:100) 
+llhs = log_iw(R0_PCA, Rp_PCA, nu_vec)
+# llhs = log_iw(R0_PCA, Rp, nu_vec)
+# llhs = log_iw(R0, Rp_PCA, nu_vec)
+plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood")
+print(nu_vec[which.max(llhs)])
+
+```
+
+### Model 2
+
+$$\mathrm{F}(R_0 | \frac{\nu R'}{N}, N, \nu + 2)$$
+This model corresponds to the hierarchy 
+$$R_0 | \Psi \sim \mathcal{W}(\Psi / N, N), \quad \Psi | R' \sim \mathcal{IW}(\nu R', \nu + p + 1).$$
+```{r}
+N = nrow(X_in)
+nu_vec = c(1:100) 
+llhs = log_F(R0, Rp, N, nu_vec)
+plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood of matrix F-distribution")
+
+print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
+
+```
+
+### Model 3
+$$\mathrm{F}(R_0 | \frac{\nu \Psi'}{N}, N, \nu + 2)$$
+This model corresponds to the hierarchy 
+$$R_0 | \Psi \sim \mathcal{W}(\Psi / N, N), \quad \Psi | \Psi' \sim \mathcal{IW}(\nu \Psi', \nu + p + 1),$$
+and $\Psi' = (N' R' + \delta I) / (N' + \delta)$ being the posterior mean of the estimated population covariance matrix.
+
+```{r}
+N = nrow(X_in)
+Np = nrow(X_out)
+nu_vec = c(1:100) 
+delta = 1e-6
+Psi_p = (Np * Rp + delta * diag(p)) / (Np + delta)
+llhs = log_F(R0, Psi_p, N, nu_vec)
+plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood of matrix F-distribution")
+
+print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
+```
+
+### Model 4
+
+$$\mathrm{F}(R_0 | \frac{\nu \Psi_{PCA}'}{N}, N, \nu + 2)$$
+```{r}
+nu_vec = c(1:100) 
+
+llhs = log_F(R0, Rp_PCA, N, nu_vec)
+plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood of matrix F-distribution")
+
+print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
+```
+
+### Model 5
+
+ 
+$$\mathrm{IW}(R_0 | \nu \Psi_{Bayes}', \nu + p + 1)$$
+```{r}
+nu_vec = c(1:100) 
+llhs = log_iw(R0, Psi_p, nu_vec)
+plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood")
+print(nu_vec[which.max(llhs)])
+
+```
+
+### Model 6
+
+**Model 6:** This is our original easiest model, but the estimated $\nu$ in this model is very small
+$$\mathrm{IW}(R_0 | \nu R', \nu + p + 1)$$
+
+```{r}
+nu_vec = c(1:100) 
+llhs = log_iw(R0, Rp, nu_vec)
+plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood")
+print(nu_vec[which.max(llhs)])
+
+```
