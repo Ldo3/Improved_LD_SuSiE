@@ -1,0 +1,229 @@
+---
+title: "Investigate Rank and Inverse-Wishart fit of N3finemapping data"
+Author: "Dat Do"
+output:
+  workflowr::wflow_html:
+    toc: true
+    toc_float: true
+---
+
+```{r}
+library(susieR)
+library(Matrix)
+
+data(N3finemapping)
+attach(N3finemapping)
+X0 = N3finemapping$X
+## getting covariance matrix from the whole sample
+## and examine the eigendecomposition to estimate numerical rank
+R = cov(X0)
+eig <- eigen(R)
+plot(eig$values,
+     main = "Eigenvalues of covariance matrix calculated using all samples",
+     ylab = "Value",
+     xlab = "Eigenvalue index")
+
+n0 = dim(X0)[1]
+p0 = dim(X0)[2]
+percent_explained = .95
+eig_cumsum = cumsum(eig$values)
+r_p = sum(eig_cumsum < percent_explained * eig_cumsum[p0]) ## percentage variance explained
+sprintf("%d first principle components explain %.1f percent of variance", r_p, percent_explained*100)
+snp_total = p0
+sprintf("Total number of SNPs is %d", p0)
+sprintf("Sample size %d", n0)
+
+```
+
+Now we proceed to split the data into half and look at the heatmap of the covariance matrices of two sub-samples.
+
+```{r}
+#### randomly split the data into half
+#### randomly select p consecutive SNPs where p < n so IW is proper
+seed = 3
+p = 50
+# Start from a random point on the genome
+indx_start = sample(1: (snp_total - p), 1)
+X = X0[, indx_start:(indx_start + p -1)]
+# View(cor(X)[1:10, 1:10])
+## sub-sample into two
+out_sample_size = n0 / 2
+out_sample = sample(1:n0, out_sample_size)
+X_out = X[out_sample, ]
+X_in = X[setdiff(1:n0, out_sample), ]
+
+rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
+indx_p = setdiff(1:p, rm_p)
+X_in = X_in[, indx_p]
+X_out = X_out[, indx_p]
+## out-sample LD matrix
+p = length(indx_p)
+Rp = cov(X_out)
+R0 = cov(X_in)
+library(ggplot2)
+library(reshape2)
+df1 <- melt(R0)
+df2 <- melt(Rp)
+N_in = nrow(X_in)
+N_out = nrow(X_out)
+p1 <- ggplot(df1, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(sprintf("In-sample Cov, %d samples", nrow(X_in)))
+p2 <- ggplot(df2, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(sprintf("Out-of-sample Cov, %d samples", nrow(X_out)))
+library(gridExtra)
+grid.arrange(p1, p2, ncol = 2)
+```
+
+Now let us consider modeling the in-sample covariance matrix $R_0$ using the matrix F-distribution. We will consider two models: (1) one has mean being equal to the out-of-sample covariance matrix $R'$ and (2) one has mean being equal to the "population" out-of-sample covariance matrix $\Psi'$ (where we will learn $\Psi'$ using Probabilistic PCA). 
+
+Firstly, when modeling $R | \Psi \sim \mathcal{W}(\Psi / N, N)$ and $\Psi | R' \sim \mathcal{IW}(\nu R', \nu + p + 1)$, we will have 
+
+$$R | R' \sim \mathrm{F}\left(\dfrac{\nu}{N} R', N, \nu + 2\right) $$
+This distribution has two degree-of-freedoms $N$ and $\nu+2$. It has mean $R'$ and density:
+
+$$p(R) = \dfrac{\Gamma_{\! p} \left(\tfrac{N + \nu + p + 1}{2}\right)}{\Gamma_{\! p} \left(\tfrac{N}{2}\right) \Gamma_{\! p} \left(\tfrac{\nu + p + 1}{2}\right)} \left| \dfrac{\nu R'}{N} \right|^{- N / 2} |R|^{(N - p - 1) / 2}  \left|I + \dfrac{N}{\nu} R (R')^{-1}\right|^{-(N + \nu + p + 1) / 2}$$
+
+```{r}
+## Matrix F-distribution likelihood
+#### log F(R0 | nu * Rp / N, N, nu + 2)
+log_multigamma_vec <- function(a, p) {
+  # vectorized multivariate gamma
+  j <- 1:p
+  # sum over j, but broadcasting a over j
+  (p*(p-1)/4)*log(pi) +
+    rowSums(matrix(lgamma(a), nrow=length(a), ncol=p, byrow=FALSE) +
+              matrix((1 - j)/2, nrow=length(a), ncol=p, byrow=TRUE))
+}
+
+log_F <- function(R0, Rp, N, nu_vec) {
+  p <- nrow(R0)
+  jitter = 1e-8
+  R0 = R0 + jitter * diag(p)
+  Rp = Rp + jitter * diag(p)
+  # Precompute expensive shared quantities
+  logdet_nu_Rp_over_N <- (determinant(Rp, logarithm = TRUE)$modulus 
+                          + p * log(nu_vec)
+                          - p * log(N))
+  logdetR0   <- determinant(R0, logarithm = TRUE)$modulus
+  
+  lambda_vec <- eigen(solve(Rp, R0))$values
+  lambda_over_nu = tcrossprod(lambda_vec, N / nu_vec)
+  logdet_I_plus_RR <- colSums(log(1 + lambda_over_nu))
+  
+  llhs = (log_multigamma_vec((N + nu_vec + p + 1) / 2, p)
+          - log_multigamma_vec(N / 2, p)
+          - log_multigamma_vec((nu_vec + p + 1) / 2, p)
+          - .5 * N * logdet_nu_Rp_over_N
+          + .5 * (N - p - 1) * logdetR0
+          - .5 * (N + nu_vec + p + 1) * logdet_I_plus_RR)
+  
+  as.numeric(llhs)
+}
+
+log_iw <- function(R0, Rp, nu_vec) {
+  p <- nrow(R0)
+  jitter = 1e-12
+  R0 = R0 + jitter * diag(p)
+  Rp = Rp + jitter * diag(p)
+  # Precompute expensive shared quantities
+  logdet_nu_Rp <- determinant(Rp, logarithm = TRUE)$modulus + p * log(nu_vec)
+  logdetR0   <- determinant(R0,   logarithm = TRUE)$modulus
+  tr_term   <- nu_vec * sum(t(Rp) * solve(R0))
+  llhs = (.5 * (nu_vec + p + 1) * logdet_nu_Rp
+          - .5 * (nu_vec + p + 1) * p * log(2)
+          - log_multigamma_vec((nu_vec + p + 1) / 2, p)
+          - .5 * (nu_vec + 2 * (p + 1)) * logdetR0
+          - .5 * tr_term)
+  as.numeric(llhs)
+}
+
+N = nrow(X_in)
+nu_vec = c(1:100) 
+llhs = log_F(R0, Rp, N, nu_vec)
+plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood of matrix F-distribution")
+
+print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
+```
+This is slightly better than the Inverse-Wishart distribution, since $\log |I + N R (R') / \nu|$ behaves better than the trace term $\mathrm{Trace}(R^{-1} R')$ (log is smaller than linear). However this $\nu$ is still quite smaller than the out-of-sample size ~300. After the optimal $\nu$, the likelihood again decreases linearly when $\nu$ increases. 
+
+------
+
+Now let us try the second model: $R | \Psi \sim \mathcal{W}(\Psi / N, N)$ and $\Psi | \Psi' \sim \mathcal{IW}(\nu Psi', \nu + p + 1)$. We have
+
+$$R | \Psi' \sim \mathrm{F}\left(\dfrac{\nu}{N} \Psi', N, \nu + 2\right), $$
+where $\Psi'$ is the out-of-sample population covariance matrix. This model feels more natural to me since modeling the in-sample population matrix $\Psi$ using the out-of-sample population covariance matrix $\Psi'$ seems more reasonable than using the out-of-sample covariance matrix $R'$.
+
+In the following we consider two choices of $\Psi'$ by using (1) PPCA and (2) posterior mean of a Bayesian procedure, then evaluate the matrix F-distribution likelihood.
+
+```{r}
+## Using PPCA to learn Psi' and then plot R, R' and Psi'
+
+eig <- eigen(Rp)
+eig_cumsum = cumsum(eig$values)
+percent_explained = .95
+eig_cumsum = cumsum(eig$values)
+q = sum(eig_cumsum < percent_explained * eig_cumsum[p]) 
+sprintf("%d first principle components explain %.1f percent of variance", q, percent_explained*100)
+
+## PPCA
+lambda <- eig$values
+U <- eig$vectors
+sigma2_est <- mean(lambda[(q+1):p])
+L_diag <- sqrt(lambda[1:q] - sigma2_est)
+# L_diag <- sqrt(lambda[1:q])
+W_ppca <- U[,1:q] %*% diag(L_diag)
+Psi_est <- W_ppca %*% t(W_ppca) + sigma2_est * diag(p)
+
+# Vp = eig$vectors[, c(1:q)]
+# Dp = diag(eig$values[c(1:q)])
+# Psi_est = Vp %*% Dp %*% t(Vp) + diag(p) * sum(eig$values[c(q + 1, p)])
+
+df3 <- melt(Psi_est)
+p3 <- ggplot(df3, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(paste0("PPCA estimate population cov."))
+
+grid.arrange(p1, p2, p3, ncol = 3)
+```
+
+
+```{r}
+N = nrow(X_in)
+nu_vec = c(1:100) 
+llhs = log_F(R0, Psi_est, N, nu_vec)
+plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood of matrix F-distribution")
+
+print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
+
+```
+
+Now let us try the Bayesian estimate: For the uninformative prior $\Psi' \sim \mathcal{IW}(I, p)$ and $X'_1, \dots, X'_{N'} \sim N(0, \Psi')$, we have $\Psi' | X' \sim \mathcal{IW}(N' R' + I, N' + p)$, having the posterior mean $\dfrac{N'R' + I}{N' - 1}$ 
+
+```{r}
+
+Np = nrow(X_out)
+Psi_Bayes <- (Np * Rp + diag(p)) / (Np - 1)
+
+
+N = nrow(X_in)
+nu_vec = c(1:100) 
+llhs = log_F(R0, Psi_Bayes, N, nu_vec)
+plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood of matrix F-distribution")
+
+print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
+
+```
+
+
+
+
+
+
