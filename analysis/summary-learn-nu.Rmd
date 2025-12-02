@@ -22,7 +22,7 @@ In conclusion, the considered models can be ordered as follows (MLE $\nu$ from l
 
 (6) $\mathcal{IW}(R_0 | \nu R', \nu + p + 1)$
 
-where $\Psi_{PCA} and $\Psi'_{PCA}$ are the PPCA of the in-sample and out-of-sample population covariance matrix with 99% variance explained, and
+where $\Psi_{PCA}$ and $\Psi'_{PCA}$ are the PPCA of the in-sample and out-of-sample population covariance matrix with 99% variance explained, and
 $$\Psi'_{Bayes} = \dfrac{N' R' + \delta I}{N' + \delta},$$
 for very small $\delta$. This corresponds to learning the out-of-sample population using posterior mean in a Bayesian procedure. 
 
@@ -35,7 +35,7 @@ In this Markdown, we subsample the data to get in-sample $R_0$ and out-of-sample
 First, load the data:
 
 ```{r}
-seed = 5  ## change this to see different experiment
+seed = 10  ## change this to see different experiment
 set.seed(seed)
 library(susieR)
 library(Matrix)
