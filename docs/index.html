@@ -13,7 +13,7 @@
 
 <title>Improving the LD SuSiE model</title>
 
-<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
@@ -304,7 +304,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-12-01
+<strong>Last updated:</strong> 2025-12-02
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -322,7 +322,7 @@ title="This is the local directory in which the code in this file was executed."
 This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
 analysis was created with <a
   href="https://github.com/workflowr/workflowr">workflowr</a> (version
-1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+1.7.2). The <em>Checks</em> tab describes the reproducibility checks
 that were applied when the results were created. The <em>Past
 versions</em> tab lists the development history.
 </p>
@@ -351,15 +351,15 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtreef304d90d3a3813e65203299827d0b8bc8e27cb6dtargetblankf304d90a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree05b0f500613f34a132aff3c3f8ecc7130b90a1bctargetblank05b0f50a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/f304d90d3a3813e65203299827d0b8bc8e27cb6d" target="_blank">f304d90</a>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/05b0f500613f34a132aff3c3f8ecc7130b90a1bc" target="_blank">05b0f50</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtreef304d90d3a3813e65203299827d0b8bc8e27cb6dtargetblankf304d90a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree05b0f500613f34a132aff3c3f8ecc7130b90a1bctargetblank05b0f50a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -369,7 +369,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/f304d90d3a3813e65203299827d0b8bc8e27cb6d" target="_blank">f304d90</a>.
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/05b0f500613f34a132aff3c3f8ecc7130b90a1bc" target="_blank">05b0f50</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -387,8 +387,15 @@ Ignored files:
     Ignored:    .DS_Store
     Ignored:    .RData
     Ignored:    .Rhistory
+    Ignored:    analysis/.DS_Store
+    Ignored:    analysis/.RData
+    Ignored:    analysis/.Rhistory
+
+Untracked files:
+    Untracked:  code/PPCA.R
 
 Unstaged changes:
+    Modified:   analysis/genotype-matrix-rank-investigation.Rmd
     Modified:   code_push.R
 
 </code></pre>
@@ -404,6 +411,7 @@ have uncommitted changes.
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
 These are the previous versions of the repository in which changes were
 made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML
@@ -433,6 +441,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/05b0f500613f34a132aff3c3f8ecc7130b90a1bc/analysis/index.Rmd" target="_blank">05b0f50</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-12-02
+</td>
+<td>
+wflow_publish(c("analysis/index.Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/028a8ee03f8bcfb2b0a72f44635f5098be9b22e5/docs/index.html" target="_blank">028a8ee</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-12-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1157,12 +1199,9 @@ nu</a></p></li>
 decomposition</a></p></li>
 <li><p><a href="genotype-matrix-rank-investigation.html">Investigate
 rank and Inverse-Wishart likelihood with N3finemapping data</a></p></li>
+<li><p><a href="nu-matrix-F-distribution.html">Estimate nu in the matrix
+F-distribution</a></p></li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
