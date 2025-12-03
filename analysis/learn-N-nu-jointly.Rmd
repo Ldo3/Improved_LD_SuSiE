@@ -189,8 +189,12 @@ library(reshape2)
 #   labs(x = "nu", y = "N - p + 1", fill = "Log-likelihood")
 
 nu_max_each_N = max.col(llhs, ties.method = "first")
+print(nu_max_each_N)
 
-nu_max_each_N
+for (i in c(1:(length(N_vec) %/% 10))){
+  print(sprintf("If N = %d then optimal nu is %d", N_vec[10*i], nu_max_each_N[10*i]))
+}
+
 ```
 
 ```{r}
