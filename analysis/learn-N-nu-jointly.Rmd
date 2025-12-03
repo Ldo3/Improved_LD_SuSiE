@@ -28,11 +28,11 @@ X0 = N3finemapping$X
 ## getting covariance matrix from the whole sample
 ## and examine the eigendecomposition to estimate numerical rank
 R = cov(X0)
-eig <- eigen(R)
-plot(eig$values,
-     main = "Eigenvalues of covariance matrix calculated using all samples",
-     ylab = "Value",
-     xlab = "Eigenvalue index")
+# eig <- eigen(R)
+# plot(eig$values,
+#      main = "Eigenvalues of covariance matrix calculated using all samples",
+#      ylab = "Value",
+#      xlab = "Eigenvalue index")
 
 n0 = dim(X0)[1]
 p0 = dim(X0)[2]
@@ -165,8 +165,7 @@ log_iw <- function(R0, Rp, nu_vec) {
 
 ### Model
 
-$$\mathcal{IW}(\Psi_{PCA} | \nu \Psi'_{PCA}, \nu + p + 1)$$
-This is not really a model for $R_0$, but it gives largest $\nu$.
+$$R^{(0)} \sim \mathrm{F}\left(\dfrac{\nu \Psi^{(1)}}{N}, N, \nu + 2\right),$$
 
 ```{r}
 N = nrow(X_in)
@@ -181,65 +180,40 @@ llhs = log_F_matrix(R0, Psi1, N_vec, nu_vec)
 library(ggplot2)
 library(reshape2)
 
-df <- melt(llhs, varnames = c("N", "nu"), value.name = "value")
-
-ggplot(df, aes(x = nu, y = N, fill = value)) +
-  geom_tile() +
-  scale_fill_gradient2(low = "blue", high = "red", mid = "white") +
-  theme_minimal() +
-  labs(x = "nu", y = "N - p + 1", fill = "Log-likelihood")
+# df <- melt(llhs, varnames = c("N", "nu"), value.name = "value")
+# 
+# ggplot(df, aes(x = nu, y = N, fill = value)) +
+#   geom_tile() +
+#   scale_fill_gradient2(low = "blue", high = "red", mid = "white") +
+#   theme_minimal() +
+#   labs(x = "nu", y = "N - p + 1", fill = "Log-likelihood")
 
 nu_max_each_N = max.col(llhs, ties.method = "first")
 
 nu_max_each_N
 ```
+
 ```{r}
-log_multigamma_v <- function(a, p) {
-  # vectorized multivariate gamma
-  j <- 1:p
-  # sum over j, but broadcasting a over j
-  (p*(p-1)/4)*log(pi) +
-    rowSums(matrix(lgamma(a), nrow=length(a), ncol=p, byrow=FALSE) +
-              matrix((1 - j)/2, nrow=length(a), ncol=p, byrow=TRUE))
-}
-log_F <- function(R0, Rp, N, nu_vec) {
-  p <- nrow(R0)
-  jitter = 1e-8
-  R0 = R0 + jitter * diag(p)
-  # Precompute expensive shared quantities
-  logdet_nu_Rp_over_N <- (determinant(Rp, logarithm = TRUE)$modulus 
-                          + p * log(nu_vec)
-                          - p * log(N))
-  logdetR0   <- determinant(R0, logarithm = TRUE)$modulus
-  
-  lambda_vec <- eigen(solve(Rp, R0))$values
-  lambda_over_nu = tcrossprod(lambda_vec, N / nu_vec)
-  logdet_I_plus_RR <- colSums(log(1 + lambda_over_nu))
-  llhs = (log_multigamma_v((N + nu_vec + p + 1) / 2, p)
-          - log_multigamma_v(N / 2, p)
-          - log_multigamma_v((nu_vec + p + 1) / 2, p)
-          - .5 * N * logdet_nu_Rp_over_N
-          + .5 * (N - p - 1) * logdetR0
-          - .5 * (N + nu_vec + p + 1) * logdet_I_plus_RR)
-  
-  # logdet_Rplus_Rp = rep(0, length(nu_vec))
-  # for (idx in 1:length(nu_vec)){
-  #   nu = nu_vec[idx]
-  #   logdet_Rplus_Rp[idx] <- determinant(R0 + nu * Rp / N, logarithm = TRUE)$modulus
-  # }
-  # 
-  # llhs = (log_multigamma_v((N + nu_vec + p + 1) / 2, p)
-  #         - log_multigamma_v(N / 2, p)
-  #         - log_multigamma_v((nu_vec + p + 1) / 2, p)
-  #         + .5 * (nu_vec + p + 1) * logdet_nu_Rp_over_N
-  #         + .5 * (N - p - 1) * logdetR0
-  #         - .5 * (N + nu_vec + p + 1) * logdet_Rplus_Rp)
-  # 
-  as.numeric(llhs)
-}
-N = nrow(X_in)
-llhs = log_F(R0, Psi1, N, nu_vec)
-plot(nu_vec, llhs, xlab = "nu value", ylab = "log-likelihood")
-print(nu_vec[which.max(llhs)])
+# install.packages("plotly")
+library(plotly)
+max_idx <- which(llhs == max(llhs), arr.ind = TRUE)
+i_max <- max_idx[1] # Row index
+j_max <- max_idx[2] # Col index
+
+x_peak <- N_vec[i_max] 
+y_peak <- nu_vec[j_max]
+z_peak <- llhs[i_max, j_max]
+
+# Plotly expects a list or simple vectors for x and y, and a matrix for z
+plot_ly(x = N_vec, y = nu_vec, z = t(llhs)) %>%
+  add_surface() %>%
+  add_markers(x = x_peak, y = y_peak, z = z_peak, 
+              marker = list(size = 5, color = 'red', symbol = 'cross'),
+              name = "Argmax") %>%
+  layout(title = "Interactive 3D Surface Plot",
+         scene = list(xaxis = list(title = 'N'),
+                      yaxis = list(title = 'nu'),
+                      zaxis = list(title = 'log-likelihood')))
+
 ```
 

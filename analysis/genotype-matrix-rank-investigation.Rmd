@@ -87,12 +87,12 @@ They look pretty similar, let us see what is the MLE of $\nu_0$ in the likelihoo
 #### log IW(R0 | nu0 * Rp, nu0 + J + 1)
 log_multigamma_vec <- function(a, p) {
   # vectorized multivariate gamma
-  j <- 1:p
+  shifts <- (1 - seq_len(p)) / 2
   # sum over j, but broadcasting a over j
   (p*(p-1)/4)*log(pi) +
-    rowSums(matrix(lgamma(a), nrow=length(a), ncol=p, byrow=FALSE) +
-              matrix((1 - j)/2, nrow=length(a), ncol=p, byrow=TRUE))
+    rowSums(lgamma(outer(a, shifts, "+")))
 }
+
 
 log_iw <- function(R0, Rp, nu_vec) {
   p <- nrow(R0)
