@@ -13,7 +13,7 @@
 
 <title>Summary of learning nu in all considered models</title>
 
-<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
@@ -512,15 +512,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree43968172d00451bd7e6962c75ab3c42a8ffb0c94targetblank4396817a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree794fc76d7cf9e70bf2c4883d5c434a9706a51e6btargetblank794fc76a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/43968172d00451bd7e6962c75ab3c42a8ffb0c94" target="_blank">4396817</a>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/794fc76d7cf9e70bf2c4883d5c434a9706a51e6b" target="_blank">794fc76</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree43968172d00451bd7e6962c75ab3c42a8ffb0c94targetblank4396817a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree794fc76d7cf9e70bf2c4883d5c434a9706a51e6btargetblank794fc76a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -530,7 +530,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/43968172d00451bd7e6962c75ab3c42a8ffb0c94" target="_blank">4396817</a>.
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/794fc76d7cf9e70bf2c4883d5c434a9706a51e6b" target="_blank">794fc76</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -548,6 +548,7 @@ Ignored files:
     Ignored:    .DS_Store
 
 Unstaged changes:
+    Modified:   analysis/df-nu-low-rank.Rmd
     Modified:   code_push.R
 
 </code></pre>
@@ -563,6 +564,7 @@ have uncommitted changes.
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
 These are the previous versions of the repository in which changes were
 made to the R Markdown (<code>analysis/summary-learn-nu.Rmd</code>) and
@@ -593,6 +595,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/794fc76d7cf9e70bf2c4883d5c434a9706a51e6b/analysis/summary-learn-nu.Rmd" target="_blank">794fc76</a>
+</td>
+<td>
+dodat
+</td>
+<td>
+2025-12-02
+</td>
+<td>
+wflow_publish(c("analysis/genotype-matrix-rank-investigation.Rmd",
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/953e8e9dccae6c3814356eae88be3487a6513170/docs/summary-learn-nu.html" target="_blank">953e8e9</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-12-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -690,8 +726,9 @@ class="section level2">
 <p>First, load the data:</p>
 <pre class="r"><code>seed = 10  ## change this to see different experiment
 set.seed(seed)
-library(susieR)
-library(Matrix)
+library(susieR)</code></pre>
+<pre><code>Warning: package &#39;susieR&#39; was built under R version 4.3.3</code></pre>
+<pre class="r"><code>library(Matrix)
 
 data(N3finemapping)
 attach(N3finemapping)
@@ -811,6 +848,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/953e8e9dccae6c3814356eae88be3487a6513170/docs/figure/summary-learn-nu.Rmd/unnamed-chunk-2-1.png" target="_blank">953e8e9</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-12-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/7edf83cf22679b02c9e45333875c891c744dc0a0/docs/figure/summary-learn-nu.Rmd/unnamed-chunk-2-1.png" target="_blank">7edf83c</a>
 </td>
 <td>
@@ -829,12 +877,12 @@ dodat97
 #### log F(R0 | nu * Rp / N, N, nu + 2)
 log_multigamma_vec &lt;- function(a, p) {
   # vectorized multivariate gamma
-  j &lt;- 1:p
+  shifts &lt;- (1 - seq_len(p)) / 2
   # sum over j, but broadcasting a over j
   (p*(p-1)/4)*log(pi) +
-    rowSums(matrix(lgamma(a), nrow=length(a), ncol=p, byrow=FALSE) +
-              matrix((1 - j)/2, nrow=length(a), ncol=p, byrow=TRUE))
+    rowSums(lgamma(outer(a, shifts, &quot;+&quot;)))
 }
+
 
 log_F &lt;- function(R0, Rp, N, nu_vec) {
   p &lt;- nrow(R0)
@@ -954,6 +1002,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/953e8e9dccae6c3814356eae88be3487a6513170/docs/figure/summary-learn-nu.Rmd/unnamed-chunk-4-1.png" target="_blank">953e8e9</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-12-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/7edf83cf22679b02c9e45333875c891c744dc0a0/docs/figure/summary-learn-nu.Rmd/unnamed-chunk-4-1.png" target="_blank">7edf83c</a>
 </td>
 <td>
@@ -968,7 +1027,7 @@ dodat97
 </div>
 </div>
 <pre class="r"><code>print(nu_vec[which.max(llhs)])</code></pre>
-<pre><code>[1] 64</code></pre>
+<pre><code>[1] 98</code></pre>
 </div>
 <div id="model-2" class="section level3">
 <h3>Model 2</h3>
@@ -1005,6 +1064,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/953e8e9dccae6c3814356eae88be3487a6513170/docs/figure/summary-learn-nu.Rmd/unnamed-chunk-5-1.png" target="_blank">953e8e9</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-12-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/7edf83cf22679b02c9e45333875c891c744dc0a0/docs/figure/summary-learn-nu.Rmd/unnamed-chunk-5-1.png" target="_blank">7edf83c</a>
 </td>
 <td>
@@ -1019,7 +1089,7 @@ dodat97
 </div>
 </div>
 <pre class="r"><code>print(paste0(&quot;Optimal nu is &quot;, nu_vec[which.max(llhs)]))</code></pre>
-<pre><code>[1] &quot;Optimal nu is 24&quot;</code></pre>
+<pre><code>[1] &quot;Optimal nu is 32&quot;</code></pre>
 </div>
 <div id="model-3" class="section level3">
 <h3>Model 3</h3>
@@ -1062,6 +1132,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/953e8e9dccae6c3814356eae88be3487a6513170/docs/figure/summary-learn-nu.Rmd/unnamed-chunk-6-1.png" target="_blank">953e8e9</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-12-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/7edf83cf22679b02c9e45333875c891c744dc0a0/docs/figure/summary-learn-nu.Rmd/unnamed-chunk-6-1.png" target="_blank">7edf83c</a>
 </td>
 <td>
@@ -1076,7 +1157,7 @@ dodat97
 </div>
 </div>
 <pre class="r"><code>print(paste0(&quot;Optimal nu is &quot;, nu_vec[which.max(llhs)]))</code></pre>
-<pre><code>[1] &quot;Optimal nu is 24&quot;</code></pre>
+<pre><code>[1] &quot;Optimal nu is 32&quot;</code></pre>
 </div>
 <div id="model-4" class="section level3">
 <h3>Model 4</h3>
@@ -1111,6 +1192,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/953e8e9dccae6c3814356eae88be3487a6513170/docs/figure/summary-learn-nu.Rmd/unnamed-chunk-7-1.png" target="_blank">953e8e9</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-12-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/7edf83cf22679b02c9e45333875c891c744dc0a0/docs/figure/summary-learn-nu.Rmd/unnamed-chunk-7-1.png" target="_blank">7edf83c</a>
 </td>
 <td>
@@ -1125,7 +1217,7 @@ dodat97
 </div>
 </div>
 <pre class="r"><code>print(paste0(&quot;Optimal nu is &quot;, nu_vec[which.max(llhs)]))</code></pre>
-<pre><code>[1] &quot;Optimal nu is 12&quot;</code></pre>
+<pre><code>[1] &quot;Optimal nu is 18&quot;</code></pre>
 </div>
 <div id="model-5" class="section level3">
 <h3>Model 5</h3>
@@ -1157,6 +1249,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/953e8e9dccae6c3814356eae88be3487a6513170/docs/figure/summary-learn-nu.Rmd/unnamed-chunk-8-1.png" target="_blank">953e8e9</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-12-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/7edf83cf22679b02c9e45333875c891c744dc0a0/docs/figure/summary-learn-nu.Rmd/unnamed-chunk-8-1.png" target="_blank">7edf83c</a>
@@ -1209,6 +1312,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/953e8e9dccae6c3814356eae88be3487a6513170/docs/figure/summary-learn-nu.Rmd/unnamed-chunk-9-1.png" target="_blank">953e8e9</a>
+</td>
+<td>
+dodat97
+</td>
+<td>
+2025-12-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/7edf83cf22679b02c9e45333875c891c744dc0a0/docs/figure/summary-learn-nu.Rmd/unnamed-chunk-9-1.png" target="_blank">7edf83c</a>
 </td>
 <td>
@@ -1233,13 +1347,13 @@ Session information
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.5.1 (2025-06-13)
-Platform: aarch64-apple-darwin20
-Running under: macOS Sequoia 15.0
+<pre><code>R version 4.3.2 (2023-10-31)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS 15.6.1
 
 Matrix products: default
-BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
-LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+BLAS:   /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRblas.0.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
 
 locale:
 [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -1251,29 +1365,25 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] gridExtra_2.3   reshape2_1.4.4  ggplot2_3.5.2   Matrix_1.7-3   
+[1] gridExtra_2.3   reshape2_1.4.5  ggplot2_4.0.1   Matrix_1.6-1.1 
 [5] susieR_0.14.2   workflowr_1.7.2
 
 loaded via a namespace (and not attached):
- [1] sass_0.4.10        stringi_1.8.7      lattice_0.22-7     digest_0.6.37     
- [5] magrittr_2.0.3     evaluate_1.0.5     grid_4.5.1         RColorBrewer_1.1-3
- [9] fastmap_1.2.0      rprojroot_2.1.1    plyr_1.8.9         jsonlite_2.0.0    
-[13] processx_3.8.6     whisker_0.4.1      reshape_0.8.10     ps_1.9.1          
-[17] mixsqp_0.3-54      promises_1.5.0     httr_1.4.7         scales_1.4.0      
-[21] jquerylib_0.1.4    cli_3.6.5          rlang_1.1.6        crayon_1.5.3      
-[25] withr_3.0.2        cachem_1.1.0       yaml_2.3.10        otel_0.2.0        
-[29] tools_4.5.1        httpuv_1.6.16      vctrs_0.6.5        R6_2.6.1          
-[33] matrixStats_1.5.0  lifecycle_1.0.4    git2r_0.36.2       stringr_1.5.2     
-[37] fs_1.6.6           irlba_2.3.5.1      pkgconfig_2.0.3    callr_3.7.6       
-[41] pillar_1.11.0      bslib_0.9.0        later_1.4.4        gtable_0.3.6      
-[45] glue_1.8.0         Rcpp_1.1.0         xfun_0.53          tibble_3.3.0      
-[49] rstudioapi_0.17.1  knitr_1.50         farver_2.1.2       htmltools_0.5.8.1 
-[53] labeling_0.4.3     rmarkdown_2.29     compiler_4.5.1     getPass_0.2-4     </code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
+ [1] sass_0.4.10        generics_0.1.4     stringi_1.8.7      lattice_0.22-7    
+ [5] digest_0.6.39      magrittr_2.0.4     evaluate_1.0.5     grid_4.3.2        
+ [9] RColorBrewer_1.1-3 fastmap_1.2.0      plyr_1.8.9         rprojroot_2.1.1   
+[13] jsonlite_2.0.0     processx_3.8.6     whisker_0.4.1      reshape_0.8.10    
+[17] mixsqp_0.3-54      ps_1.9.1           promises_1.5.0     httr_1.4.7        
+[21] scales_1.4.0       jquerylib_0.1.4    cli_3.6.5          rlang_1.1.6       
+[25] crayon_1.5.3       withr_3.0.2        cachem_1.1.0       yaml_2.3.11       
+[29] otel_0.2.0         tools_4.3.2        dplyr_1.1.4        httpuv_1.6.16     
+[33] vctrs_0.6.5        R6_2.6.1           matrixStats_1.5.0  lifecycle_1.0.4   
+[37] git2r_0.36.2       stringr_1.6.0      fs_1.6.6           irlba_2.3.5.1     
+[41] pkgconfig_2.0.3    callr_3.7.6        pillar_1.11.1      bslib_0.9.0       
+[45] later_1.4.4        gtable_0.3.6       glue_1.8.0         Rcpp_1.1.0        
+[49] xfun_0.54          tibble_3.3.0       tidyselect_1.2.1   rstudioapi_0.17.1 
+[53] knitr_1.50         farver_2.1.2       htmltools_0.5.8.1  labeling_0.4.3    
+[57] rmarkdown_2.30     compiler_4.3.2     getPass_0.2-4      S7_0.2.1          </code></pre>
 </div>
 </div>
 </div>
