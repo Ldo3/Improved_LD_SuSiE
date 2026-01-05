@@ -1,0 +1,276 @@
+---
+title: "Jointly optimize nu and delta"
+Author: "Dat Do"
+output:
+  workflowr::wflow_html:
+    toc: true
+    toc_float: true
+---
+
+Consider only model 3 and 5 from Markdown "Summary of learning nu in all considered models" and now we vary both $\nu$ and $\delta$.
+
+
+(Model 3) $\mathrm{F}(R_0 | \frac{\nu \Psi'}{N}, N, \nu + 2)$
+
+(Model 5) $\mathcal{IW}(R_0 | \frac{\nu \Psi'}{N}, \nu + p + 1)$
+
+
+where $\Psi' = \dfrac{\nu R' + \delta \text{diag}(R_0)}{\nu + \delta}$.
+
+## 1. Data preparation and log-likelihood functions
+First, load the data:
+
+```{r}
+seed = 10  ## change this to see different experiment
+set.seed(seed)
+library(susieR)
+library(Matrix)
+
+data(N3finemapping)
+attach(N3finemapping)
+X0 = N3finemapping$X
+## getting covariance matrix from the whole sample
+## and examine the eigendecomposition to estimate numerical rank
+R = cov(X0)
+eig <- eigen(R)
+plot(eig$values,
+     main = "Eigenvalues of covariance matrix calculated using all samples",
+     ylab = "Value",
+     xlab = "Eigenvalue index")
+
+n0 = dim(X0)[1]
+p0 = dim(X0)[2]
+snp_total = p0
+```
+
+We proceed to split the data into half and look at the heatmap of the covariance matrices of two sub-samples.
+
+```{r}
+#### randomly split the data into half
+#### randomly select p consecutive SNPs where p < n so IW is proper
+p = 100
+# Start from a random point on the genome
+indx_start = sample(1: (snp_total - p), 1)
+X = X0[, indx_start:(indx_start + p -1)]
+# View(cor(X)[1:10, 1:10])
+## sub-sample into two
+out_sample_size = n0 / 2
+out_sample = sample(1:n0, out_sample_size)
+X_out = X[out_sample, ]
+X_in = X[setdiff(1:n0, out_sample), ]
+
+rm_p = c(which(diag(cov(X_in))==0), which(diag(cov(X_out))==0))
+indx_p = setdiff(1:p, rm_p)
+X_in = X_in[, indx_p]
+X_out = X_out[, indx_p]
+## out-sample LD matrix
+p = length(indx_p)
+Rp = cov(X_out)
+R0 = cov(X_in)
+library(ggplot2)
+library(reshape2)
+df1 <- melt(R0)
+df2 <- melt(Rp)
+N_in = nrow(X_in)
+N_out = nrow(X_out)
+p1 <- ggplot(df1, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(sprintf("In-sample Cov, %d samples", nrow(X_in)))
+p2 <- ggplot(df2, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low="blue", mid="white", high="red") +
+  coord_fixed() +
+  ggtitle(sprintf("Out-of-sample Cov, %d samples", nrow(X_out)))
+library(gridExtra)
+grid.arrange(p1, p2, ncol = 2)
+```
+
+Log-likelihood functions: 
+
+```{r}
+## Matrix F-distribution likelihood
+#### log F(R0 | nu * Rp / N, N, nu + 2)
+log_multigamma_vec <- function(a, p) {
+  # vectorized multivariate gamma
+  shifts <- (1 - seq_len(p)) / 2
+  # sum over j, but broadcasting a over j
+  (p*(p-1)/4)*log(pi) +
+    rowSums(lgamma(outer(a, shifts, "+")))
+}
+
+
+log_F <- function(R0, Rp, N, nu_vec) {
+  p <- nrow(R0)
+  jitter = 1e-8
+  R0 = R0 + jitter * diag(p)
+  Rp = Rp + jitter * diag(p)
+  # Precompute expensive shared quantities
+  logdet_nu_Rp_over_N <- (determinant(Rp, logarithm = TRUE)$modulus 
+                          + p * log(nu_vec)
+                          - p * log(N))
+  logdetR0   <- determinant(R0, logarithm = TRUE)$modulus
+  
+  # lambda_vec <- eigen(solve(Rp, R0))$values
+  # lambda_over_nu = tcrossprod(lambda_vec, N / nu_vec)
+  # logdet_I_plus_RR <- colSums(log(1 + lambda_over_nu))
+  # llhs = (log_multigamma_vec((N + nu_vec + p + 1) / 2, p)
+  #         - log_multigamma_vec(N / 2, p)
+  #         - log_multigamma_vec((nu_vec + p + 1) / 2, p)
+  #         - .5 * N * logdet_nu_Rp_over_N
+  #         + .5 * (N - p - 1) * logdetR0
+  #         - .5 * (N + nu_vec + p + 1) * logdet_I_plus_RR)
+  
+  logdet_Rplus_Rp = rep(0, length(nu_vec))
+  for (idx in 1:length(nu_vec)){
+    nu = nu_vec[idx]
+    logdet_Rplus_Rp[idx] <- determinant(R0 + nu * Rp / N, logarithm = TRUE)$modulus
+  }
+  
+  llhs = (log_multigamma_vec((N + nu_vec + p + 1) / 2, p)
+          - log_multigamma_vec(N / 2, p)
+          - log_multigamma_vec((nu_vec + p + 1) / 2, p)
+          + .5 * (nu_vec + p + 1) * logdet_nu_Rp_over_N
+          + .5 * (N - p - 1) * logdetR0
+          - .5 * (N + nu_vec + p + 1) * logdet_Rplus_Rp)
+  
+  as.numeric(llhs)
+}
+
+log_iw <- function(R0, Rp, nu_vec) {
+  p <- nrow(R0)
+  jitter = 1e-12
+  R0 = R0 + jitter * diag(p)
+  Rp = Rp + jitter * diag(p)
+  # Precompute expensive shared quantities
+  logdet_nu_Rp <- determinant(Rp, logarithm = TRUE)$modulus + p * log(nu_vec)
+  logdetR0   <- determinant(R0,   logarithm = TRUE)$modulus
+  tr_term   <- nu_vec * sum(t(Rp) * solve(R0))
+  llhs = (.5 * (nu_vec + p + 1) * logdet_nu_Rp
+          - .5 * (nu_vec + p + 1) * p * log(2)
+          - log_multigamma_vec((nu_vec + p + 1) / 2, p)
+          - .5 * (nu_vec + 2 * (p + 1)) * logdetR0
+          - .5 * tr_term)
+  as.numeric(llhs)
+}
+
+
+```
+
+## 2. Comparing $\nu$ learned in the F model with various delta
+
+Sorry In this simulation $\Psi' = \dfrac{N' R' + \text{diag}(R_0)}{N' + \delta}$
+
+This is not exactly setting $\Psi' = \dfrac{\nu R' + \text{diag}(R_0)}{\nu' + \delta}$ as we want. But I found it still gives some more intuition.
+
+```{r}
+N = nrow(X_in)
+Np = nrow(X_out)
+nu_vec = c(1:100) 
+delta = 1e-6
+Psi_p = (Np * Rp + delta * diag(R0)) / (Np + delta)
+llhs = log_F(R0, Psi_p, N, nu_vec)
+plot(nu_vec, llhs, xlab = paste0("nu value; setting delta = ", delta), ylab = "log-likelihood of matrix F-distribution")
+
+print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
+```
+
+
+```{r}
+N = nrow(X_in)
+Np = nrow(X_out)
+nu_vec = c(1:100) 
+delta = 1e-2
+Psi_p = (Np * Rp + delta * diag(R0)) / (Np + delta)
+llhs = log_F(R0, Psi_p, N, nu_vec)
+plot(nu_vec, llhs, xlab = paste0("nu value; setting delta = ", delta), ylab = "log-likelihood of matrix F-distribution")
+
+print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
+```
+When $\delta = 0.01$ we have larger $\nu$, which is interesting. Further increasing $\delta$ does not lead to a bigger optimal $\nu$.
+
+```{r}
+N = nrow(X_in)
+Np = nrow(X_out)
+nu_vec = c(1:100) 
+delta = 1e-1
+Psi_p = (Np * Rp + delta * diag(R0)) / (Np + delta)
+llhs = log_F(R0, Psi_p, N, nu_vec)
+plot(nu_vec, llhs, xlab = paste0("nu value; setting delta = ", delta), ylab = "log-likelihood of matrix F-distribution")
+
+print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
+```
+
+
+
+Now let's try to add $\text{diag}(R')$ instead of $\text{diag}(R_0)$. The optimal $\nu$ is not as large. So it seems like setting the prior as $\text{diag}(R_0)$ is better.
+
+
+```{r}
+N = nrow(X_in)
+Np = nrow(X_out)
+nu_vec = c(1:100) 
+delta = 1e-2
+Psi_p = (Np * Rp + delta * diag(Rp)) / (Np + delta)
+llhs = log_F(R0, Psi_p, N, nu_vec)
+plot(nu_vec, llhs, xlab = paste0("nu value; setting delta = ", delta), ylab = "log-likelihood of matrix F-distribution")
+
+print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
+```
+
+
+### Model 5
+
+$$\mathrm{IW}(R_0 | \nu \Psi', \nu + p + 1)$$
+
+```{r}
+
+delta = 1e-6
+Psi_p = (Np * Rp + delta * diag(Rp)) / (Np + delta)
+llhs = log_iw(R0, Psi_p, nu_vec)
+plot(nu_vec, llhs, xlab = paste0("nu value; setting delta = ", delta), ylab = "log-likelihood of IW")
+
+print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
+
+```
+
+
+```{r}
+
+delta = 1e-2
+Psi_p = (Np * Rp + delta * diag(Rp)) / (Np + delta)
+llhs = log_iw(R0, Psi_p, nu_vec)
+plot(nu_vec, llhs, xlab = paste0("nu value; setting delta = ", delta), ylab = "log-likelihood of IW")
+
+print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
+
+```
+
+They are both bad, because in the pdf of IW, we take the inverse of $R_0$ not $R'$ (out-of-sample cov. mat.). So adding a small regularization to $R'$ does not help and the PDF is small due to the singularity of $R_0$. I can not make $\nu$ any larger with Inverse-Wishart formulation here. But recall that in the Variational Inference (jointly with SuSiE), the estimated $R_0$ does borrow eigenvectors of $R'$ so that the estimated $\nu$ might be larger. 
+
+In conclusion, jointly learning $\delta$ can help to achieve larger $\nu$, hence borrowing more strength from the out-of-sample LD (if appropriately adjusted by $\delta$).
+
+
+==============
+
+Extra: We try the model
+
+$$\mathrm{F}(R_0 | \frac{\nu \Psi''}{N}, N, \nu + 2)$$
+where $\Psi'' = \dfrac{N' \text{diag}(R_0)^{1/2} \text{diag}(R')^{-1/2} R' \text{diag}(R')^{-1/2} \text{diag}(R_0)^{1/2} + \delta \text{diag}(R_0)}{N' + \delta}$. But the estimated optimal $\nu$ seems not as large.
+
+
+```{r}
+N = nrow(X_in)
+Np = nrow(X_out)
+nu_vec = c(1:100) 
+delta = 1e-2
+Psi_pp = (Np * diag(diag(R0)^(0.5)) %*% cov2cor(Rp) %*% diag(diag(R0)^(0.5)) + delta * diag(R0)) / (Np + delta)
+llhs = log_F(R0, Psi_p, N, nu_vec)
+plot(nu_vec, llhs, xlab = paste0("nu value when delta = ", delta), ylab = "log-likelihood of matrix F-distribution")
+
+print(paste0("Optimal nu is ", nu_vec[which.max(llhs)]))
+
+```
+
+
