@@ -110,7 +110,8 @@ pip_plot <- function (fit, causal_snps = NULL, max_cs_size = 100,
                     shape = 1,size = 3,inherit.aes = FALSE) +
          scale_color_manual(values = colors) +
          labs(x = "SNP",y = "PIP",color = "CS",title = title) +
-         theme_cowplot(font_size = 10))
+         theme_cowplot(font_size = 10) +
+         theme(plot.title = element_text(size = 10,face = "plain")))
 }
 p1 <- pip_plot(fit_susie,causal_snps = which(b != 0),title = "susie")
 p2 <- pip_plot(fit_susie_rss,causal_snps = which(b != 0),title = "susie_rss")
