@@ -70,20 +70,20 @@ out   <- with(test,compute_suff_stat(X,y,standardize = TRUE))
 R_out <- cov2cor(out$XtX)
 
 # Run susie on the training data.
-fit_susie <- susie(train$X,train$y,L = 10,standardize = TRUE,
+fit_susie <- susie(train$X,train$y,L = 5,standardize = TRUE,
                    min_abs_corr = 0,estimate_prior_method = "EM",
                    prior_tol = 0,check_null_threshold = -1,
                    verbose = TRUE)
 
 # Run susie_rss on the training data.
 n <- nrow(train$X)
-fit_susie_rss <- susie_rss(zhat,R,n,L = 10,min_abs_corr = 0,
+fit_susie_rss <- susie_rss(zhat,R,n,L = 5,min_abs_corr = 0,
                            estimate_prior_method = "EM",
                            prior_tol = 0,check_null_threshold = -1,
                            verbose = TRUE)
 
 # Run susie_rss on the training data, with out-of-sample LD (R_out).
-fit_susie_rss_Rout <- susie_rss(zhat,R_out,n,L = 10,min_abs_corr = 0,
+fit_susie_rss_Rout <- susie_rss(zhat,R_out,n,L = 5,min_abs_corr = 0,
                                 estimate_prior_method = "EM",prior_tol = 0,
                                 check_null_threshold = -1,verbose = TRUE)
 
@@ -119,35 +119,36 @@ p3 <- pip_plot(fit_susie_rss_Rout,causal_snps = which(b != 0),
                title = "susie_rss, out-of-sample LD")
 print(plot_grid(p1,p2,p3,nrow = 3,ncol = 1))
 
-stop()
-
-# Run susie on the training set with different settings of L, then
-# predict the unseen Ys.
-mse <- rep(0,10)
-mse_rss <- rep(0,10)
-for (L in 1:10) {
-  input_ss <- compute_suff_stat(train$X,train$y,standardize = TRUE)
-  ss <- univariate_regression(train$X,train$y)
-  R <- with(input_ss,cov2cor(XtX))
-  zhat <- with(ss,betahat/sebetahat)
-  input_ss_test <- compute_suff_stat(test$X,test$y,standardize = TRUE)
-  ss_test <- univariate_regression(test$X,test$y)
-  R_test <- with(input_ss_test,cov2cor(XtX))
-  zhat_test <- with(ss_test,betahat/sebetahat)
-  fit <-  susie(train$X,train$y,L = L,standardize = TRUE,
-                min_abs_corr = 0,estimate_prior_method = "EM",
-                prior_tol = 0,check_null_threshold = -1,verbose = TRUE)
-  fit_rss    <- susie_rss(zhat,R,n,min_abs_corr = 0,
-                          estimate_prior_method = "EM",prior_tol = 0,
-                          check_null_threshold = -1,verbose = TRUE)
-  ypred      <- predict(fit,test$X)
-  R_test[is.nan(R_test)] <- 0
-  ypred_rss  <- predict(fit_rss,sqrt(n)*R_test)
-  mse[L]     <- mean((test$y - ypred)^2)
-  i <- which(!is.na(zhat_test))
-  mse_rss[L] <- mean((zhat_test[i] - ypred_rss[i])^2)
+# Implement a form of cross-validation by running susie on the
+# training set with different settings of L, then predict the
+# regression outcomes in the test set.
+maxL <- 5
+mse <- matrix(0,3,maxL)
+rownames(mse) <- c("susie","susie_rss","susie_rss_Rout")
+for (L in seq(1,maxL)) {
+  cat(L,"")
+  fit_susie <- susie(train$X,train$y,L = L,standardize = TRUE,
+                     min_abs_corr = 0,estimate_prior_method = "EM",
+                     prior_tol = 0,check_null_threshold = -1,
+                     verbose = FALSE)
+  ypred <- predict(fit_susie,test$X)
+  mse["susie",L] <- mean((test$y - ypred)^2)
+  n <- nrow(train$X)
+  fit_susie_rss <- susie_rss(zhat,R,n,L = L,min_abs_corr = 0,
+                             estimate_prior_method = "EM",
+                             prior_tol = 0,check_null_threshold = -1,
+                             verbose = FALSE)
+  ypred <- predict(fit_susie_rss,test$X)
+  mse["susie_rss",L] <- mean((test$y - ypred)^2)
+  fit_susie_rss_Rout <- susie_rss(zhat,R_out,n,L = L,min_abs_corr = 0,
+                                  estimate_prior_method = "EM",prior_tol = 0,
+                                  check_null_threshold = -1,verbose = FALSE)
+  ypred <- predict(fit_susie_rss_Rout,test$X)
+  mse["susie_rss_Rout",L] <- mean((test$y - ypred)^2)
 }
+cat("\n")
 
-par(mfcol = c(1,2))
-plot(1:10,mse,type = "l",lwd = 1.5,col = "darkblue")
-plot(1:10,mse_rss,type = "l",lwd = 1,col = "tomato",lty = "dashed")
+plot(1:maxL,mse["susie",],type = "l",lwd = 2,col = "darkblue",
+     xlab = "L",ylab = "MSE")
+plot(1:maxL,mse["susie_rss",],lwd = 2,col = "dodgerblue")
+plot(1:maxL,mse["susie_rss_Rout",],lwd = 2,col = "darkorange")
