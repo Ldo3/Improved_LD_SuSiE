@@ -1,6 +1,5 @@
-# The point of this script is to illustrate a simple idea for choosing
-# L, the number of "single effect regressions", via a
-# cross-validation-like approach.
+# The point of this script is to illustrate the use of CV for model
+# selection in susie, e.g., for choosing L.
 library(matrixStats)
 library(susieR)
 library(ggplot2)
@@ -11,14 +10,17 @@ set.seed(1)
 X <- readRDS("../data/Thyroid.FMO2.1Mb.RDS")$X
 storage.mode(X) <- "double"
 
-# Take a random subset of 4,000 SNPs.
-m <- ncol(X)
-j <- sort(sample(m,4000))
+# Remove SNPs with MAF < 1%
+maf <- colMeans(X)/2
+j <- which(maf > 0.01)
 X <- X[,j]
 
-# Remove SNPs that show no variation.
-j <- which(colSds(X) > 0)
+# Take a random subset of 4,000 SNPs (just so the example does not
+# take too long to run).
+p <- ncol(X)
+j <- sort(sample(p,4000))
 X <- X[,j]
+X <- scale(X,center = TRUE,scale = FALSE)
 
 # Split the data into training and test sets, and remove any columns
 # of X that show no variation in either the test or training sets.
@@ -36,25 +38,25 @@ X_test  <- X_test[,j]
 
 # Select the 3 causal SNPs.
 p1 <- 3
-p  <- ncol(X)
-j  <- sample(j,p1)
+p <- ncol(X)
+j <- sample(1:p,p1)
 
 # Simulate b.
-b        <- rep(0,p)
+b <- rep(0,p)
 names(b) <- colnames(X)
-b[j]     <- sample(c(-1,1),p1,replace = TRUE)
+b[j] <- sample(c(-1,1),p1,replace = TRUE)
 
 # Now simulate y.
-e <- rnorm(n,sd = 1)
+n <- nrow(X)
+e <- rnorm(n,sd = 0.3) 
 y <- drop(X %*% b + e)
 y <- y - mean(y)
-y <- y/sd(y)
 y_train <- y[i0]
 y_test  <- y[i1]
 train   <- list(X = X_train,y = y_train)
 test    <- list(X = X_test,y = y_test)
-rm(X,X_train,X_test)
-rm(y,y_train,y_test)
+
+stop()
 
 # Compute the "in-sample" LD matrix using the training data, and
 # compute summary statistics (association test z-scores).
@@ -86,6 +88,14 @@ fit_susie_rss <- susie_rss(zhat,R,n,L = 5,min_abs_corr = 0,
 fit_susie_rss_Rout <- susie_rss(zhat,R_out,n,L = 5,min_abs_corr = 0,
                                 estimate_prior_method = "EM",prior_tol = 0,
                                 check_null_threshold = -1,verbose = TRUE)
+
+# Compare the coefficient estimates.
+b_susie <- with(fit_susie,colSums(alpha * mu)/X_column_scale_factors)
+b_susie_rss <- with(fit_susie_rss,colSums(alpha * mu)/X_column_scale_factors)
+plot(b,b_susie,pch = 20)
+plot(b_susie,b_susie_rss,pch = 20)
+
+stop()
 
 # Compare the PIP plots.
 pip_plot <- function (fit, causal_snps = NULL, max_cs_size = 100, 
