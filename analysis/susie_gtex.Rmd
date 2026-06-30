@@ -1,5 +1,0 @@
----
-title: NMF+CC analysis of the combined MVA + LPS + PME-seq data
-author: Peter Carbonetto
-output: workflowr::wflow_html
----
