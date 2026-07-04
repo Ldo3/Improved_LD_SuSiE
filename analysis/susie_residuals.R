@@ -54,11 +54,16 @@ fit_out <- susie_rss(zhat,R_out,L = 4,n = n,estimate_prior_method = "EM",
                      tol = 1e-6,min_abs_corr = 0,verbose = TRUE)
 susie_plot(fit_out,y = "PIP",b = (b != 0))
 
-fit_out_L2 <- susie_rss(zhat,R_out,L = 2,n = n,estimate_prior_method = "EM",
-                        tol = 1e-6,min_abs_corr = 0,verbose = TRUE)
+A <- tcrossprod(zhat)
+A <- A/max(abs(A))
+w <- 1
+# w <- 0.5
+R2 <- w*R_out + (1-w)*A
+fit_out <- susie_rss(zhat,R2,L = 4,n = n,estimate_prior_method = "EM",
+                     tol = 1e-6,min_abs_corr = 0,verbose = TRUE)
 
+par(mfrow = c(1,2))
 susie_plot(fit,y = "PIP",b = (b != 0))
-susie_plot(fit_out_L2,y = "PIP",b = (b != 0))
-
+susie_plot(fit_out,y = "PIP",b = (b != 0))
 hist(fit$XtR,breaks = 64)
-hist(fit_out_L2$XtR,breaks = 64)
+hist(fit_out$XtR,breaks = 64)
