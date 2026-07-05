@@ -53,3 +53,100 @@ Dimensions of the genotype matrix we will use:
 ```{r dim-x}
 print(dim(X))
 ```
+
+## Simulate data set
+
+Select the causal SNPs, then generate the (sparse) true effects:
+
+```{r simulate-effects}
+p        <- ncol(X)
+j        <- sample(p,p1)
+b        <- rep(0,p)
+names(b) <- colnames(X)
+b[j]     <- sample(c(-1,1),p1,replace = TRUE)
+```
+
+Now simulate y:
+
+```{r simulate-y}
+n <- nrow(X)
+e <- rnorm(n,sd = 0.85)
+y <- drop(X %*% b + e)
+y <- y/sd(y)
+```
+
+Compute the "in-sample" LD matrix and an "out-of-sample" LD matrix
+(more accurately this is an LD matrix obtained using a subset of the
+samples):
+
+```{r compute-ld}
+R <- cor(X)
+i <- sample(n,n_out)
+R_out <- cor(X[i,])
+```
+
+Compute the association statistics (z-scores):
+
+```{r z-scores}
+out  <- univariate_regression(X,y)
+zhat <- with(out,betahat/sebetahat)
+```
+
+## Run SuSiE-RSS with the true number of causal SNPs
+
+Run SuSiE-RSS with the in-sample and out-of-sample LD matrices when
+the number of CSs matches the true number of causal SNPs:
+
+```{r susie-L2}
+fit <- susie_rss(zhat,R,L = 2,n = n,estimate_prior_method = "EM",
+                 tol = 1e-6,min_abs_corr = 0,verbose = TRUE)
+fit_out <- susie_rss(zhat,R_out,L = 2,n = n,estimate_prior_method = "EM",
+                     tol = 1e-6,min_abs_corr = 0,verbose = TRUE)
+```
+
+Both of the SuSiE-RSS analyses produce a similar result: two CSs, with
+each CS recovering a causal SNPs.
+
+```{r susie-plots-1, fig.height=2.25, fig.width=6}
+par(mfrow = c(1,2),mar = c(4,4,2,1))
+susie_plot(fit,y = "PIP",b = (b != 0),xlab = "SNP",main = "in-sample LD")
+susie_plot(fit_out,y = "PIP",b = (b != 0),xlab = "SNP",
+           main = "out-of-sample LD")
+```
+
+So this seems promising. It is also encouraging that the distributions
+of the SER residuals are similar in the two analyses:
+
+```{r compare-residuals, fig.height=2, fig.width=6}
+par(mfrow = c(1,2),mar = c(4,4,2,1))
+hist(fit$XtR,breaks = 64,xlab = "residuals",ylab = "",main = "in-sample LD")
+hist(fit_out$XtR,breaks = 64,xlab = "residuals",ylab = "",
+     main = "out-of-sample LD")
+```
+
+## Run susie_rss again when the number of causal SNPs is treated as an unknown
+
+Now let's see what happens in the more realistic situation when we
+don't know in advance what is the number of causal SNPs. Here are I'll
+set the upper limit on the number of CSs to 4.
+
+```{r susie-L4}
+fit <- susie_rss(zhat,R,L = 4,n = n,estimate_prior_method = "EM",
+                 tol = 1e-6,min_abs_corr = 0,verbose = TRUE)
+fit_out <- susie_rss(zhat,R_out,L = 4,n = n,estimate_prior_method = "EM",
+                     tol = 1e-6,min_abs_corr = 0,verbose = TRUE)
+```
+
+With the in-sample LD, the results look very similar to the previous
+result—so SuSiE was able to correctly determine the number of causal
+SNPs.
+
+But the result looks much different with the out-of-sample LD: it
+keeps all four CSs and fails to recover one of the causal SNPs.
+
+```{r susie-plots-2, fig.height=2.25, fig.width=6}
+par(mfrow = c(1,2),mar = c(4,4,2,1))
+susie_plot(fit,y = "PIP",b = (b != 0),xlab = "SNP",main = "in-sample LD")
+susie_plot(fit_out,y = "PIP",b = (b != 0),xlab = "SNP",
+           main = "out-of-sample LD")
+```
