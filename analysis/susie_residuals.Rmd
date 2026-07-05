@@ -107,7 +107,7 @@ fit_out <- susie_rss(zhat,R_out,L = 2,n = n,estimate_prior_method = "EM",
 Both of the SuSiE-RSS analyses produce a similar result: two CSs, with
 each CS recovering a causal SNPs.
 
-```{r susie-plots-1, fig.height=2.25, fig.width=6}
+```{r susie-plots, fig.height=2.25, fig.width=6}
 par(mfrow = c(1,2),mar = c(4,4,2,1))
 susie_plot(fit,y = "PIP",b = (b != 0),xlab = "SNP",main = "in-sample LD")
 susie_plot(fit_out,y = "PIP",b = (b != 0),xlab = "SNP",
@@ -150,3 +150,20 @@ susie_plot(fit,y = "PIP",b = (b != 0),xlab = "SNP",main = "in-sample LD")
 susie_plot(fit_out,y = "PIP",b = (b != 0),xlab = "SNP",
            main = "out-of-sample LD")
 ```
+
+Looking at the SER residuals might help us understand the issue: the
+distributions now look very different, with the out-of-sample LD
+producing many more larger residuals. So it stands to reason that
+SuSiE will try to find additional SNPs that can absorb some of those
+large residuals.
+
+```{r compare-residuals-2, fig.height=2, fig.width=6}
+par(mfrow = c(1,2),mar = c(4,4,2,1))
+hist(fit$XtR,breaks = 64,xlab = "residuals",ylab = "",main = "in-sample LD")
+hist(fit_out$XtR,breaks = 64,xlab = "residuals",ylab = "",
+     main = "out-of-sample LD")
+```
+
+Perhaps some form of the residuals could be a helpful diagnostic and
+potentially could inspire some ways to improve our approach to dealing
+with LD mismatch.
