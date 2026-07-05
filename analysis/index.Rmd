@@ -45,3 +45,5 @@ We investigate the performance of SuSiE model for summary statistics with variou
 + [Jointly estimate $N$ and $\nu$ in matrix F-distribution](learn-N-nu-jointly.html)
 
 + [Jointly estimate $\delta$ and $\nu$ leads to larger optimal $\nu$](optimize-nu-delta.html)
+
++ [Examining the SuSiE residuals with an in-sample and an out-of-sample LD matrix](susie_residuals.html)
