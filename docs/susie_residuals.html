@@ -438,15 +438,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtreeecc94f498b3d02ae3af66ec7f3af89485b090fb8targetblankecc94f4a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree1274ef3d7501eca419972f31fa75b39eb47d5b1dtargetblank1274ef3a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/ecc94f498b3d02ae3af66ec7f3af89485b090fb8" target="_blank">ecc94f4</a>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/1274ef3d7501eca419972f31fa75b39eb47d5b1d" target="_blank">1274ef3</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtreeecc94f498b3d02ae3af66ec7f3af89485b090fb8targetblankecc94f4a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLdo3ImprovedLDSuSiEtree1274ef3d7501eca419972f31fa75b39eb47d5b1dtargetblank1274ef3a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -456,7 +456,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/ecc94f498b3d02ae3af66ec7f3af89485b090fb8" target="_blank">ecc94f4</a>.
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/tree/1274ef3d7501eca419972f31fa75b39eb47d5b1d" target="_blank">1274ef3</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -474,12 +474,8 @@ Ignored files:
     Ignored:    code/.DS_Store
 
 Untracked files:
-    Untracked:  analysis/susie_residuals.Rmd~
     Untracked:  data/bloodcells_chr1.153094636.157301801.matrix.gz
     Untracked:  data/bloodcells_chr1.153094636.157301801.z.rds
-
-Unstaged changes:
-    Modified:   analysis/susie_residuals.R
 
 </code></pre>
 <p>
@@ -524,6 +520,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/1274ef3d7501eca419972f31fa75b39eb47d5b1d/analysis/susie_residuals.Rmd" target="_blank">1274ef3</a>
+</td>
+<td>
+Peter Carbonetto
+</td>
+<td>
+2026-07-04
+</td>
+<td>
+Added results with L=4.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/Ldo3/Improved_LD_SuSiE/blob/ec1c75f989a643b4fa77c389fce4e5c76ef845c9/analysis/susie_residuals.Rmd" target="_blank">ec1c75f</a>
+</td>
+<td>
+Peter Carbonetto
+</td>
+<td>
+2026-07-04
+</td>
+<td>
+Added susie runs with L=2.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/Ldo3/Improved_LD_SuSiE/f0c0cd0b3f1e9fc3e9b0839510774205e6f45ec6/docs/susie_residuals.html" target="_blank">f0c0cd0</a>
+</td>
+<td>
+Peter Carbonetto
+</td>
+<td>
+2026-07-04
+</td>
+<td>
+First build of the susie_residuals analysis.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -575,6 +622,120 @@ X   &lt;- X[,j]</code></pre>
 <p>Dimensions of the genotype matrix we will use:</p>
 <pre class="r"><code>print(dim(X))
 # [1] 574 740</code></pre>
+</div>
+<div id="simulate-data-set" class="section level2">
+<h2>Simulate data set</h2>
+<p>Select the causal SNPs, then generate the (sparse) true effects:</p>
+<pre class="r"><code>p        &lt;- ncol(X)
+j        &lt;- sample(p,p1)
+b        &lt;- rep(0,p)
+names(b) &lt;- colnames(X)
+b[j]     &lt;- sample(c(-1,1),p1,replace = TRUE)</code></pre>
+<p>Now simulate y:</p>
+<pre class="r"><code>n &lt;- nrow(X)
+e &lt;- rnorm(n,sd = 0.85)
+y &lt;- drop(X %*% b + e)
+y &lt;- y/sd(y)</code></pre>
+<p>Compute the “in-sample” LD matrix and an “out-of-sample” LD matrix
+(more accurately this is an LD matrix obtained using a subset of the
+samples):</p>
+<pre class="r"><code>R &lt;- cor(X)
+i &lt;- sample(n,n_out)
+R_out &lt;- cor(X[i,])</code></pre>
+<p>Compute the association statistics (z-scores):</p>
+<pre class="r"><code>out  &lt;- univariate_regression(X,y)
+zhat &lt;- with(out,betahat/sebetahat)</code></pre>
+</div>
+<div id="run-susie-rss-with-the-true-number-of-causal-snps"
+class="section level2">
+<h2>Run SuSiE-RSS with the true number of causal SNPs</h2>
+<p>Run SuSiE-RSS with the in-sample and out-of-sample LD matrices when
+the number of CSs matches the true number of causal SNPs:</p>
+<pre class="r"><code>fit &lt;- susie_rss(zhat,R,L = 2,n = n,estimate_prior_method = &quot;EM&quot;,
+                 tol = 1e-6,min_abs_corr = 0,verbose = TRUE)
+fit_out &lt;- susie_rss(zhat,R_out,L = 2,n = n,estimate_prior_method = &quot;EM&quot;,
+                     tol = 1e-6,min_abs_corr = 0,verbose = TRUE)
+# [1] &quot;objective:-679.625514077482&quot;
+# [1] &quot;objective:-678.736157406469&quot;
+# [1] &quot;objective:-678.728143508109&quot;
+# [1] &quot;objective:-678.728136087537&quot;
+# [1] &quot;objective:-678.72813607493&quot;
+# [1] &quot;objective:-681.187973986232&quot;
+# [1] &quot;objective:-679.619950335575&quot;
+# [1] &quot;objective:-679.601939499308&quot;
+# [1] &quot;objective:-679.60178755363&quot;
+# [1] &quot;objective:-679.601785755919&quot;
+# [1] &quot;objective:-679.601785733858&quot;</code></pre>
+<p>Both of the SuSiE-RSS analyses produce a similar result: two CSs,
+with each CS recovering a causal SNPs.</p>
+<pre class="r"><code>par(mfrow = c(1,2),mar = c(4,4,2,1))
+susie_plot(fit,y = &quot;PIP&quot;,b = (b != 0),xlab = &quot;SNP&quot;,main = &quot;in-sample LD&quot;)
+susie_plot(fit_out,y = &quot;PIP&quot;,b = (b != 0),xlab = &quot;SNP&quot;,
+           main = &quot;out-of-sample LD&quot;)</code></pre>
+<p><img src="figure/susie_residuals.Rmd/susie-plots-1.png" width="720" style="display: block; margin: auto;" /></p>
+<p>So this seems promising. It is also encouraging that the
+distributions of the SER residuals are similar in the two analyses:</p>
+<pre class="r"><code>par(mfrow = c(1,2),mar = c(4,4,2,1))
+hist(fit$XtR,breaks = 64,xlab = &quot;residuals&quot;,ylab = &quot;&quot;,main = &quot;in-sample LD&quot;)
+hist(fit_out$XtR,breaks = 64,xlab = &quot;residuals&quot;,ylab = &quot;&quot;,
+     main = &quot;out-of-sample LD&quot;)</code></pre>
+<p><img src="figure/susie_residuals.Rmd/compare-residuals-1.png" width="720" style="display: block; margin: auto;" /></p>
+</div>
+<div
+id="run-susie_rss-again-when-the-number-of-causal-snps-is-treated-as-an-unknown"
+class="section level2">
+<h2>Run susie_rss again when the number of causal SNPs is treated as an
+unknown</h2>
+<p>Now let’s see what happens in the more realistic situation when we
+don’t know in advance what is the number of causal SNPs. Here are I’ll
+set the upper limit on the number of CSs to 4.</p>
+<pre class="r"><code>fit &lt;- susie_rss(zhat,R,L = 4,n = n,estimate_prior_method = &quot;EM&quot;,
+                 tol = 1e-6,min_abs_corr = 0,verbose = TRUE)
+fit_out &lt;- susie_rss(zhat,R_out,L = 4,n = n,estimate_prior_method = &quot;EM&quot;,
+                     tol = 1e-6,min_abs_corr = 0,verbose = TRUE)
+# [1] &quot;objective:-684.027362167596&quot;
+# [1] &quot;objective:-678.81396913942&quot;
+# [1] &quot;objective:-678.729036839982&quot;
+# [1] &quot;objective:-678.728114332861&quot;
+# [1] &quot;objective:-678.728114021673&quot;
+# [1] &quot;objective:-675.318067557121&quot;
+# [1] &quot;objective:-673.74329175666&quot;
+# [1] &quot;objective:-673.353263064252&quot;
+# [1] &quot;objective:-670.874597252272&quot;
+# [1] &quot;objective:-668.174884792762&quot;
+# [1] &quot;objective:-666.837767820349&quot;
+# [1] &quot;objective:-666.49352123619&quot;
+# [1] &quot;objective:-666.423473872949&quot;
+# [1] &quot;objective:-666.409749119563&quot;
+# [1] &quot;objective:-666.407104714961&quot;
+# [1] &quot;objective:-666.406606494006&quot;
+# [1] &quot;objective:-666.406513784715&quot;
+# [1] &quot;objective:-666.406496616446&quot;
+# [1] &quot;objective:-666.406493442221&quot;
+# [1] &quot;objective:-666.406492855621&quot;</code></pre>
+<p>With the in-sample LD, the results look very similar to the previous
+result—so SuSiE was able to correctly determine the number of causal
+SNPs.</p>
+<p>But the result looks much different with the out-of-sample LD: it
+keeps all four CSs and fails to recover one of the causal SNPs.</p>
+<pre class="r"><code>par(mfrow = c(1,2),mar = c(4,4,2,1))
+susie_plot(fit,y = &quot;PIP&quot;,b = (b != 0),xlab = &quot;SNP&quot;,main = &quot;in-sample LD&quot;)
+susie_plot(fit_out,y = &quot;PIP&quot;,b = (b != 0),xlab = &quot;SNP&quot;,
+           main = &quot;out-of-sample LD&quot;)</code></pre>
+<p><img src="figure/susie_residuals.Rmd/susie-plots-2-1.png" width="720" style="display: block; margin: auto;" /></p>
+<p>Looking at the SER residuals might help us understand the issue: the
+distributions now look very different, with the out-of-sample LD
+producing many more larger residuals. So it stands to reason that SuSiE
+will try to find additional SNPs that can absorb some of those large
+residuals.</p>
+<pre class="r"><code>par(mfrow = c(1,2),mar = c(4,4,2,1))
+hist(fit$XtR,breaks = 64,xlab = &quot;residuals&quot;,ylab = &quot;&quot;,main = &quot;in-sample LD&quot;)
+hist(fit_out$XtR,breaks = 64,xlab = &quot;residuals&quot;,ylab = &quot;&quot;,
+     main = &quot;out-of-sample LD&quot;)</code></pre>
+<p><img src="figure/susie_residuals.Rmd/compare-residuals-2-1.png" width="720" style="display: block; margin: auto;" /></p>
+<p>Perhaps some form of the residuals could be a helpful diagnostic and
+potentially could inspire some ways to improve our approach to dealing
+with LD mismatch.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -605,20 +766,25 @@ Session information
 # [1] matrixStats_1.2.0 susieR_0.14.4    
 # 
 # loaded via a namespace (and not attached):
-#  [1] Matrix_1.6-5       gtable_0.3.6       jsonlite_2.0.0     dplyr_1.1.4       
-#  [5] compiler_4.3.3     crayon_1.5.3       promises_1.3.3     tidyselect_1.2.1  
-#  [9] Rcpp_1.1.0         stringr_1.5.1      git2r_0.33.0       dichromat_2.0-0.1 
-# [13] later_1.4.2        jquerylib_0.1.4    scales_1.4.0       yaml_2.3.10       
-# [17] fastmap_1.2.0      lattice_0.22-5     plyr_1.8.9         ggplot2_3.5.2     
-# [21] R6_2.6.1           generics_0.1.4     mixsqp_0.3-54      workflowr_1.7.1   
-# [25] knitr_1.50         tibble_3.3.0       rprojroot_2.0.4    RColorBrewer_1.1-3
-# [29] bslib_0.9.0        pillar_1.11.0      rlang_1.1.6        reshape_0.8.9     
-# [33] cachem_1.1.0       stringi_1.8.7      httpuv_1.6.14      xfun_0.52         
-# [37] fs_1.6.6           sass_0.4.10        cli_3.6.5          magrittr_2.0.3    
-# [41] digest_0.6.37      grid_4.3.3         irlba_2.3.5.1      lifecycle_1.0.4   
-# [45] vctrs_0.6.5        evaluate_1.0.4     glue_1.8.0         farver_2.1.2      
-# [49] whisker_0.4.1      rmarkdown_2.29     tools_4.3.3        pkgconfig_2.0.3   
-# [53] htmltools_0.5.8.1</code></pre>
+#  [1] sass_0.4.10         generics_0.1.4      stringi_1.8.7      
+#  [4] lattice_0.22-5      digest_0.6.37       magrittr_2.0.3     
+#  [7] evaluate_1.0.4      grid_4.3.3          RColorBrewer_1.1-3 
+# [10] fastmap_1.2.0       rprojroot_2.0.4     workflowr_1.7.1    
+# [13] plyr_1.8.9          jsonlite_2.0.0      Matrix_1.6-5       
+# [16] whisker_0.4.1       reshape_0.8.9       mixsqp_0.3-54      
+# [19] promises_1.3.3      scales_1.4.0        jquerylib_0.1.4    
+# [22] cli_3.6.5           rlang_1.1.6         crayon_1.5.3       
+# [25] cachem_1.1.0        yaml_2.3.10         tools_4.3.3        
+# [28] parallel_4.3.3      dplyr_1.1.4         ggplot2_3.5.2      
+# [31] httpuv_1.6.14       Rfast_2.1.0         RcppZiggurat_0.1.6 
+# [34] vctrs_0.6.5         R6_2.6.1            lifecycle_1.0.4    
+# [37] git2r_0.33.0        stringr_1.5.1       fs_1.6.6           
+# [40] irlba_2.3.5.1       pkgconfig_2.0.3     RcppParallel_5.1.10
+# [43] pillar_1.11.0       bslib_0.9.0         later_1.4.2        
+# [46] gtable_0.3.6        glue_1.8.0          Rcpp_1.1.0         
+# [49] xfun_0.52           tibble_3.3.0        tidyselect_1.2.1   
+# [52] knitr_1.50          dichromat_2.0-0.1   farver_2.1.2       
+# [55] htmltools_0.5.8.1   rmarkdown_2.29      compiler_4.3.3</code></pre>
 </div>
 </div>
 </div>
