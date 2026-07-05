@@ -1,0 +1,55 @@
+---
+title: Examining the SuSiE residuals with an in-sample and an out-of-sample LD matrix
+author: Peter Carbonetto
+output: workflowr::wflow_html
+---
+
+In this exploratory analysis I'm using a slightly modified version of
+susieR that can be installed in this way:
+
+```{r install-susie, eval=FALSE}
+library(remotes)
+install_github("stephenslab/susieR@output_residuals")
+```
+
+```{r knitr-opts, include=FALSE}
+knitr::opts_chunk$set(comment = "#",collapse = TRUE,results = "hold",
+                      fig.align = "center",dpi = 120)
+```
+
+## Initial setup
+
+Here I set the seed for reproducibility.
+
+```{r setup}
+library(susieR)
+library(matrixStats)
+print(packageVersion("susieR"))
+set.seed(1)
+p1      <- 2
+min_maf <- 0.03
+n_out   <- 100
+```
+
+Load a version of the GTEx genotype data:
+
+```{r load-genotype}
+X <- readRDS("data/Thyroid.FMO2.1Mb.RDS")$X
+storage.mode(X) <- "double"
+X <- X[,1:1000]
+```
+
+Filter the SNPs by MAF:
+
+```{r filter-by-maf}
+maf <- colMeans(X)/2
+maf <- pmin(maf,1 - maf)
+j   <- which(maf > min_maf)
+X   <- X[,j]
+```
+
+Dimensions of the genotype matrix we will use:
+
+```{r dim-x}
+print(dim(X))
+```
